@@ -2,7 +2,7 @@ FROM node:20.19.0-slim
 
 WORKDIR /usr/src/app
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.6.3
 
 COPY package.json pnpm-lock.yaml* ./
 RUN pnpm install --frozen-lockfile
