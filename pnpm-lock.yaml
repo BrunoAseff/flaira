@@ -26,9 +26,6 @@ importers:
       react-intl:
         specifier: ^7.1.6
         version: 7.1.6(react@19.0.0)(typescript@5.8.2)
-      ts-prune:
-        specifier: ^0.10.3
-        version: 0.10.3
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -51,6 +48,9 @@ importers:
       tailwindcss:
         specifier: ^4
         version: 4.0.14
+      ts-prune:
+        specifier: ^0.10.3
+        version: 0.10.3
       typescript:
         specifier: ^5
         version: 5.8.2
