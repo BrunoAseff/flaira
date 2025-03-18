@@ -6,7 +6,34 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "error"
+      },
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error",
+        "useYield": "error",
+        "noUnreachable": "error"
+      },
+      "style": {
+        "noNonNullAssertion": "error",
+        "noParameterAssign": "error",
+        "noUselessElse": "error",
+        "useTemplate": "error",
+        "useDefaultParameterLast": "error"
+      },
+      "complexity": {
+        "noStaticOnlyClass": "error",
+        "noVoid": "error",
+        "noForEach": "error"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "error"
+      },
+      "performance": {
+        "noDelete": "error"
+      }
     }
   },
   "formatter": {
