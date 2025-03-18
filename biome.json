@@ -7,32 +7,38 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "suspicious": {
-        "noExplicitAny": "error"
-      },
       "correctness": {
-        "noUnusedImports": "error",
-        "noUnusedVariables": "error",
-        "useYield": "error",
-        "noUnreachable": "error"
+        "noUnusedFunctionParameters": {
+          "level": "warn",
+          "fix": "unsafe"
+        },
+        "noUnusedImports": {
+          "level": "warn",
+          "fix": "unsafe"
+        },
+        "noUnusedLabels": {
+          "level": "warn",
+          "fix": "unsafe"
+        },
+        "noUnusedPrivateClassMembers": {
+          "level": "warn",
+          "fix": "unsafe"
+        },
+        "noUnusedVariables": {
+          "level": "warn",
+          "fix": "unsafe"
+        },
+        "useExhaustiveDependencies": "warn"
       },
-      "style": {
-        "noNonNullAssertion": "error",
-        "noParameterAssign": "error",
-        "noUselessElse": "error",
-        "useTemplate": "error",
-        "useDefaultParameterLast": "error"
-      },
-      "complexity": {
-        "noStaticOnlyClass": "error",
-        "noVoid": "error",
-        "noForEach": "error"
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noConsole": "warn"
       },
       "security": {
         "noDangerouslySetInnerHtml": "error"
       },
-      "performance": {
-        "noDelete": "error"
+      "style": {
+        "noNonNullAssertion": "warn"
       }
     }
   },
