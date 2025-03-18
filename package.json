@@ -6,7 +6,11 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "biome check ."
+    "lint": "biome check .",
+    "check:updates": "npx npm-check-updates -i",
+    "find:deadcode": "ts-prune | grep -v '(used in module)'",
+    "preinstall": "npx only-allow pnpm",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "drizzle-orm": "^0.40.0",
@@ -15,6 +19,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-intl": "^7.1.6",
+    "ts-prune": "^0.10.3",
     "zod": "^3.24.2"
   },
   "devDependencies": {
