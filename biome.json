@@ -1,0 +1,16 @@
+{
+  "files": {
+    "ignoreUnknown": false,
+    "ignore": ["node_modules", ".next", "pnpm-lock.yaml"]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "useEditorconfig": true
+  }
+}
