@@ -2,35 +2,22 @@
   "name": "flaira",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.6.3",
   "scripts": {
-    "dev": "next dev --turbo",
-    "build": "next build",
-    "start": "next start",
-    "lint": "biome check .",
+    "dev": "pnpm -r run dev",
+    "build": "pnpm -r run build",
+    "start": "pnpm -r run start",
+    "lint": "pnpm -r run lint",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r run test",
+    "clean": "pnpm -r run clean",
     "check:updates": "npx npm-check-updates -i",
-    "find:deadcode": "ts-prune | grep -v '(used in module)'",
-    "preinstall": "npx only-allow pnpm",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "drizzle-orm": "^0.40.0",
-    "hono": "^4.7.4",
-    "next": "15.2.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-intl": "^7.1.6",
-    "zod": "^3.24.2"
+    "find:deadcode": "pnpm -r run find:deadcode"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "tailwindcss": "^4",
-    "typescript": "^5",
-    "vitest": "^3.0.8",
-    "ts-prune": "^0.10.3"
+    "turbo": "^2.4.4",
+    "typescript": "^5"
   },
   "pnpm": {
     "ignoredBuiltDependencies": ["@biomejs/biome", "esbuild"],
