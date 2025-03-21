@@ -1,7 +1,13 @@
 {
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["node_modules", ".next", "pnpm-lock.yaml"]
+    "ignore": [
+      "node_modules",
+      ".next",
+      "pnpm-lock.yaml",
+      "**/next-env.d.ts",
+      ".turbo"
+    ]
   },
   "linter": {
     "enabled": true,
