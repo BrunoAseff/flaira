@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@10.6.3",
+  "engines": {
+    "node": "20.19.0",
+    "pnpm": "10.6.3"
+  },
   "scripts": {
     "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"magenta,blue\" \"pnpm --filter @flaira/backend run dev\" \"pnpm --filter @flaira/frontend run dev\"",
     "build": "pnpm -r run build",
@@ -15,11 +19,11 @@
     "find:deadcode": "pnpm -r run find:deadcode"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "concurrently": "^9.1.2",
-    "pino-pretty": "^13.0.0",
-    "turbo": "^2.4.4",
-    "typescript": "^5"
+    "@biomejs/biome": "1.9.4",
+    "concurrently": "9.1.2",
+    "pino-pretty": "13.0.0",
+    "turbo": "2.4.4",
+    "typescript": "5"
   },
   "pnpm": {
     "ignoredBuiltDependencies": ["@biomejs/biome", "esbuild"],
