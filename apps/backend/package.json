@@ -11,15 +11,15 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "drizzle-orm": "^0.40.0",
-    "hono": "^4.7.4",
-    "@hono/node-server": "^1.2.0",
-    "zod": "^3.24.2"
+    "drizzle-orm": "0.40.0",
+    "hono": "4.7.4",
+    "@hono/node-server": "1.2.0",
+    "zod": "3.24.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "tsx": "^4.0.0",
-    "ts-prune": "^0.10.3",
-    "typescript": "^5"
+    "@types/node": "20",
+    "tsx": "4.0.0",
+    "ts-prune": "0.10.3",
+    "typescript": "5"
   }
 }
