@@ -1,4 +1,4 @@
-FROM node:20.19.0-slim
+FROM node:20.19-alpine AS build
 
 WORKDIR /usr/src/app
 
@@ -10,9 +10,21 @@ COPY apps/backend/package.json ./apps/backend/
 
 RUN pnpm install --frozen-lockfile
 
-COPY . .
+COPY apps/frontend ./apps/frontend
+COPY apps/backend ./apps/backend
 
 RUN pnpm run build
+
+FROM node:20.19-alpine
+
+WORKDIR /usr/src/app
+
+RUN npm install -g pnpm@10.6.3
+
+COPY --from=build /usr/src/app/apps/frontend ./apps/frontend
+COPY --from=build /usr/src/app/apps/backend ./apps/backend
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml* ./
 
 EXPOSE 3000 3001
 
