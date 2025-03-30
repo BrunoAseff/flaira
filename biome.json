@@ -44,7 +44,7 @@
         "noDangerouslySetInnerHtml": "error"
       },
       "style": {
-        "noNonNullAssertion": "warn"
+        "noNonNullAssertion": "off"
       }
     }
   },
