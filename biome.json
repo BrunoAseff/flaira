@@ -38,7 +38,7 @@
       },
       "suspicious": {
         "noExplicitAny": "warn",
-        "noConsole": "warn"
+        "noConsole": "off"
       },
       "security": {
         "noDangerouslySetInnerHtml": "error"
