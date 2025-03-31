@@ -7,9 +7,10 @@ export const status = new Hono();
 
 status.get("/", async (c) => {
   try {
-    const version = await db.execute(sql`SELECT version();`);
-    const maxConnections = await db.execute(sql`SHOW max_connections;`);
-
+    const [version, maxConnections] = await Promise.all([
+      db.execute(sql`SELECT version();`),
+      db.execute(sql`SHOW max_connections;`),
+    ]);
     return c.json({
       status: "ok",
       code: 200,
