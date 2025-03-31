@@ -17,7 +17,7 @@ status.get("/", async (c) => {
       code: 200,
       postgres_version: version.rows[0]?.version || "unknown",
       max_connections: maxConnections.rows[0]?.max_connections || "unknown",
-      open_connections: openConnections.rows[0].count || "unknown",
+      open_connections: openConnections.rows[0]?.count || "unknown",
     });
   } catch (error) {
     console.error("Database status check failed:", error);
