@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { db } from "@/db";
 import { sql } from "drizzle-orm";
+import { env } from "@/env";
 
 export const status = new Hono();
 
@@ -17,6 +18,15 @@ status.get("/", async (c) => {
     });
   } catch (error) {
     console.error("Database status check failed:", error);
-    return c.json({ status: "error", message: "Database unavailable" }, 500);
+    let errorMessage = "Database unavailable";
+
+    if (error instanceof Error) {
+      errorMessage =
+        env.NODE_ENV === "production"
+          ? "Database unavailable"
+          : `Database error: ${error.message}`;
+    }
+
+    return c.json({ status: "error", message: errorMessage }, 500);
   }
 });
