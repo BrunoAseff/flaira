@@ -7,4 +7,4 @@ serve({
   port: env.PORT,
 });
 
-console.log(`Server running on http://localhost:${env.PORT}`);
+console.log(`Server running on port ${env.PORT}`);
