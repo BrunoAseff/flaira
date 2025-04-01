@@ -30,7 +30,7 @@ importers:
         specifier: 1.2.0
         version: 1.2.0
       dotenv:
-        specifier: ^16.4.7
+        specifier: 16.4.7
         version: 16.4.7
       drizzle-orm:
         specifier: 0.40.0
@@ -39,7 +39,7 @@ importers:
         specifier: 4.7.4
         version: 4.7.4
       pg:
-        specifier: ^8.14.1
+        specifier: 8.14.1
         version: 8.14.1
       zod:
         specifier: 3.24.2
@@ -49,10 +49,10 @@ importers:
         specifier: '20'
         version: 20.17.24
       '@types/pg':
-        specifier: ^8.11.11
+        specifier: 8.11.11
         version: 8.11.11
       drizzle-kit:
-        specifier: ^0.30.6
+        specifier: 0.30.6
         version: 0.30.6
       ts-prune:
         specifier: 0.10.3
