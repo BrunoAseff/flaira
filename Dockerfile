@@ -4,14 +4,15 @@ WORKDIR /usr/src/app
 
 RUN npm install -g pnpm@10.6.3
 
-COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml* ./
-COPY apps/frontend/package.json ./apps/frontend/
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/backend/package.json ./apps/backend/
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
-COPY apps/frontend ./apps/frontend
+COPY tsconfig*.json ./
 COPY apps/backend ./apps/backend
+
+WORKDIR /usr/src/app/apps/backend
 
 RUN pnpm run build
 
@@ -21,11 +22,15 @@ WORKDIR /usr/src/app
 
 RUN npm install -g pnpm@10.6.3
 
-COPY --from=build /usr/src/app/apps/frontend ./apps/frontend
-COPY --from=build /usr/src/app/apps/backend ./apps/backend
-COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml* ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/backend/package.json ./apps/backend/
 
-EXPOSE 3000 3001
+RUN pnpm install --prod --filter @flaira/backend
+
+COPY --from=build /usr/src/app/apps/backend/dist ./apps/backend/dist
+
+WORKDIR /usr/src/app/apps/backend
+
+EXPOSE 3001
 
 CMD ["pnpm", "run", "start"]
