@@ -8,7 +8,10 @@
     "pnpm": "10.6.3"
   },
   "scripts": {
-    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"magenta,blue\" \"pnpm --filter @flaira/backend run dev\" \"pnpm --filter @flaira/frontend run dev\"",
+    "dev": "pnpm run services:up && concurrently -n \"BACKEND,FRONTEND\" -c \"magenta,blue\" \"pnpm --filter @flaira/backend run dev\" \"pnpm --filter @flaira/frontend run dev\"",
+    "services:up": "docker compose up -d",
+    "services:stop": "docker compose stop",
+    "services:down": "docker compose down",
     "build": "pnpm -r run build",
     "start": "concurrently \"pnpm --filter backend run start\" \"pnpm --filter frontend run start\"",
     "lint": "pnpm -r run lint",
