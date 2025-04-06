@@ -1,0 +1,33 @@
+name: Build & Push to ECR
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::692859947277:role/GitHubActionsECRPushRole
+          aws-region: us-east-2
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to ECR
+        run: |
+          IMAGE_TAG=latest
+          REPO=692859947277.dkr.ecr.us-east-2.amazonaws.com/flaira
+          docker build -t $REPO:$IMAGE_TAG .
+          docker push $REPO:$IMAGE_TAG
