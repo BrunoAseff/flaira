@@ -31,3 +31,11 @@ jobs:
           REPO=692859947277.dkr.ecr.us-east-2.amazonaws.com/flaira
           docker build -t $REPO:$IMAGE_TAG .
           docker push $REPO:$IMAGE_TAG
+
+      - name: Deploy to ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: taskdef.json
+          service: flaira-service
+          cluster: flaira
+          wait-for-service-stability: true
