@@ -7,6 +7,7 @@
     "build": "tsc && tsc-alias",
     "start": "node dist/index.js",
     "lint": "biome check .",
+    "test": "vitest",
     "find:deadcode": "ts-prune | grep -v '(used in module)'",
     "typecheck": "tsc --noEmit"
   },
