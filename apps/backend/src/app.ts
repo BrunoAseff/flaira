@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { status } from "@/routes/status";
+import { status } from "@/modules/status/route";
 
 const app = new Hono();
 

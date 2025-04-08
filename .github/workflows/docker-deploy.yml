@@ -31,3 +31,10 @@ jobs:
           REPO=692859947277.dkr.ecr.us-east-2.amazonaws.com/flaira
           docker build -t $REPO:$IMAGE_TAG .
           docker push $REPO:$IMAGE_TAG
+
+      - name: Force ECS to redeploy latest image
+        run: |
+          aws ecs update-service \
+            --cluster flaira \
+            --service flaira-service \
+            --force-new-deployment
