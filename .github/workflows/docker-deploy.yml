@@ -32,10 +32,9 @@ jobs:
           docker build -t $REPO:$IMAGE_TAG .
           docker push $REPO:$IMAGE_TAG
 
-      - name: Deploy to ECS
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: taskdef.json
-          service: flaira-service
-          cluster: flaira
-          wait-for-service-stability: true
+      - name: Force ECS to redeploy latest image
+        run: |
+          aws ecs update-service \
+            --cluster flaira \
+            --service flaira-service \
+            --force-new-deployment
