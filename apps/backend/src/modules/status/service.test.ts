@@ -2,11 +2,12 @@ import { describe, it, expect } from "vitest";
 
 describe("GET /status (integration)", () => {
   it("should return ok with postgres info", async () => {
-    const res = await fetch("http://localhost:3001/status");
-    const json = await res.json();
+    const response = await fetch("http://localhost:3001/status");
+    const data = await response.json();
 
-    expect(res.status).toBe(200);
-    expect(json.status).toBe("ok");
-    expect(json.data).toHaveProperty("postgres_version");
+    expect(data.status).toBe("ok");
+    expect(typeof data.data.postgres_version).toBe("string");
+    expect(data.data.max_connections).toBeTypeOf("string");
+    expect(Number(data.data.open_connections)).toBeGreaterThanOrEqual(0);
   });
 });
