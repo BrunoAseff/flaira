@@ -1,27 +1,21 @@
 import type { Context } from "hono";
 import { getDatabaseStatus } from "./service";
-import { env } from "@/env";
+import { getBody, getHeaders, getResponse } from "@/utils/http";
 
-export const getStatus = async (c: Context) => {
+export const getStatus = async (context: Context) => {
   try {
-    const dbStatus = await getDatabaseStatus();
+    const result = await getDatabaseStatus();
 
-    return c.json({
-      status: "ok",
-      code: 200,
-      ...dbStatus,
-    });
+    const headers = getHeaders();
+    const body = getBody(200, result);
+
+    return getResponse(context, 200, headers, body);
   } catch (error) {
-    console.error("Database status check failed:", error);
-    let errorMessage = "Database unavailable";
+    console.error("Failed to get status", error);
 
-    if (error instanceof Error) {
-      errorMessage =
-        env.NODE_ENV === "production"
-          ? "Database unavailable"
-          : `Database error: ${error.message}`;
-    }
+    const headers = getHeaders();
+    const body = getBody(500, null, error);
 
-    return c.json({ status: "error", message: errorMessage }, 500);
+    return getResponse(context, 500, headers, body);
   }
 };
