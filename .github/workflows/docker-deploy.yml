@@ -36,5 +36,5 @@ jobs:
         run: |
           aws ecs update-service \
             --cluster flaira \
-            --service flaira-service-prod \
+            --service flairaprod \
             --force-new-deployment
