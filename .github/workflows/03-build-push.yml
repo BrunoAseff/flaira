@@ -6,6 +6,7 @@ on:
 
 jobs:
   build-and-push:
+    needs: [lint, typecheck]
     runs-on: ubuntu-latest
 
     permissions:
