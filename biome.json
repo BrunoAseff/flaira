@@ -9,6 +9,9 @@
       ".turbo"
     ]
   },
+  "organizeImports": {
+    "enabled": false
+  },
   "linter": {
     "enabled": true,
     "rules": {
