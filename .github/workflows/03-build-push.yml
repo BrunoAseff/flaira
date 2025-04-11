@@ -1,12 +1,14 @@
-name: Build & Push to ECR
+name: Build & Deploy to ECR
 
 on:
-  push:
-    branches: [main]
+  workflow_run:
+    workflows: ["lint", "typecheck"]
+    types:
+      - completed
 
 jobs:
-  build-and-push:
-    needs: [lint, typecheck]
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
 
     permissions:
@@ -14,8 +16,17 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 10.6.3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.19.0
+
+      - run: pnpm install
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -39,3 +50,4 @@ jobs:
             --cluster flaira \
             --service flairaprod \
             --force-new-deployment
+            
