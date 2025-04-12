@@ -30,6 +30,32 @@ jobs:
       - run: pnpm install
       - run: pnpm typecheck
 
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 10.6.3
+      - uses: actions/setup-node@v3
+        with:
+        node-version: 20.19.0
+      - run: pnpm install
+
+      - run: pnpm run services:up
+
+      - name: Wait for backend
+        run: |
+          echo "Esperando o backend iniciar..."
+          timeout=60
+          while ! curl -s http://localhost:3001/status && [ $timeout -gt 0 ]; do
+          sleep 5
+          timeout=$((timeout - 5))
+          done
+
+      - run: pnpm test
+
   build-and-push:
     needs: [lint, typecheck]
     if: github.ref == 'refs/heads/main'
