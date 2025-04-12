@@ -40,7 +40,7 @@ jobs:
           version: 10.6.3
       - uses: actions/setup-node@v3
         with:
-        node-version: 20.19.0
+          node-version: 20.19.0
       - run: pnpm install
 
       - run: pnpm run services:up
