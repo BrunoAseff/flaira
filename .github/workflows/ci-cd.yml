@@ -48,13 +48,28 @@ jobs:
           echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/flaira?schema=public" > .env.development
           # Add other necessary env variables here
 
-      - name: Start services
+      - name: Start services and backend
         run: |
+          # Start PostgreSQL
           pnpm run services:up
           echo "Docker containers status:"
           docker ps
-          echo "Docker container logs:"
-          docker-compose logs
+          
+          # Start the backend service
+          echo "Starting backend service..."
+          # Use dotenv to load environment variables from .env.development
+          pnpm run dev:backend &
+          # Wait for the backend to initialize
+          sleep 10
+          
+          # Check if backend is running
+          echo "Checking if backend is running..."
+          if curl -s http://localhost:3001/status; then
+            echo "Backend is up and running!"
+          else
+            echo "Backend failed to start"
+            exit 1
+          fi
 
       - name: Wait for backend
         run: |
@@ -74,7 +89,7 @@ jobs:
             # Print container logs for debugging
             if [ $attempts -eq 5 ]; then
               echo "Backend still not ready, checking container logs:"
-              docker-compose logs
+              docker logs postgres_dev
             fi
             
             sleep 10
@@ -82,7 +97,7 @@ jobs:
           
           if [ $attempts -ge $max_attempts ]; then
             echo "Backend did not start within the timeout period." >&2
-            docker-compose logs
+            docker logs postgres_dev
             exit 1
           fi
 
