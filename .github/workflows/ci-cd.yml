@@ -30,7 +30,7 @@ jobs:
       - run: pnpm install
       - run: pnpm typecheck
 
-  backend tests:
+  backend_tests:
     runs-on: ubuntu-latest
     services:
       postgres:
