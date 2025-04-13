@@ -35,24 +35,20 @@ jobs:
     services:
       postgres:
         image: postgres:17.2-alpine3.21
-        ports:
-          - 5432:5432
         env:
           POSTGRES_USER: local_user
           POSTGRES_PASSWORD: local_password
           POSTGRES_DB: local_db
+        ports:
+          - 5432:5432
         options: >-
-          --health-cmd="pg_isready"
+          --health-cmd="pg_isready -U local_user -d local_db"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-
     env:
-      POSTGRES_USER: local_user
-      POSTGRES_PASSWORD: local_password
-      POSTGRES_DB: local_db
       DATABASE_URL: postgres://local_user:local_password@localhost:5432/local_db
-
+      PORT: 3001
     steps:
       - uses: actions/checkout@v3
 
@@ -67,9 +63,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Start backend in background
+        run: pnpm --filter @flaira/backend run dev &
+      
+      - name: Wait for server to be ready
+        run: |
+          echo "Waiting for backend to be ready..."
+          until curl --silent http://localhost:3001/status; do
+            sleep 1
+          done
+
       - name: Run backend tests
-        run: pnpm --filter @flaira/backend run test
-    
+        run: pnpm --filter @flaira/backend run test    
 
   build-and-push:
     needs: [lint, typecheck, backend-tests]
