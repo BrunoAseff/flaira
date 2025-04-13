@@ -30,64 +30,64 @@ jobs:
       - run: pnpm install
       - run: pnpm typecheck
 
-tests:
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v3
-    - uses: pnpm/action-setup@v2
-      with:
-        version: 10.6.3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 20.19.0
-    - run: pnpm install
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 10.6.3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.19.0
+      - run: pnpm install
 
-    - name: Setup environment
-      run: |
-        echo "Creating .env.development file"
-        echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/flaira?schema=public" > .env.development
-        # Add other necessary env variables here
+      - name: Setup environment
+        run: |
+          echo "Creating .env.development file"
+          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/flaira?schema=public" > .env.development
+          # Add other necessary env variables here
 
-    - name: Start services
-      run: |
-        pnpm run services:up
-        echo "Docker containers status:"
-        docker ps
-        echo "Docker container logs:"
-        docker-compose logs
-
-    - name: Wait for backend
-      run: |
-        echo "Waiting for backend to start..."
-        max_attempts=12
-        attempts=0
-        
-        while [ $attempts -lt $max_attempts ]; do
-          if curl -s http://localhost:3001/status; then
-            echo "Backend is up and running!"
-            break
-          fi
-          
-          attempts=$((attempts + 1))
-          echo "Attempt $attempts/$max_attempts: Backend not ready yet, waiting..."
-          
-          # Print container logs for debugging
-          if [ $attempts -eq 5 ]; then
-            echo "Backend still not ready, checking container logs:"
-            docker-compose logs
-          fi
-          
-          sleep 10
-        done
-        
-        if [ $attempts -ge $max_attempts ]; then
-          echo "Backend did not start within the timeout period." >&2
+      - name: Start services
+        run: |
+          pnpm run services:up
+          echo "Docker containers status:"
+          docker ps
+          echo "Docker container logs:"
           docker-compose logs
-          exit 1
-        fi
 
-    - name: Run tests
-      run: VITEST_LOG_LEVEL=verbose pnpm test
+      - name: Wait for backend
+        run: |
+          echo "Waiting for backend to start..."
+          max_attempts=12
+          attempts=0
+          
+          while [ $attempts -lt $max_attempts ]; do
+            if curl -s http://localhost:3001/status; then
+              echo "Backend is up and running!"
+              break
+            fi
+            
+            attempts=$((attempts + 1))
+            echo "Attempt $attempts/$max_attempts: Backend not ready yet, waiting..."
+            
+            # Print container logs for debugging
+            if [ $attempts -eq 5 ]; then
+              echo "Backend still not ready, checking container logs:"
+              docker-compose logs
+            fi
+            
+            sleep 10
+          done
+          
+          if [ $attempts -ge $max_attempts ]; then
+            echo "Backend did not start within the timeout period." >&2
+            docker-compose logs
+            exit 1
+          fi
+
+      - name: Run tests
+        run: VITEST_LOG_LEVEL=verbose pnpm test
 
   build-and-push:
     needs: [lint, typecheck, tests]
