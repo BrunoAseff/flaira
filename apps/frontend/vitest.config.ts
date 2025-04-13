@@ -5,7 +5,7 @@ export default mergeConfig(
   base,
   defineConfig({
     test: {
-      environment: "jsdom",
+      environment: "node",
     },
   }),
 );
