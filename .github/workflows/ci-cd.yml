@@ -30,7 +30,7 @@ jobs:
       - run: pnpm install
       - run: pnpm typecheck
 
-  backend_tests:
+  backend-tests:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -72,7 +72,7 @@ jobs:
     
 
   build-and-push:
-    needs: [lint, typecheck, tests]
+    needs: [lint, typecheck, backend-tests]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
