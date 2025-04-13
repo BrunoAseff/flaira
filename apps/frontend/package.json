@@ -11,7 +11,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check .",
-    "test": "vitest",
     "find:deadcode": "ts-prune | grep -v '(used in module)'",
     "typecheck": "tsc --noEmit"
   },
