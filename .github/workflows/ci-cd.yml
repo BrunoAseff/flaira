@@ -30,94 +30,46 @@ jobs:
       - run: pnpm install
       - run: pnpm typecheck
 
-  tests:
+  backend tests:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17.2-alpine3.21
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: local_user
+          POSTGRES_PASSWORD: local_password
+          POSTGRES_DB: local_db
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      POSTGRES_USER: local_user
+      POSTGRES_PASSWORD: local_password
+      POSTGRES_DB: local_db
+      DATABASE_URL: postgres://local_user:local_password@localhost:5432/local_db
+
     steps:
       - uses: actions/checkout@v3
+
       - uses: pnpm/action-setup@v2
         with:
           version: 10.6.3
+
       - uses: actions/setup-node@v3
         with:
           node-version: 20.19.0
-      - run: pnpm install
 
-      - name: Setup environment
-        run: |
-          echo "Creating .env.development file"
-          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/flaira?schema=public" > .env.development
-          # Add other necessary env variables here
+      - name: Install dependencies
+        run: pnpm install
 
-      - name: Start PostgreSQL
-        run: |
-          # Start PostgreSQL
-          pnpm run services:up
-          echo "Docker containers status:"
-          docker ps
-
-      - name: Initialize PostgreSQL
-        run: |
-          echo "Waiting for PostgreSQL to initialize..."
-          # Wait for PostgreSQL to be fully available
-          sleep 15
-          # Create database if it doesn't exist
-          docker exec postgres_dev psql -U postgres -c "CREATE DATABASE flaira;" || echo "Database already exists"
-          # Run any migrations if needed
-          echo "Running migrations..."
-          pnpm --filter @flaira/backend run migrate:deploy || echo "No migrations to run"
-
-      - name: Start backend
-        run: |
-          # Start the backend service with nohup to ensure it stays running
-          echo "Starting backend service..."
-          nohup pnpm run dev:backend > backend.log 2>&1 &
-          # Wait for the backend to initialize
-          sleep 15
-
-      - name: Wait for backend with OK status
-        run: |
-          echo "Checking if backend is running with OK status..."
-          max_attempts=12
-          attempts=0
-          
-          while [ $attempts -lt $max_attempts ]; do
-            response=$(curl -s http://localhost:3001/status)
-            echo "Response: $response"
-            
-            if echo "$response" | grep -q '"status":"ok"'; then
-              echo "Backend is up and running with OK status!"
-              break
-            fi
-            
-            attempts=$((attempts + 1))
-            echo "Attempt $attempts/$max_attempts: Backend not ready yet, waiting..."
-            
-            # Print container logs for debugging
-            if [ $attempts -eq 5 ]; then
-              echo "Backend still not ready, checking container logs:"
-              docker logs postgres_dev
-              echo "Backend logs:"
-              cat backend.log
-            fi
-            
-            sleep 10
-          done
-          
-          if [ $attempts -ge $max_attempts ]; then
-            echo "Backend did not return OK status within the timeout period." >&2
-            docker logs postgres_dev
-            cat backend.log
-            exit 1
-          fi
-
-      - name: Run tests
-        run: VITEST_LOG_LEVEL=verbose pnpm test
-
-      - name: Check backend logs
-        if: always()
-        run: |
-          echo "Backend logs:"
-          cat backend.log
+      - name: Run backend tests
+        run: pnpm --filter @flaira/backend run test
+    
 
   build-and-push:
     needs: [lint, typecheck, tests]
