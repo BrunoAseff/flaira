@@ -57,7 +57,7 @@ jobs:
       - run: pnpm test
 
   build-and-push:
-    needs: [lint, typecheck]
+    needs: [lint, typecheck, tests]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
