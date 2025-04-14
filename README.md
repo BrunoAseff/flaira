@@ -1,14 +1,15 @@
 # Flaira
 
-This is a **flight search platform**, where users can search and get real-time flight information.
+This is a **travel tracking platform**, where users can log and explore their trips in one place.
 
 ⚙️ **Overengineered on purpose** — I'm using this project to learn DevOps, AWS, backend, and infrastructure. Expect way more complexity than necessary.
 
 ## What will it do in the future
 
-- Search and list flight data.
-- Show flights on a real-time map (using Flight Radar API).
-- User accounts for saving searches.
+- Track trips.
+- Store photos, videos, notes, and memories.
+- Show trips on an interactive map.
+- Create travel goals and view journey stats.
 
 🏗️ Infra (a.k.a. the unnecessarily elaborate plumbing)
 
