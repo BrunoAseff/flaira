@@ -66,11 +66,19 @@ jobs:
       - name: Start backend
         run: pnpm --filter @flaira/backend run dev &
 
-      - name: Wait for server to be ready
+      - name: Wait for server
         run: |
           echo "Waiting for backend to be ready..."
-          until curl --silent http://localhost:3001/status; do
-            sleep 1
+          max_attempts=30
+          attempt=0
+          until curl --silent --fail http://localhost:3001/status || [ $attempt -ge $max_attempts ]; do
+            attempt=$((attempt+1))
+            echo "Attempt $attempt/$max_attempts: Server not ready yet"
+            sleep 2
+            if [ $attempt -ge $max_attempts ]; then
+              echo "Error: Backend failed to start after $max_attempts attempts"
+              exit 1
+            fi
           done
 
       - name: Run backend tests
@@ -111,7 +119,7 @@ jobs:
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, tag, and push image to ECR
+      - name: Push image to ECR
         run: |
           IMAGE_TAG=latest
           REPO=692859947277.dkr.ecr.us-east-2.amazonaws.com/flaira
