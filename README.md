@@ -6,9 +6,10 @@ This is a **flight search platform**, where users can search and get real-time f
 
 ## What will it do in the future
 
-- Search and list flight data.
-- Show flights on a real-time map (using Flight Radar API).
-- User accounts for saving searches.
+- Track trips.
+- Store photos, videos, notes, and memories.
+- Show trips on an interactive map.
+- Create travel goals and view journey stats.
 
 🏗️ Infra (a.k.a. the unnecessarily elaborate plumbing)
 
