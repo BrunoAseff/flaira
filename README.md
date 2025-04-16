@@ -11,7 +11,7 @@ This is a **travel tracking platform**, where users can log and explore their tr
 - Show trips on an interactive map.
 - Create travel goals and view journey stats.
 
-🏗️ Infra (a.k.a. the unnecessarily elaborate plumbing)
+🏗️ Infra
 
 - Everything runs in Docker, because of course it does.
 - GitHub Actions builds and ships the backend image to AWS ECR, like a good little automation robot.
