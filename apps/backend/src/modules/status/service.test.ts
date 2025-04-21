@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-describe("GET /status (integration)", () => {
+describe("GET /status", () => {
   it("should return ok with postgres info", async () => {
     const response = await fetch("http://localhost:3001/status");
     const data = await response.json();
