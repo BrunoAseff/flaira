@@ -106,6 +106,8 @@ jobs:
       - name: Install and migrate
         env:
           DATABASE_URL: ${{ secrets.RDS_DATABASE_URL }}
+          BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+          BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
         run: |
           pnpm install
           cd apps/backend
