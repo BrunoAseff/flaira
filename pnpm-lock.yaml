@@ -36,7 +36,7 @@ importers:
         specifier: 1.2.0
         version: 1.2.0
       better-auth:
-        specifier: ^1.2.7
+        specifier: 1.2.7
         version: 1.2.7
       dotenv:
         specifier: 16.4.7
@@ -79,7 +79,7 @@ importers:
   apps/frontend:
     dependencies:
       better-auth:
-        specifier: ^1.2.7
+        specifier: 1.2.7
         version: 1.2.7
       next:
         specifier: 15.2.2
