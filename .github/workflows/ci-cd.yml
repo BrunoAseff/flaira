@@ -111,7 +111,7 @@ jobs:
           npx drizzle-kit push
 
   deploy-production:
-    needs: [run-migrations]
+    needs: [push-db-migrations]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
