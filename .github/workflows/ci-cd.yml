@@ -108,6 +108,7 @@ jobs:
           DATABASE_URL: ${{ secrets.RDS_DATABASE_URL }}
         run: |
           pnpm install
+          cd apps/backend
           npx drizzle-kit push
 
   deploy-production:
