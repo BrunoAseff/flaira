@@ -12,8 +12,8 @@
     "typecheck": "tsc --noEmit",
     "drizzle:generate": "drizzle-kit generate --config=./drizzle.config.ts",
     "drizzle:migrate": "drizzle-kit migrate --config=./drizzle.config.ts",
-    "drizzle:push": "drizzle-kit pull --config=./drizzle.config.ts",
-    "drizzle:pull": "drizzle-kit push --config=./drizzle.config.ts",
+    "drizzle:push": "drizzle-kit push --config=./drizzle.config.ts",
+    "drizzle:pull": "drizzle-kit pull --config=./drizzle.config.ts",
     "drizzle:studio": "drizzle-kit studio"
   },
   "dependencies": {
