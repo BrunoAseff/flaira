@@ -85,11 +85,35 @@ jobs:
       - name: Run backend tests
         run: pnpm --filter @flaira/backend run test    
 
-  build-and-push:
+  push-db-migrations:
     needs: [lint, typecheck, backend-tests]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10.6.3
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.19.0
+
+      - name: Install and migrate
+        env:
+          DATABASE_URL: ${{ secrets.RDS_DATABASE_URL }}
+        run: |
+          pnpm install
+          npx drizzle-kit push
+
+  deploy-production:
+    needs: [run-migrations]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
