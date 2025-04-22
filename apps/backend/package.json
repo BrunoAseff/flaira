@@ -9,7 +9,10 @@
     "lint": "biome check .",
     "test": "vitest",
     "find:deadcode": "ts-prune | grep -v '(used in module)'",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "drizzle:generate": "drizzle-kit generate:pg",
+    "drizzle:push": "drizzle-kit push:pg",
+    "drizzle:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@hono/node-server": "1.2.0",
