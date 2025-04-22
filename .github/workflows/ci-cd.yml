@@ -47,8 +47,9 @@ jobs:
           --health-timeout=5s
           --health-retries=5
     env:
-      DATABASE_URL: postgres://local_user:local_password@localhost:5432/local_db
-      PORT: 3001
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+        BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
     steps:
       - uses: actions/checkout@v3
 
