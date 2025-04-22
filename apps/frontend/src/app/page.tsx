@@ -14,8 +14,6 @@ export default function Home() {
     queryFn: () => auth.getSession(),
   });
 
-  console.log("Session", session);
-  // this is only temporarily code rabbit don't pick on me
   if (isLoading) return <p>Carregando...</p>;
   if (error) return <p>Erro: {error.message}</p>;
   if (!session?.data) return <SignUp />;
