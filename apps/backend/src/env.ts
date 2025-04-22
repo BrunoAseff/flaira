@@ -5,6 +5,8 @@ const envSchema = z.object({
   DATABASE_URL: z.string(),
   NODE_ENV: z.enum(["development", "test", "production"]).default("production"),
   PORT: z.coerce.number().default(3001),
+  BETTER_AUTH_SECRET: z.string(),
+  BETTER_AUTH_URL: z.string(),
 });
 
 const _env = envSchema.safeParse(process.env);
@@ -12,9 +14,7 @@ const _env = envSchema.safeParse(process.env);
 if (_env.success === false) {
   console.error("Invalid environment variables.", _env.error.format());
 
-  throw new Error(
-    "Invalid environment variables. Please ensure DATABASE_URL is properly set in your .env file.",
-  );
+  throw new Error("Invalid environment variables.");
 }
 
 export const env = _env.data;
