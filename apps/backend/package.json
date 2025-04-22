@@ -9,10 +9,16 @@
     "lint": "biome check .",
     "test": "vitest",
     "find:deadcode": "ts-prune | grep -v '(used in module)'",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "drizzle:generate": "drizzle-kit generate --config=./drizzle.config.ts",
+    "drizzle:migrate": "drizzle-kit migrate --config=./drizzle.config.ts",
+    "drizzle:push": "drizzle-kit push --config=./drizzle.config.ts",
+    "drizzle:pull": "drizzle-kit pull --config=./drizzle.config.ts",
+    "drizzle:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@hono/node-server": "1.2.0",
+    "better-auth": "1.2.7",
     "dotenv": "16.4.7",
     "drizzle-orm": "0.40.0",
     "hono": "4.7.4",
