@@ -37,10 +37,10 @@ export function getResponse(
 }
 
 export const corsConfig = {
-    origin: env.FRONTEND_URL, 
-    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowHeaders: ["Content-Type", "Authorization"],
-    exposeHeaders: ["Content-Length"],
-    credentials: true, 
-    maxAge: 86400,
-}
+  origin: env.FRONTEND_URL,
+  allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowHeaders: ["Content-Type", "Authorization"],
+  exposeHeaders: ["Content-Length"],
+  credentials: true,
+  maxAge: 86400,
+};
