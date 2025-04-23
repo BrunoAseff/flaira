@@ -35,3 +35,12 @@ export function getResponse(
 ) {
   return c.newResponse(JSON.stringify(body), statusCode, headers);
 }
+
+export const corsConfig = {
+    origin: env.FRONTEND_URL, 
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    exposeHeaders: ["Content-Length"],
+    credentials: true, 
+    maxAge: 86400,
+}
