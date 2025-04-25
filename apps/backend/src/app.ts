@@ -8,7 +8,7 @@ const app = new Hono();
 
 app.use("*", cors(corsConfig));
 
-app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+app.on(["POST", "GET"], "/auth/**", (c) => auth.handler(c.req.raw));
 
 app.route("/status", status);
 
