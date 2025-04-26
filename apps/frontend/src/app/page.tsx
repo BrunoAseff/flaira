@@ -1,14 +1,16 @@
 "use client";
 
 import { auth } from "@/auth/client";
-import SignUp from "@/components/SignUp";
+import AuthPage from "@/components/AuthPage";
+import ErrorPage from "@/components/ErrorPage";
+import LoadingPage from "@/components/LoadingPage";
 
 export default function Home() {
   const { data: session, isPending, error } = auth.useSession();
 
-  if (isPending) return <p>Carregando...</p>;
-  if (error) return <p>Erro: {error.message}</p>;
-  if (!session) return <SignUp />;
+  if (isPending) return <LoadingPage />;
+  if (error) return <ErrorPage />;
+  if (!session) return <AuthPage />;
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
