@@ -1,16 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Parkinsans } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/hooks/useQuery";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const parkinsans = Parkinsans({
+  variable: "--font-parkinsans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -25,9 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${parkinsans.variable} antialiased  font-sans`}>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
