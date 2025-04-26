@@ -6,7 +6,8 @@
       ".next",
       "pnpm-lock.yaml",
       "**/next-env.d.ts",
-      ".turbo"
+      ".turbo",
+      "./src/components/ui/**"
     ]
   },
   "organizeImports": {
