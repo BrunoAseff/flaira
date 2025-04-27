@@ -1,16 +1,23 @@
 "use client";
 
 import { auth } from "@/auth/client";
-import AuthPage from "@/components/AuthPage";
-import ErrorPage from "@/components/ErrorPage";
-import LoadingPage from "@/components/LoadingPage";
+import ErrorPage from "@/components/pages/ErrorPage";
+import LoadingPage from "@/components/pages/LoadingPage";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
   const { data: session, isPending, error } = auth.useSession();
+  const router = useRouter();
 
-  if (isPending) return <LoadingPage />;
+  useEffect(() => {
+    if (!isPending && !session) {
+      router.push("/auth");
+    }
+  }, [session, isPending, router]);
+
+  if (isPending || !session) return <LoadingPage />;
   if (error) return <ErrorPage />;
-  if (!session) return <AuthPage />;
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">

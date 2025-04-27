@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { ProgressiveBlur } from "./ui/progressive-blur";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { ProgressiveBlur } from "../ui/progressive-blur";
 
 export default function AuthPage() {
   return (
