@@ -32,11 +32,16 @@ export default function AuthPage() {
           </h1>
           <div className="flex flex-col mb-3 gap-1">
             <Label htmlFor="email">Email</Label>
-            <Input name="email" />
+            <Input id="email" name="email" type="email" autoComplete="email" />
           </div>
           <div className="flex flex-col mb-3 gap-1">
-            <Label>Password</Label>
-            <Input />
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+            />
           </div>
 
           <Button>Sign in</Button>
