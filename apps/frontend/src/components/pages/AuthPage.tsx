@@ -6,7 +6,7 @@ import { ProgressiveBlur } from "../ui/progressive-blur";
 
 export default function AuthPage() {
   return (
-    <main className="w-full h-screen flex">
+    <main className="w-full h-dvh flex">
       <div className="w-1/2 relative md:block hidden">
         <Image
           className="object-cover"
