@@ -12,7 +12,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!isPending && !session) {
-      router.push("/auth");
+      router.push("/sign-in");
     }
   }, [session, isPending, router]);
 

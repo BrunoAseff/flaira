@@ -1,10 +1,11 @@
 import Image from "next/image";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { ProgressiveBlur } from "../ui/progressive-blur";
+import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 
-export default function AuthPage() {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <main className="w-full h-dvh flex">
       <div className="w-1/2 relative md:block hidden">
@@ -26,26 +27,7 @@ export default function AuthPage() {
         </div>
       </div>
       <div className="md:w-1/2 w-full flex items-center justify-center md:mx-16 gap-6">
-        <div className="w-[85%] md:w-[32rem] bg-background  p-6 rounded-2xl flex flex-col gap-6">
-          <h1 className="text-left mr-auto font-medium text-xl mb-6">
-            Sign in to Flaira
-          </h1>
-          <div className="flex flex-col mb-3 gap-1">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" autoComplete="email" />
-          </div>
-          <div className="flex flex-col mb-3 gap-1">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-            />
-          </div>
-
-          <Button>Sign in</Button>
-        </div>
+        {children}
         <Image
           className="object-cover md:hidden absolute z-[-99]"
           src="/sign-in.png"
