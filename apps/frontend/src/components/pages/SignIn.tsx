@@ -31,7 +31,7 @@ export default function SignIn() {
           autoComplete="current-password"
         />
         <Link
-          className="text-sm text-blue-700 hover:underline hover:text-blue-600 transition-all duration-300 font-light"
+          className="text-sm mt-1 w-fit text-link hover:underline transition-all duration-300 font-semibold"
           href={"/forgot-password"}
         >
           Forgot my password
