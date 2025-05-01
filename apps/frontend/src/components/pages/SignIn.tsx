@@ -53,7 +53,7 @@ export default function SignIn() {
           <form.Field
             validators={{
               onChangeAsync: z.string().email("Invalid email format"),
-              onChangeAsyncDebounceMs: 250,
+              onChangeAsyncDebounceMs: 500,
             }}
             name="email"
             children={(field) => (
@@ -92,7 +92,7 @@ export default function SignIn() {
             name="password"
             validators={{
               onChangeAsync: z.string().min(8, "Password is too short"),
-              onChangeAsyncDebounceMs: 250,
+              onChangeAsyncDebounceMs: 500,
             }}
             children={(field) => (
               <div className="flex flex-col mb-3 gap-1">
