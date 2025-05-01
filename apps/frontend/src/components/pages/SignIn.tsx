@@ -67,7 +67,7 @@ export default function SignIn() {
                   <Label htmlFor="email">Email</Label>
                   <div className="h-6">
                     {field.state.meta.errors[0] && (
-                      <p className="text-error text-base">
+                      <p className="text-error text-base font-medium">
                         {field.state.meta.errors[0].message}
                       </p>
                     )}
@@ -117,7 +117,7 @@ export default function SignIn() {
                   <Label htmlFor="password">Password</Label>
                   <div className="h-6">
                     {field.state.meta.errors[0] && (
-                      <p className="text-error text-base">
+                      <p className="text-error text-base font-medium">
                         {field.state.meta.errors[0].message}
                       </p>
                     )}
