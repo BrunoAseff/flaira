@@ -136,7 +136,7 @@ export default function SignIn() {
                   onBlur={() => field.handleBlur()}
                 />
                 <Link
-                  className="text-sm mt-1 w-fit text-link hover:underline transition-all duration-300 font-semibold"
+                  className="text-sm mt-1 w-fit text-link hover:underline transition-all duration-300 font-medium"
                   href={"/forgot-password"}
                 >
                   Forgot my password
