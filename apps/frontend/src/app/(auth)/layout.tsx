@@ -22,8 +22,10 @@ export default function RootLayout({
           blurIntensity={1}
         />
         <div className="relative top-6 left-6 text-background">
-          <h1 className="text-2xl">Flaira</h1>
-          <p>The best platform for tracking your trips</p>
+          <h1 className="text-2xl font-semibold">Flaira</h1>
+          <p className="font-medium text-muted">
+            The best platform for tracking your trips
+          </p>
         </div>
       </div>
       <div className="md:w-1/2 w-full flex items-center justify-center md:mx-16 gap-6">

@@ -54,13 +54,13 @@
 :root {
   --radius: 0.625rem;
   --background: oklch(0.94 0.015 95.41);
-  --foreground: oklch(0.145 0 0);
+  --foreground: oklch(0.3 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.53 0.137 143.35);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.94 0.015 95.41);
   --secondary: oklch(0.75 0.1534 350.91);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.91 0.015 95.41);
@@ -71,7 +71,7 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.8 0 143.35);
   --ring: oklch(0.708 0 0);
-  --link: oklch(0.56 0.0849 240.94);
+  --link: oklch(0.56 0.1 240.94);
   --error: oklch(0.59 0.22 18);
   --success: oklch(0.75 0.0836 167.46);
   --success-foreground: oklch(0.91 0.0438 121.39);
