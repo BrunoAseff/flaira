@@ -25,6 +25,11 @@ type User = z.infer<typeof userSchema>;
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState({
+    email: false,
+    password: false,
+  });
+
   const form = useForm({
     defaultValues: {
       email: "",
@@ -75,14 +80,26 @@ export default function SignIn() {
                   type="email"
                   autoComplete="email"
                   success={
+                    hasInteracted.email &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
-                    !field.state.meta.isValidating
+                    !field.state.meta.isValidating &&
+                    field.state.value.length > 0
                   }
                   value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={() => field.handleBlur()}
+                  onChange={(e) => {
+                    field.handleChange(e.target.value);
+                    if (!hasInteracted.email && e.target.value.length > 0) {
+                      setHasInteracted((prev) => ({ ...prev, email: true }));
+                    }
+                  }}
+                  onBlur={() => {
+                    field.handleBlur();
+                    if (field.state.value.length > 0) {
+                      setHasInteracted((prev) => ({ ...prev, email: true }));
+                    }
+                  }}
                 />
               </div>
             )}
@@ -126,14 +143,26 @@ export default function SignIn() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   success={
+                    hasInteracted.password &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
-                    !field.state.meta.isValidating
+                    !field.state.meta.isValidating &&
+                    field.state.value.length > 0
                   }
                   value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={() => field.handleBlur()}
+                  onChange={(e) => {
+                    field.handleChange(e.target.value);
+                    if (!hasInteracted.password && e.target.value.length > 0) {
+                      setHasInteracted((prev) => ({ ...prev, password: true }));
+                    }
+                  }}
+                  onBlur={() => {
+                    field.handleBlur();
+                    if (field.state.value.length > 0) {
+                      setHasInteracted((prev) => ({ ...prev, password: true }));
+                    }
+                  }}
                 />
                 <Link
                   className="text-sm mt-1 w-fit text-link hover:underline transition-all duration-300 font-medium"
