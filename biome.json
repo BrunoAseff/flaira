@@ -34,6 +34,7 @@
           "level": "warn",
           "fix": "unsafe"
         },
+        "noChildrenProp": "off",
         "noUnusedVariables": {
           "level": "warn",
           "fix": "unsafe"
