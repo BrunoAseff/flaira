@@ -43,7 +43,7 @@ export default function SignIn() {
   return (
     <Card className="w-[90%] md:w-[32rem] bg-background p-6 rounded-2xl border-none shadow-none">
       <CardHeader>
-        <CardTitle className="text-left mr-auto font-medium text-xl mb-6">
+        <CardTitle className="text-left mr-auto font-semibold text-foreground text-2xl mb-6">
           Sign in to Flaira
         </CardTitle>
       </CardHeader>
@@ -67,7 +67,7 @@ export default function SignIn() {
                   <Label htmlFor="email">Email</Label>
                   <div className="h-6">
                     {field.state.meta.errors[0] && (
-                      <p className="text-error text-sm">
+                      <p className="text-error text-base font-medium">
                         {field.state.meta.errors[0].message}
                       </p>
                     )}
@@ -117,7 +117,7 @@ export default function SignIn() {
                   <Label htmlFor="password">Password</Label>
                   <div className="h-6">
                     {field.state.meta.errors[0] && (
-                      <p className="text-error text-sm">
+                      <p className="text-error text-base font-medium">
                         {field.state.meta.errors[0].message}
                       </p>
                     )}
@@ -165,7 +165,7 @@ export default function SignIn() {
                   }}
                 />
                 <Link
-                  className="text-sm mt-1 w-fit text-link hover:underline transition-all duration-300 font-medium"
+                  className="text-base mt-1 w-fit text-link hover:underline transition-all duration-300 font-medium"
                   href={"/forgot-password"}
                 >
                   Forgot my password

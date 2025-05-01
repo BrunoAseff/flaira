@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Parkinsans } from "next/font/google";
+import { Quicksand } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/hooks/useQuery";
 
-const parkinsans = Parkinsans({
+const parkinsans = Quicksand({
   variable: "--font-parkinsans",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
