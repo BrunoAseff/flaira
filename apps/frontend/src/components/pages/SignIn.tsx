@@ -13,15 +13,11 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { z } from "zod";
+import type { z } from "zod";
 import { useState } from "react";
+import { signInSchema } from "@/schemas/auth";
 
-const userSchema = z.object({
-  email: z.string().email("Invalid email format"),
-  password: z.string().min(8, "Password should have at least 8 characters"),
-});
-
-type User = z.infer<typeof userSchema>;
+type User = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -43,7 +39,7 @@ export default function SignIn() {
   return (
     <Card className="w-[90%] md:w-[32rem] bg-background p-6 rounded-2xl border-none shadow-none">
       <CardHeader>
-        <CardTitle className="text-left mr-auto font-semibold text-foreground text-2xl mb-6">
+        <CardTitle className="text-left mr-auto font-semibold text-foreground text-2xl mb-1 md:mb-6">
           Sign in to Flaira
         </CardTitle>
       </CardHeader>
@@ -57,7 +53,7 @@ export default function SignIn() {
         >
           <form.Field
             validators={{
-              onChangeAsync: z.string().email("Invalid email format"),
+              onChangeAsync: signInSchema.shape.email,
               onChangeAsyncDebounceMs: 500,
             }}
             name="email"
@@ -84,8 +80,7 @@ export default function SignIn() {
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
-                    !field.state.meta.isValidating &&
-                    field.state.value.length > 0
+                    !field.state.meta.isValidating
                   }
                   value={field.state.value}
                   onChange={(e) => {
@@ -108,7 +103,7 @@ export default function SignIn() {
           <form.Field
             name="password"
             validators={{
-              onChangeAsync: z.string().min(8, "Password is too short"),
+              onChangeAsync: signInSchema.shape.password,
               onChangeAsyncDebounceMs: 500,
             }}
             children={(field) => (
@@ -147,8 +142,7 @@ export default function SignIn() {
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
-                    !field.state.meta.isValidating &&
-                    field.state.value.length > 0
+                    !field.state.meta.isValidating
                   }
                   value={field.state.value}
                   onChange={(e) => {
@@ -175,9 +169,16 @@ export default function SignIn() {
           />
         </form>
       </CardContent>
-      <CardFooter>
-        {" "}
-        <Button onClick={form.handleSubmit}>Sign in</Button>
+      <CardFooter className="flex flex-col w-full gap-4 place-items-center">
+        <Button type="submit" onClick={form.handleSubmit}>
+          Sign in
+        </Button>
+        <Link
+          className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
+          href={"/sign-up"}
+        >
+          Don't have an account? Sign Up
+        </Link>
       </CardFooter>
     </Card>
   );
