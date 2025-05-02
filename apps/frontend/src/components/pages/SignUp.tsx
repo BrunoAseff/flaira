@@ -76,12 +76,9 @@ export default function SignUp() {
             validators={{
               onChangeAsync: z
                 .string()
-                .min(3, "Username must be at least 3 characters")
-                .max(30, "Username cannot exceed 30 characters")
-                .regex(
-                  /^[a-zA-Z0-9_-]+$/,
-                  "Username can only contain letters, numbers, underscores and dashes",
-                )
+                .min(3, "Username is too short")
+                .max(30, "Username is too long")
+                .regex(/^[a-zA-Z0-9_-]+$/, "Invalid username")
                 .trim(),
               onChangeAsyncDebounceMs: 500,
             }}
