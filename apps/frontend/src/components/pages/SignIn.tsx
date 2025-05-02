@@ -83,7 +83,8 @@ export default function SignIn() {
                     hasInteracted.email &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
-                    field.state.meta.isValid
+                    field.state.meta.isValid &&
+                    !field.state.meta.isValidating
                   }
                   value={field.state.value}
                   onChange={(e) => {

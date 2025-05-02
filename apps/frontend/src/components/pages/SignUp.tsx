@@ -30,14 +30,15 @@ const userSchema = z.object({
     .max(100, "Password is too long"),
   confirmPassword: z
     .string()
-    .min(8, "Username is too short")
-    .max(100, "Username is too long"),
+    .min(8, "Password is too short")
+    .max(100, "Password is too long"),
 });
 
 type User = z.infer<typeof userSchema>;
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [hasInteracted, setHasInteracted] = useState({
     username: false,
     email: false,
@@ -214,7 +215,7 @@ export default function SignUp() {
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                   success={
                     hasInteracted.password &&
                     field.state.meta.isTouched &&
@@ -267,22 +268,22 @@ export default function SignUp() {
                 <Input
                   iconLeft={<KeyRound />}
                   iconRight={
-                    showPassword ? (
+                    showConfirmPassword ? (
                       <Eye
                         className="text-accent cursor-pointer"
-                        onClick={() => setShowPassword(false)}
+                        onClick={() => setShowConfirmPassword(false)}
                       />
                     ) : (
                       <EyeOff
                         className="text-accent cursor-pointer"
-                        onClick={() => setShowPassword(true)}
+                        onClick={() => setShowConfirmPassword(true)}
                       />
                     )
                   }
                   id="confirmPassword"
                   name="confirmPassword"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  autoComplete="new-password"
                   success={
                     hasInteracted.confirmPassword &&
                     field.state.meta.isTouched &&
