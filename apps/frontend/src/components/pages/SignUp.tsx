@@ -177,11 +177,17 @@ export default function SignUp() {
                   iconRight={
                     showPassword ? (
                       <Eye
+                        aria-label="Hide password"
+                        role="button"
+                        tabIndex={0}
                         className="text-accent cursor-pointer"
                         onClick={() => setShowPassword(false)}
                       />
                     ) : (
                       <EyeOff
+                        aria-label="Show password"
+                        role="button"
+                        tabIndex={0}
                         className="text-accent cursor-pointer"
                         onClick={() => setShowPassword(true)}
                       />
@@ -264,8 +270,7 @@ export default function SignUp() {
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
-                    !field.state.meta.isValidating &&
-                    field.state.value.length > 0
+                    !field.state.meta.isValidating
                   }
                   value={field.state.value}
                   onChange={(e) => {
