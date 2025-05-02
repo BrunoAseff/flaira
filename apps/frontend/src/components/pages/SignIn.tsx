@@ -15,13 +15,9 @@ import {
 } from "../ui/card";
 import { z } from "zod";
 import { useState } from "react";
+import type { signInSchema } from "@/schemas/auth";
 
-const userSchema = z.object({
-  email: z.string().email("Invalid email"),
-  password: z.string().min(8, "Invalid password"),
-});
-
-type User = z.infer<typeof userSchema>;
+type User = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);

@@ -15,26 +15,9 @@ import {
 } from "../ui/card";
 import { z } from "zod";
 import { useState } from "react";
+import type { signUpSchema } from "@/schemas/auth";
 
-const userSchema = z.object({
-  username: z
-    .string()
-    .min(3, "Username is too short")
-    .max(30, "Username is too long")
-    .regex(/^[a-zA-Z0-9_-]+$/, "Invalid username")
-    .trim(),
-  email: z.string().email("Invalid email").trim().toLowerCase(),
-  password: z
-    .string()
-    .min(8, "Password is too short")
-    .max(100, "Password is too long"),
-  confirmPassword: z
-    .string()
-    .min(8, "Password is too short")
-    .max(100, "Password is too long"),
-});
-
-type User = z.infer<typeof userSchema>;
+type User = z.infer<typeof signUpSchema>;
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
