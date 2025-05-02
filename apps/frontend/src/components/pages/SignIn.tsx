@@ -174,7 +174,9 @@ export default function SignIn() {
         </form>
       </CardContent>
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">
-        <Button onClick={form.handleSubmit}>Sign in</Button>
+        <Button type="submit" onClick={form.handleSubmit}>
+          Sign in
+        </Button>
         <Link
           className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
           href={"/sign-up"}
