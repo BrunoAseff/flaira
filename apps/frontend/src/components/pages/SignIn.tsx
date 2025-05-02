@@ -17,8 +17,8 @@ import { z } from "zod";
 import { useState } from "react";
 
 const userSchema = z.object({
-  email: z.string().email("Invalid email format"),
-  password: z.string().min(8, "Password should have at least 8 characters"),
+  email: z.string().email("Invalid email"),
+  password: z.string().min(8, "Invalid password"),
 });
 
 type User = z.infer<typeof userSchema>;
@@ -57,7 +57,7 @@ export default function SignIn() {
         >
           <form.Field
             validators={{
-              onChangeAsync: z.string().email("Invalid email format"),
+              onChangeAsync: z.string().email("Invalid email"),
               onChangeAsyncDebounceMs: 500,
             }}
             name="email"
@@ -108,7 +108,7 @@ export default function SignIn() {
           <form.Field
             name="password"
             validators={{
-              onChangeAsync: z.string().min(8, "Password is too short"),
+              onChangeAsync: z.string().min(8, "Invalid password"),
               onChangeAsyncDebounceMs: 500,
             }}
             children={(field) => (
@@ -175,9 +175,14 @@ export default function SignIn() {
           />
         </form>
       </CardContent>
-      <CardFooter>
-        {" "}
+      <CardFooter className="flex flex-col w-full gap-4 place-items-center">
         <Button onClick={form.handleSubmit}>Sign in</Button>
+        <Link
+          className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
+          href={"/sign-up"}
+        >
+          Don't have an account? Sign Up
+        </Link>
       </CardFooter>
     </Card>
   );
