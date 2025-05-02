@@ -13,9 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { z } from "zod";
+import type { z } from "zod";
 import { useState } from "react";
-import type { signInSchema } from "@/schemas/auth";
+import { signInSchema } from "@/schemas/auth";
 
 type User = z.infer<typeof signInSchema>;
 
@@ -53,7 +53,7 @@ export default function SignIn() {
         >
           <form.Field
             validators={{
-              onChangeAsync: z.string().email("Invalid email"),
+              onChangeAsync: signInSchema.shape.email,
               onChangeAsyncDebounceMs: 500,
             }}
             name="email"
@@ -103,7 +103,7 @@ export default function SignIn() {
           <form.Field
             name="password"
             validators={{
-              onChangeAsync: z.string().min(8, "Invalid password"),
+              onChangeAsync: signInSchema.shape.password,
               onChangeAsyncDebounceMs: 500,
             }}
             children={(field) => (

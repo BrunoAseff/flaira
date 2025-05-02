@@ -13,9 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { z } from "zod";
+import type { z } from "zod";
 import { useState } from "react";
-import type { signUpSchema } from "@/schemas/auth";
+import { signUpSchema } from "@/schemas/auth";
 
 type User = z.infer<typeof signUpSchema>;
 
@@ -58,12 +58,7 @@ export default function SignUp() {
         >
           <form.Field
             validators={{
-              onChangeAsync: z
-                .string()
-                .min(3, "Username is too short")
-                .max(30, "Username is too long")
-                .regex(/^[a-zA-Z0-9_-]+$/, "Invalid username")
-                .trim(),
+              onChangeAsync: signUpSchema.shape.username,
               onChangeAsyncDebounceMs: 500,
             }}
             name="username"
@@ -112,7 +107,7 @@ export default function SignUp() {
           />
           <form.Field
             validators={{
-              onChangeAsync: z.string().email("Invalid email"),
+              onChangeAsync: signUpSchema.shape.email,
               onChangeAsyncDebounceMs: 500,
             }}
             name="email"
@@ -162,10 +157,7 @@ export default function SignUp() {
           <form.Field
             name="password"
             validators={{
-              onChangeAsync: z
-                .string()
-                .min(8, "Password is too short")
-                .max(100, "Password is too long"),
+              onChangeAsync: signUpSchema.shape.password,
               onChangeAsyncDebounceMs: 500,
             }}
             children={(field) => (
