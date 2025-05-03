@@ -172,7 +172,7 @@ export default function SignIn() {
                   aria-disabled={!allFieldsFilled || !isValid}
                   loading={isSubmitting}
                 >
-                  Sign Up
+                  Sign In
                 </Button>
               );
             }}
