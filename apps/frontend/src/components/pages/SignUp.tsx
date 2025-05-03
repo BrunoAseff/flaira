@@ -22,12 +22,6 @@ type User = z.infer<typeof signUpSchema>;
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState({
-    username: false,
-    email: false,
-    password: false,
-    confirmPassword: false,
-  });
 
   const form = useForm({
     defaultValues: {
@@ -54,6 +48,7 @@ export default function SignUp() {
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            form.handleSubmit();
           }}
         >
           <form.Field
@@ -67,11 +62,12 @@ export default function SignUp() {
                 <div className="flex w-full justify-between">
                   <Label htmlFor="username">Username</Label>
                   <div className="h-6">
-                    {field.state.meta.errors[0] && (
-                      <p className="text-error text-base font-medium">
-                        {field.state.meta.errors[0].message}
-                      </p>
-                    )}
+                    {field.state.meta.errors[0] &&
+                      (field.state.meta.isDirty || form.state.isSubmitting) && (
+                        <p className="text-error text-base font-medium">
+                          {field.state.meta.errors[0].message}
+                        </p>
+                      )}
                   </div>
                 </div>
                 <Input
@@ -81,7 +77,7 @@ export default function SignUp() {
                   type="text"
                   autoComplete="username"
                   success={
-                    hasInteracted.username &&
+                    field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
@@ -91,15 +87,9 @@ export default function SignUp() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    if (!hasInteracted.username && e.target.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, username: true }));
-                    }
                   }}
                   onBlur={() => {
                     field.handleBlur();
-                    if (field.state.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, username: true }));
-                    }
                   }}
                 />
               </div>
@@ -116,11 +106,12 @@ export default function SignUp() {
                 <div className="flex w-full justify-between">
                   <Label htmlFor="email">Email</Label>
                   <div className="h-6">
-                    {field.state.meta.errors[0] && (
-                      <p className="text-error text-base font-medium">
-                        {field.state.meta.errors[0].message}
-                      </p>
-                    )}
+                    {field.state.meta.errors[0] &&
+                      (field.state.meta.isDirty || form.state.isSubmitting) && (
+                        <p className="text-error text-base font-medium">
+                          {field.state.meta.errors[0].message}
+                        </p>
+                      )}
                   </div>
                 </div>
                 <Input
@@ -130,7 +121,7 @@ export default function SignUp() {
                   type="email"
                   autoComplete="email"
                   success={
-                    hasInteracted.email &&
+                    field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
@@ -139,15 +130,9 @@ export default function SignUp() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    if (!hasInteracted.email && e.target.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, email: true }));
-                    }
                   }}
                   onBlur={() => {
                     field.handleBlur();
-                    if (field.state.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, email: true }));
-                    }
                   }}
                 />
               </div>
@@ -165,11 +150,12 @@ export default function SignUp() {
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="password">Password</Label>
                   <div className="h-6">
-                    {field.state.meta.errors[0] && (
-                      <p className="text-error text-base font-medium">
-                        {field.state.meta.errors[0].message}
-                      </p>
-                    )}
+                    {field.state.meta.errors[0] &&
+                      (field.state.meta.isDirty || form.state.isSubmitting) && (
+                        <p className="text-error text-base font-medium">
+                          {field.state.meta.errors[0].message}
+                        </p>
+                      )}
                   </div>
                 </div>{" "}
                 <Input
@@ -198,7 +184,7 @@ export default function SignUp() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
                   success={
-                    hasInteracted.password &&
+                    field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
@@ -207,15 +193,10 @@ export default function SignUp() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    if (!hasInteracted.password && e.target.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, password: true }));
-                    }
+                    form.validateField("confirmPassword", "change");
                   }}
                   onBlur={() => {
                     field.handleBlur();
-                    if (field.state.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, password: true }));
-                    }
                   }}
                 />
               </div>
@@ -239,7 +220,7 @@ export default function SignUp() {
                   <Label htmlFor="confirmPassword">Confirm your password</Label>
                   <div className="h-6">
                     {field.state.meta.errors[0] &&
-                      hasInteracted.confirmPassword && (
+                      (field.state.meta.isDirty || form.state.isSubmitting) && (
                         <p className="text-error text-base font-medium">
                           {field.state.meta.errors[0]}
                         </p>
@@ -266,7 +247,7 @@ export default function SignUp() {
                   type={showConfirmPassword ? "text" : "password"}
                   autoComplete="new-password"
                   success={
-                    hasInteracted.confirmPassword &&
+                    field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
@@ -275,35 +256,43 @@ export default function SignUp() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    if (
-                      !hasInteracted.confirmPassword &&
-                      e.target.value.length > 0
-                    ) {
-                      setHasInteracted((prev) => ({
-                        ...prev,
-                        confirmPassword: true,
-                      }));
-                    }
                   }}
                   onBlur={() => {
                     field.handleBlur();
-                    if (field.state.value.length > 0) {
-                      setHasInteracted((prev) => ({
-                        ...prev,
-                        confirmPassword: true,
-                      }));
-                    }
                   }}
                 />
               </div>
             )}
           />
+
+          <form.Subscribe
+            selector={(state) => ({
+              isSubmitting: state.isSubmitting,
+              isValid: state.isValid,
+              fieldMeta: state.fieldMeta,
+            })}
+            children={({ isSubmitting, isValid, fieldMeta }) => {
+              const allFieldsFilled = Object.entries(fieldMeta).every(
+                ([_, meta]) =>
+                  meta.isDirty && !meta.errors.length && !meta.isValidating,
+              );
+
+              return (
+                <Button
+                  type="submit"
+                  onClick={form.handleSubmit}
+                  disabled={!allFieldsFilled || !isValid}
+                  aria-disabled={!allFieldsFilled || !isValid}
+                  loading={isSubmitting}
+                >
+                  Sign Up
+                </Button>
+              );
+            }}
+          />
         </form>
       </CardContent>
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">
-        <Button type="submit" onClick={form.handleSubmit}>
-          Sign up
-        </Button>
         <Link
           className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
           href={"/sign-in"}

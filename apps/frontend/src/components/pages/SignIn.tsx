@@ -21,10 +21,6 @@ type User = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState({
-    email: false,
-    password: false,
-  });
 
   const form = useForm({
     defaultValues: {
@@ -49,6 +45,7 @@ export default function SignIn() {
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            form.handleSubmit();
           }}
         >
           <form.Field
@@ -76,7 +73,7 @@ export default function SignIn() {
                   type="email"
                   autoComplete="email"
                   success={
-                    hasInteracted.email &&
+                    field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
@@ -85,15 +82,9 @@ export default function SignIn() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    if (!hasInteracted.email && e.target.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, email: true }));
-                    }
                   }}
                   onBlur={() => {
                     field.handleBlur();
-                    if (field.state.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, email: true }));
-                    }
                   }}
                 />
               </div>
@@ -138,7 +129,7 @@ export default function SignIn() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   success={
-                    hasInteracted.password &&
+                    field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
@@ -147,15 +138,9 @@ export default function SignIn() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    if (!hasInteracted.password && e.target.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, password: true }));
-                    }
                   }}
                   onBlur={() => {
                     field.handleBlur();
-                    if (field.state.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, password: true }));
-                    }
                   }}
                 />
                 <Link
@@ -167,12 +152,34 @@ export default function SignIn() {
               </div>
             )}
           />
+          <form.Subscribe
+            selector={(state) => ({
+              isSubmitting: state.isSubmitting,
+              isValid: state.isValid,
+              fieldMeta: state.fieldMeta,
+            })}
+            children={({ isSubmitting, isValid, fieldMeta }) => {
+              const allFieldsFilled = Object.entries(fieldMeta).every(
+                ([_, meta]) =>
+                  meta.isDirty && !meta.errors.length && !meta.isValidating,
+              );
+
+              return (
+                <Button
+                  type="submit"
+                  onClick={form.handleSubmit}
+                  disabled={!allFieldsFilled || !isValid}
+                  aria-disabled={!allFieldsFilled || !isValid}
+                  loading={isSubmitting}
+                >
+                  Sign In
+                </Button>
+              );
+            }}
+          />
         </form>
       </CardContent>
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">
-        <Button type="submit" onClick={form.handleSubmit}>
-          Sign in
-        </Button>
         <Link
           className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
           href={"/sign-up"}
