@@ -45,6 +45,7 @@ export default function SignIn() {
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            form.handleSubmit();
           }}
         >
           <form.Field
@@ -151,12 +152,17 @@ export default function SignIn() {
               </div>
             )}
           />
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isValidating]}
+            children={([canSubmit]) => (
+              <Button onClick={form.handleSubmit} disabled={!canSubmit}>
+                Sign Up
+              </Button>
+            )}
+          />
         </form>
       </CardContent>
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">
-        <Button type="submit" onClick={form.handleSubmit}>
-          Sign in
-        </Button>
         <Link
           className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
           href={"/sign-up"}
