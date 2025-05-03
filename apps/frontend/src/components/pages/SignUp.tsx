@@ -48,6 +48,7 @@ export default function SignUp() {
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            form.handleSubmit();
           }}
         >
           <form.Field
@@ -61,11 +62,12 @@ export default function SignUp() {
                 <div className="flex w-full justify-between">
                   <Label htmlFor="username">Username</Label>
                   <div className="h-6">
-                    {field.state.meta.errors[0] && (
-                      <p className="text-error text-base font-medium">
-                        {field.state.meta.errors[0].message}
-                      </p>
-                    )}
+                    {field.state.meta.errors[0] &&
+                      (field.state.meta.isDirty || form.state.isSubmitting) && (
+                        <p className="text-error text-base font-medium">
+                          {field.state.meta.errors[0].message}
+                        </p>
+                      )}
                   </div>
                 </div>
                 <Input
@@ -104,11 +106,12 @@ export default function SignUp() {
                 <div className="flex w-full justify-between">
                   <Label htmlFor="email">Email</Label>
                   <div className="h-6">
-                    {field.state.meta.errors[0] && (
-                      <p className="text-error text-base font-medium">
-                        {field.state.meta.errors[0].message}
-                      </p>
-                    )}
+                    {field.state.meta.errors[0] &&
+                      (field.state.meta.isDirty || form.state.isSubmitting) && (
+                        <p className="text-error text-base font-medium">
+                          {field.state.meta.errors[0].message}
+                        </p>
+                      )}
                   </div>
                 </div>
                 <Input
@@ -147,11 +150,12 @@ export default function SignUp() {
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="password">Password</Label>
                   <div className="h-6">
-                    {field.state.meta.errors[0] && (
-                      <p className="text-error text-base font-medium">
-                        {field.state.meta.errors[0].message}
-                      </p>
-                    )}
+                    {field.state.meta.errors[0] &&
+                      (field.state.meta.isDirty || form.state.isSubmitting) && (
+                        <p className="text-error text-base font-medium">
+                          {field.state.meta.errors[0].message}
+                        </p>
+                      )}
                   </div>
                 </div>{" "}
                 <Input
@@ -189,6 +193,7 @@ export default function SignUp() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
+                    form.validateField("confirmPassword", "change");
                   }}
                   onBlur={() => {
                     field.handleBlur();
@@ -214,11 +219,12 @@ export default function SignUp() {
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="confirmPassword">Confirm your password</Label>
                   <div className="h-6">
-                    {field.state.meta.errors[0] && field.state.meta.isDirty && (
-                      <p className="text-error text-base font-medium">
-                        {field.state.meta.errors[0]}
-                      </p>
-                    )}
+                    {field.state.meta.errors[0] &&
+                      (field.state.meta.isDirty || form.state.isSubmitting) && (
+                        <p className="text-error text-base font-medium">
+                          {field.state.meta.errors[0]}
+                        </p>
+                      )}
                   </div>
                 </div>{" "}
                 <Input
@@ -258,12 +264,35 @@ export default function SignUp() {
               </div>
             )}
           />
+
+          <form.Subscribe
+            selector={(state) => ({
+              isSubmitting: state.isSubmitting,
+              isValid: state.isValid,
+              fieldMeta: state.fieldMeta,
+            })}
+            children={({ isSubmitting, isValid, fieldMeta }) => {
+              const allFieldsFilled = Object.entries(fieldMeta).every(
+                ([_, meta]) =>
+                  meta.isDirty && !meta.errors.length && !meta.isValidating,
+              );
+
+              return (
+                <Button
+                  type="submit"
+                  onClick={form.handleSubmit}
+                  disabled={!allFieldsFilled || !isValid}
+                  aria-disabled={!allFieldsFilled || !isValid}
+                  loading={isSubmitting}
+                >
+                  Sign Up
+                </Button>
+              );
+            }}
+          />
         </form>
       </CardContent>
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">
-        <Button type="submit" onClick={form.handleSubmit}>
-          Sign up
-        </Button>
         <Link
           className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
           href={"/sign-in"}

@@ -153,12 +153,29 @@ export default function SignIn() {
             )}
           />
           <form.Subscribe
-            selector={(state) => [state.canSubmit, state.isValidating]}
-            children={([canSubmit]) => (
-              <Button onClick={form.handleSubmit} disabled={!canSubmit}>
-                Sign Up
-              </Button>
-            )}
+            selector={(state) => ({
+              isSubmitting: state.isSubmitting,
+              isValid: state.isValid,
+              fieldMeta: state.fieldMeta,
+            })}
+            children={({ isSubmitting, isValid, fieldMeta }) => {
+              const allFieldsFilled = Object.entries(fieldMeta).every(
+                ([_, meta]) =>
+                  meta.isDirty && !meta.errors.length && !meta.isValidating,
+              );
+
+              return (
+                <Button
+                  type="submit"
+                  onClick={form.handleSubmit}
+                  disabled={!allFieldsFilled || !isValid}
+                  aria-disabled={!allFieldsFilled || !isValid}
+                  loading={isSubmitting}
+                >
+                  Sign Up
+                </Button>
+              );
+            }}
           />
         </form>
       </CardContent>
