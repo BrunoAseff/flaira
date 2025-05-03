@@ -21,10 +21,6 @@ type User = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState({
-    email: false,
-    password: false,
-  });
 
   const form = useForm({
     defaultValues: {
@@ -76,7 +72,7 @@ export default function SignIn() {
                   type="email"
                   autoComplete="email"
                   success={
-                    hasInteracted.email &&
+                    field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
@@ -85,15 +81,9 @@ export default function SignIn() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    if (!hasInteracted.email && e.target.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, email: true }));
-                    }
                   }}
                   onBlur={() => {
                     field.handleBlur();
-                    if (field.state.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, email: true }));
-                    }
                   }}
                 />
               </div>
@@ -138,7 +128,7 @@ export default function SignIn() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   success={
-                    hasInteracted.password &&
+                    field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
@@ -147,15 +137,9 @@ export default function SignIn() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    if (!hasInteracted.password && e.target.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, password: true }));
-                    }
                   }}
                   onBlur={() => {
                     field.handleBlur();
-                    if (field.state.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, password: true }));
-                    }
                   }}
                 />
                 <Link

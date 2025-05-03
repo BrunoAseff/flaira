@@ -22,12 +22,6 @@ type User = z.infer<typeof signUpSchema>;
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState({
-    username: false,
-    email: false,
-    password: false,
-    confirmPassword: false,
-  });
 
   const form = useForm({
     defaultValues: {
@@ -81,7 +75,7 @@ export default function SignUp() {
                   type="text"
                   autoComplete="username"
                   success={
-                    hasInteracted.username &&
+                    field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
@@ -91,15 +85,9 @@ export default function SignUp() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    if (!hasInteracted.username && e.target.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, username: true }));
-                    }
                   }}
                   onBlur={() => {
                     field.handleBlur();
-                    if (field.state.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, username: true }));
-                    }
                   }}
                 />
               </div>
@@ -130,7 +118,7 @@ export default function SignUp() {
                   type="email"
                   autoComplete="email"
                   success={
-                    hasInteracted.email &&
+                    field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
@@ -139,15 +127,9 @@ export default function SignUp() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    if (!hasInteracted.email && e.target.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, email: true }));
-                    }
                   }}
                   onBlur={() => {
                     field.handleBlur();
-                    if (field.state.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, email: true }));
-                    }
                   }}
                 />
               </div>
@@ -198,7 +180,7 @@ export default function SignUp() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
                   success={
-                    hasInteracted.password &&
+                    field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
@@ -207,15 +189,9 @@ export default function SignUp() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    if (!hasInteracted.password && e.target.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, password: true }));
-                    }
                   }}
                   onBlur={() => {
                     field.handleBlur();
-                    if (field.state.value.length > 0) {
-                      setHasInteracted((prev) => ({ ...prev, password: true }));
-                    }
                   }}
                 />
               </div>
@@ -238,12 +214,11 @@ export default function SignUp() {
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="confirmPassword">Confirm your password</Label>
                   <div className="h-6">
-                    {field.state.meta.errors[0] &&
-                      hasInteracted.confirmPassword && (
-                        <p className="text-error text-base font-medium">
-                          {field.state.meta.errors[0]}
-                        </p>
-                      )}
+                    {field.state.meta.errors[0] && field.state.meta.isDirty && (
+                      <p className="text-error text-base font-medium">
+                        {field.state.meta.errors[0]}
+                      </p>
+                    )}
                   </div>
                 </div>{" "}
                 <Input
@@ -266,7 +241,7 @@ export default function SignUp() {
                   type={showConfirmPassword ? "text" : "password"}
                   autoComplete="new-password"
                   success={
-                    hasInteracted.confirmPassword &&
+                    field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
                     !field.state.meta.errors.length &&
                     field.state.meta.isValid &&
@@ -275,24 +250,9 @@ export default function SignUp() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    if (
-                      !hasInteracted.confirmPassword &&
-                      e.target.value.length > 0
-                    ) {
-                      setHasInteracted((prev) => ({
-                        ...prev,
-                        confirmPassword: true,
-                      }));
-                    }
                   }}
                   onBlur={() => {
                     field.handleBlur();
-                    if (field.state.value.length > 0) {
-                      setHasInteracted((prev) => ({
-                        ...prev,
-                        confirmPassword: true,
-                      }));
-                    }
                   }}
                 />
               </div>
