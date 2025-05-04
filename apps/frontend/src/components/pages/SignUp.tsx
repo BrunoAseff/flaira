@@ -25,7 +25,7 @@ export default function SignUp() {
 
   const form = useForm({
     defaultValues: {
-      username: "",
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -53,14 +53,14 @@ export default function SignUp() {
         >
           <form.Field
             validators={{
-              onChangeAsync: signUpSchema.shape.username,
+              onChangeAsync: signUpSchema.shape.name,
               onChangeAsyncDebounceMs: 500,
             }}
-            name="username"
+            name="name"
             children={(field) => (
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between">
-                  <Label htmlFor="username">Username</Label>
+                  <Label htmlFor="name">Full name</Label>
                   <div className="h-6">
                     {field.state.meta.errors[0] &&
                       (field.state.meta.isDirty || form.state.isSubmitting) && (
@@ -72,10 +72,10 @@ export default function SignUp() {
                 </div>
                 <Input
                   iconLeft={<UserIcon />}
-                  id="username"
-                  name="username"
+                  id="name"
+                  name="name"
                   type="text"
-                  autoComplete="username"
+                  autoComplete="name"
                   success={
                     field.state.meta.isDirty &&
                     field.state.meta.isTouched &&
