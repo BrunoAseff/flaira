@@ -1,12 +1,11 @@
 import { z } from "zod";
 
 const email = z.string().email("Invalid email").trim().toLowerCase();
-const username = z
+const name = z
   .string()
-  .min(3, "Username is too short")
-  .max(30, "Username is too long")
-  .regex(/^[a-zA-Z0-9_-]+$/, "Invalid username")
-  .trim();
+  .min(3, "Name is too short")
+  .max(100, "Name is too long")
+  .regex(/^[a-zA-ZÀ-ÖØ-öø-ÿ\s'-]+$/, "Invalid name");
 
 const signUpPassword = z
   .string()
@@ -19,7 +18,7 @@ const signInPassword = z
   .max(100, "Invalid password");
 
 export const signUpSchema = z.object({
-  username,
+  name,
   email,
   password: signUpPassword,
   confirmPassword: signUpPassword,

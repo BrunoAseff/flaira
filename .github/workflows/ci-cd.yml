@@ -51,6 +51,7 @@ jobs:
         BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
         BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
         FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+        RESEND_API: ${{ secrets.RESEND_API }}
     steps:
       - uses: actions/checkout@v3
 
@@ -110,6 +111,7 @@ jobs:
           BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
           BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+          RESEND_API: ${{ secrets.RESEND_API }}
         run: |
           pnpm install --no-frozen-lockfile
           cd apps/backend
