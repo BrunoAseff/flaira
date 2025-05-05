@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { auth } from "@/auth/client";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useCooldown } from "@/hooks/useCooldown";
 
 export default function EmailConfirmed({
   isVerified,
@@ -19,8 +20,7 @@ export default function EmailConfirmed({
   isVerified: boolean;
 }) {
   const router = useRouter();
-  const [timer, setTimer] = useState(60);
-  const [isCooldown, setIsCooldown] = useState(true);
+  const { timer, isCooldown, startCooldown } = useCooldown();
   const { data: session } = auth.useSession();
 
   useEffect(() => {
@@ -29,21 +29,8 @@ export default function EmailConfirmed({
     }
   }, [isVerified, router]);
 
-  useEffect(() => {
-    if (timer > 0 && isCooldown) {
-      const interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
-
-      return () => clearInterval(interval);
-    } else {
-      setIsCooldown(false);
-    }
-  }, [timer, isCooldown]);
-
   const handleResend = () => {
-    setIsCooldown(true);
-    setTimer(60);
+    startCooldown();
 
     if (session?.user?.email) {
       auth.sendVerificationEmail({
@@ -74,7 +61,11 @@ export default function EmailConfirmed({
         <p className="text-base text-muted-foreground">
           Need a new verification link? Click the button below:
         </p>
-        <Button onClick={handleResend} disabled={isCooldown}>
+        <Button
+          onClick={handleResend}
+          disabled={isCooldown}
+          aria-disabled={isCooldown}
+        >
           {isCooldown ? `Wait ${timer}s` : "Resend verification email"}
         </Button>
       </CardFooter>

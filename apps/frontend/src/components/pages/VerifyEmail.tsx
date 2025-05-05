@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { MailSearch } from "lucide-react";
 import { Button } from "../ui/button";
 import {
@@ -11,30 +10,20 @@ import {
   CardTitle,
 } from "../ui/card";
 import { auth } from "@/auth/client";
+import { useCooldown } from "@/hooks/useCooldown";
 
 export default function VerifyEmail() {
-  const [timer, setTimer] = useState(60);
-  const [isCooldown, setIsCooldown] = useState(true);
+  const { timer, isCooldown, startCooldown } = useCooldown();
   const { data: session } = auth.useSession();
 
-  useEffect(() => {
-    if (timer > 0) {
-      const interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
-
-      return () => clearInterval(interval);
-    } else {
-      setIsCooldown(false);
-    }
-  }, [timer]);
-
   function handleResend() {
-    setIsCooldown(true);
-    setTimer(60);
-    if (session?.user.email) {
+    const email = session?.user.email;
+
+    startCooldown();
+
+    if (email) {
       auth.sendVerificationEmail({
-        email: session?.user.email,
+        email,
       });
     }
   }
@@ -49,13 +38,13 @@ export default function VerifyEmail() {
       <CardContent className="flex flex-col items-center gap-4">
         <MailSearch className="w-16 h-16 text-success" />
         <p className="text-base text-foreground">
-          Thanks for creating an account! We’ve sent you a verification link.
+          Thanks for creating an account! We've sent you a verification link.
           Please check your inbox.
         </p>
       </CardContent>
       <CardFooter className="flex flex-col items-center gap-2">
         <p className="text-base text-muted-foreground">
-          Didn’t receive the email? Click the button below:
+          Didn't receive the email? Click the button below:
         </p>
         <Button
           onClick={handleResend}
