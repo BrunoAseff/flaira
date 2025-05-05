@@ -16,12 +16,15 @@ import {
 import type { z } from "zod";
 import { useState } from "react";
 import { signUpSchema } from "@/schemas/auth";
+import { auth } from "@/auth/client";
+import { useRouter } from "next/navigation";
 
 type User = z.infer<typeof signUpSchema>;
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const router = useRouter();
 
   const form = useForm({
     defaultValues: {
@@ -30,8 +33,19 @@ export default function SignUp() {
       password: "",
       confirmPassword: "",
     } as User,
-    onSubmit: ({ value }) => {
-      console.log(value);
+    onSubmit: async ({ value }) => {
+      await auth.signUp.email(
+        {
+          email: value.email,
+          password: value.password,
+          name: value.name,
+        },
+        {
+          onSuccess: () => {
+            router.push("/verify-email");
+          },
+        },
+      );
     },
   });
 
