@@ -16,19 +16,37 @@ import {
 import type { z } from "zod";
 import { useState } from "react";
 import { signInSchema } from "@/schemas/auth";
+import { auth } from "@/auth/client";
+import { useRouter } from "next/navigation";
 
 type User = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
-
+  const router = useRouter();
   const form = useForm({
     defaultValues: {
       email: "",
       password: "",
     } as User,
     onSubmit: ({ value }) => {
-      console.log(value);
+      auth.signIn.email(
+        {
+          email: value.email,
+          password: value.password,
+        },
+        {
+          onError: (ctx) => {
+            if (ctx.error.status === 403) {
+              router.push("/verify-email/not-verified");
+            } else {
+            }
+          },
+          onSuccess: () => {
+            router.push("/");
+          },
+        },
+      );
     },
   });
 
