@@ -18,11 +18,13 @@ import { useState } from "react";
 import { signInSchema } from "@/schemas/auth";
 import { auth } from "@/auth/client";
 import { useRouter } from "next/navigation";
+import { Banner } from "../ui/banner";
 
 type User = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
   const form = useForm({
     defaultValues: {
@@ -39,7 +41,10 @@ export default function SignIn() {
           onError: (ctx) => {
             if (ctx.error.status === 403) {
               router.push("/verify-email/not-verified");
+            } else if (ctx.error.status === 401) {
+              setErrorMessage("Incorrect username or password.");
             } else {
+              setErrorMessage("Sorry, something went wrong. Please try again.");
             }
           },
           onSuccess: () => {
@@ -170,6 +175,7 @@ export default function SignIn() {
               </div>
             )}
           />
+
           <form.Subscribe
             selector={(state) => ({
               isSubmitting: state.isSubmitting,
@@ -195,6 +201,7 @@ export default function SignIn() {
               );
             }}
           />
+          {errorMessage && <Banner variant="error">{errorMessage}</Banner>}
         </form>
       </CardContent>
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">

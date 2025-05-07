@@ -18,12 +18,15 @@ import { useState } from "react";
 import { signUpSchema } from "@/schemas/auth";
 import { auth } from "@/auth/client";
 import { useRouter } from "next/navigation";
+import { Banner } from "../ui/banner";
 
 type User = z.infer<typeof signUpSchema>;
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const router = useRouter();
 
   const form = useForm({
@@ -43,6 +46,13 @@ export default function SignUp() {
         {
           onSuccess: () => {
             router.push("/verify-email");
+          },
+          onError: (ctx) => {
+            if (ctx.error.status === 422) {
+              setErrorMessage("A user with this email already exists");
+            } else {
+              setErrorMessage("Sorry, something went wrong. Please try again.");
+            }
           },
         },
       );
@@ -304,6 +314,7 @@ export default function SignUp() {
               );
             }}
           />
+          {errorMessage && <Banner variant="error">{errorMessage}</Banner>}
         </form>
       </CardContent>
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">
