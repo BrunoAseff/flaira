@@ -9,8 +9,7 @@ export function Banner({
   className?: string;
   variant?: 'error';
   children: React.ReactNode;
-  [key: string]: any;
-}) {
+  } & Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'children'>) {
   const variantStyles = {
     error: "text-error bg-error/10 border-error"
   };
@@ -19,7 +18,7 @@ export function Banner({
 
   return (
     <div 
-      className={`w-full rounded-xl p-4 h-13 border-2 flex items-center ${variantStyle} ${className || ''}`}
+      className={`w-full rounded-xl text-sm md:text-base md:font-semibold p-4 h-13 border-1 md:border-2 font-medium flex items-center ${variantStyle} ${className || ''}`}
       {...props}
     >
       {children}
