@@ -16,8 +16,8 @@ export const auth = betterAuth({
   basePath: "/auth",
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
   },
-  requireEmailVerifications: true,
   emailVerification: {
     sendOnSignUp: true,
     autoSignInAfterVerification: true,

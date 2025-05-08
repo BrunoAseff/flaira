@@ -18,12 +18,16 @@ import { useState } from "react";
 import { signUpSchema } from "@/schemas/auth";
 import { auth } from "@/auth/client";
 import { useRouter } from "next/navigation";
+import { Banner } from "../ui/banner";
 
 type User = z.infer<typeof signUpSchema>;
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+
   const router = useRouter();
 
   const form = useForm({
@@ -34,6 +38,8 @@ export default function SignUp() {
       confirmPassword: "",
     } as User,
     onSubmit: async ({ value }) => {
+      setErrorMessage("");
+      setIsAuthenticating(true);
       await auth.signUp.email(
         {
           email: value.email,
@@ -43,6 +49,15 @@ export default function SignUp() {
         {
           onSuccess: () => {
             router.push("/verify-email");
+          },
+          onError: (ctx) => {
+            setIsAuthenticating(false);
+
+            if (ctx.error.code === "USER_ALREADY_EXISTS") {
+              setErrorMessage("A user with this email already exists");
+            } else {
+              setErrorMessage("Sorry, something went wrong. Please try again.");
+            }
           },
         },
       );
@@ -297,13 +312,18 @@ export default function SignUp() {
                   onClick={form.handleSubmit}
                   disabled={!allFieldsFilled || !isValid}
                   aria-disabled={!allFieldsFilled || !isValid}
-                  loading={isSubmitting}
+                  loading={isSubmitting || isAuthenticating}
                 >
                   Sign Up
                 </Button>
               );
             }}
           />
+          {errorMessage && (
+            <Banner role="alert" aria-live="assertive" variant="error">
+              {errorMessage}
+            </Banner>
+          )}
         </form>
       </CardContent>
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">

@@ -16,19 +16,51 @@ import {
 import type { z } from "zod";
 import { useState } from "react";
 import { signInSchema } from "@/schemas/auth";
+import { auth } from "@/auth/client";
+import { useRouter } from "next/navigation";
+import { Banner } from "../ui/banner";
 
 type User = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
+  const router = useRouter();
   const form = useForm({
     defaultValues: {
       email: "",
       password: "",
     } as User,
     onSubmit: ({ value }) => {
-      console.log(value);
+      setErrorMessage("");
+      setIsAuthenticating(true);
+
+      auth.signIn.email(
+        {
+          email: value.email,
+          password: value.password,
+        },
+        {
+          onError: (ctx) => {
+            setIsAuthenticating(false);
+
+            if (ctx.error.code === "EMAIL_NOT_VERIFIED") {
+              localStorage.setItem("current-email", value.email);
+
+              router.push("/verify-email/not-verified");
+            } else if (ctx.error.code === "INVALID_EMAIL_OR_PASSWORD") {
+              setErrorMessage("Incorrect username or password.");
+            } else {
+              setErrorMessage("Sorry, something went wrong. Please try again.");
+            }
+          },
+          onSuccess: () => {
+            router.push("/");
+          },
+        },
+      );
     },
   });
 
@@ -152,6 +184,7 @@ export default function SignIn() {
               </div>
             )}
           />
+
           <form.Subscribe
             selector={(state) => ({
               isSubmitting: state.isSubmitting,
@@ -170,13 +203,18 @@ export default function SignIn() {
                   onClick={form.handleSubmit}
                   disabled={!allFieldsFilled || !isValid}
                   aria-disabled={!allFieldsFilled || !isValid}
-                  loading={isSubmitting}
+                  loading={isSubmitting || isAuthenticating}
                 >
                   Sign In
                 </Button>
               );
             }}
           />
+          {errorMessage && (
+            <Banner role="alert" aria-live="assertive" variant="error">
+              {errorMessage}
+            </Banner>
+          )}
         </form>
       </CardContent>
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">
