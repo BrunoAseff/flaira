@@ -1,6 +1,6 @@
 "use client";
 
-import { ShieldAlert } from "lucide-react";
+import { MailWarning } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -14,10 +14,9 @@ import { useCooldown } from "@/hooks/useCooldown";
 
 export default function NotVerified() {
   const { timer, isCooldown, startCooldown } = useCooldown();
-  const { data: session } = auth.useSession();
 
   function handleResend() {
-    const email = session?.user.email;
+    const email = localStorage.getItem("current-email");
 
     startCooldown();
 
@@ -36,7 +35,7 @@ export default function NotVerified() {
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
-        <ShieldAlert className="w-16 h-16 text-error" />
+        <MailWarning className="w-16 h-16 text-error" />
         <p className="text-base text-foreground">
           Your email hasn't been verified yet. Please verify your email address
           by clicking the link we sent to your inbox.
