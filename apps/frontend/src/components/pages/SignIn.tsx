@@ -53,7 +53,7 @@ export default function SignIn() {
             } else if (ctx.error.code === "INVALID_EMAIL_OR_PASSWORD") {
               setErrorMessage("Incorrect username or password.");
             } else {
-              setErrorMessage("Sorry, something went wrong. Please try again.");
+              setErrorMessage("Sorry, something went wrong.");
             }
           },
           onSuccess: () => {
