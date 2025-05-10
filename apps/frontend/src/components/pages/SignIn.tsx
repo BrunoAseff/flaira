@@ -146,11 +146,17 @@ export default function SignIn() {
                   iconRight={
                     showPassword ? (
                       <Eye
+                        aria-label="Hide password"
+                        role="button"
+                        tabIndex={0}
                         className="text-accent cursor-pointer"
                         onClick={() => setShowPassword(false)}
                       />
                     ) : (
                       <EyeOff
+                        aria-label="Show password"
+                        role="button"
+                        tabIndex={0}
                         className="text-accent cursor-pointer"
                         onClick={() => setShowPassword(true)}
                       />
