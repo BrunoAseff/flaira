@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import type { z } from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signInSchema } from "@/schemas/auth";
 import { auth } from "@/auth/client";
 import { useRouter } from "next/navigation";
@@ -26,8 +26,16 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const { data: session } = auth.useSession();
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      router.push("/");
+    }
+  }, [session, router]);
+
   const form = useForm({
     defaultValues: {
       email: "",
