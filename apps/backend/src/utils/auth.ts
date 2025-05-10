@@ -22,7 +22,7 @@ export const auth = betterAuth({
         from: "Flaira <welcome@flaira.net>",
         to: [user.email],
         subject: "Reset your password",
-        text: `Click the link to reset your password:  ${env.FRONTEND_URL}/forgot-password/${token}`,
+        text: `Click the link to reset your password: ${env.FRONTEND_URL}/forgot-password/${token}\n\nThis link will expire in 24 hours.`,
       });
     },
   },
