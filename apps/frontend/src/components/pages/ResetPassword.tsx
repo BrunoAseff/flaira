@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import Link from "next/link";
-import { Eye, EyeOff, KeyRound, Mail, User as UserIcon } from "lucide-react";
+import { Eye, EyeOff, KeyRound, CheckCircle } from "lucide-react";
 import { useForm } from "@tanstack/react-form";
 import {
   Card,
@@ -15,46 +15,45 @@ import {
 } from "../ui/card";
 import type { z } from "zod";
 import { useState } from "react";
-import { signUpSchema } from "@/schemas/auth";
+import { resetPasswordSchema } from "@/schemas/auth";
 import { auth } from "@/auth/client";
-import { useRouter } from "next/navigation";
 import { Banner } from "../ui/banner";
+import { useRouter } from "next/navigation";
 
-type User = z.infer<typeof signUpSchema>;
+type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
-export default function SignUp() {
+export default function ResetPassword({ token }: { token: string }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
-
+  const [isResetting, setIsResetting] = useState(false);
+  const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   const form = useForm({
     defaultValues: {
-      name: "",
-      email: "",
       password: "",
       confirmPassword: "",
-    } as User,
+    } as ResetPasswordFormData,
     onSubmit: async ({ value }) => {
       setErrorMessage("");
-      setIsAuthenticating(true);
-      await auth.signUp.email(
+      setIsResetting(true);
+      await auth.resetPassword(
         {
-          email: value.email,
-          password: value.password,
-          name: value.name,
+          newPassword: value.password,
+          token,
         },
         {
           onSuccess: () => {
-            router.push("/verify-email");
+            setSuccess(true);
           },
           onError: (ctx) => {
-            setIsAuthenticating(false);
+            setIsResetting(false);
 
-            if (ctx.error.code === "USER_ALREADY_EXISTS") {
-              setErrorMessage("A user with this email already exists");
+            if (ctx.error.code === "INVALID_TOKEN") {
+              setErrorMessage(
+                "Invalid or expired reset token. Please request a new password reset link.",
+              );
             } else {
               setErrorMessage("Sorry, something went wrong.");
             }
@@ -64,11 +63,33 @@ export default function SignUp() {
     },
   });
 
+  if (success) {
+    return (
+      <Card className="w-[90%] md:w-[32rem] bg-background p-6 rounded-2xl border-none shadow-none text-center">
+        <CardHeader>
+          <CardTitle className="text-foreground text-2xl font-semibold">
+            Password Reset Successful
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center gap-4">
+          <CheckCircle className="w-16 h-16 text-success" />
+          <p className="text-base text-foreground">
+            Your password has been successfully updated. You can now sign in to
+            your account using your new password.
+          </p>
+        </CardContent>
+        <CardFooter className="flex flex-col items-center gap-2">
+          <Button onClick={() => router.push("/sign-in")}>Sign In</Button>
+        </CardFooter>
+      </Card>
+    );
+  }
+
   return (
     <Card className="w-[90%] md:w-[32rem] bg-background p-6 rounded-2xl border-none shadow-none">
       <CardHeader>
         <CardTitle className="text-left mr-auto font-semibold text-foreground text-2xl mb-1 md:mb-6">
-          Sign up to Flaira
+          Reset your password
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -81,103 +102,15 @@ export default function SignUp() {
           }}
         >
           <form.Field
-            validators={{
-              onChangeAsync: signUpSchema.shape.name,
-              onChangeAsyncDebounceMs: 500,
-            }}
-            name="name"
-            children={(field) => (
-              <div className="flex flex-col mb-3 gap-1">
-                <div className="flex w-full justify-between">
-                  <Label htmlFor="name">Full name</Label>
-                  <div className="h-6">
-                    {field.state.meta.errors[0] &&
-                      (field.state.meta.isDirty || form.state.isSubmitting) && (
-                        <p className="text-error text-base font-medium">
-                          {field.state.meta.errors[0].message}
-                        </p>
-                      )}
-                  </div>
-                </div>
-                <Input
-                  iconLeft={<UserIcon />}
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  success={
-                    field.state.meta.isDirty &&
-                    field.state.meta.isTouched &&
-                    !field.state.meta.errors.length &&
-                    field.state.meta.isValid &&
-                    !field.state.meta.isValidating &&
-                    field.state.value.length > 0
-                  }
-                  value={field.state.value}
-                  onChange={(e) => {
-                    field.handleChange(e.target.value);
-                  }}
-                  onBlur={() => {
-                    field.handleBlur();
-                  }}
-                />
-              </div>
-            )}
-          />
-          <form.Field
-            validators={{
-              onChangeAsync: signUpSchema.shape.email,
-              onChangeAsyncDebounceMs: 500,
-            }}
-            name="email"
-            children={(field) => (
-              <div className="flex flex-col mb-3 gap-1">
-                <div className="flex w-full justify-between">
-                  <Label htmlFor="email">Email</Label>
-                  <div className="h-6">
-                    {field.state.meta.errors[0] &&
-                      (field.state.meta.isDirty || form.state.isSubmitting) && (
-                        <p className="text-error text-base font-medium">
-                          {field.state.meta.errors[0].message}
-                        </p>
-                      )}
-                  </div>
-                </div>
-                <Input
-                  iconLeft={<Mail />}
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  success={
-                    field.state.meta.isDirty &&
-                    field.state.meta.isTouched &&
-                    !field.state.meta.errors.length &&
-                    field.state.meta.isValid &&
-                    !field.state.meta.isValidating
-                  }
-                  value={field.state.value}
-                  onChange={(e) => {
-                    field.handleChange(e.target.value);
-                  }}
-                  onBlur={() => {
-                    field.handleBlur();
-                  }}
-                />
-              </div>
-            )}
-          />
-
-          <form.Field
             name="password"
             validators={{
-              onChangeAsync: signUpSchema.shape.password,
+              onChangeAsync: resetPasswordSchema.shape.password,
               onChangeAsyncDebounceMs: 500,
             }}
             children={(field) => (
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between items-center">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">New Password</Label>
                   <div className="h-6">
                     {field.state.meta.errors[0] &&
                       (field.state.meta.isDirty || form.state.isSubmitting) && (
@@ -246,7 +179,7 @@ export default function SignUp() {
             children={(field) => (
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between items-center">
-                  <Label htmlFor="confirmPassword">Confirm your password</Label>
+                  <Label htmlFor="confirmPassword">Confirm new password</Label>
                   <div className="h-6">
                     {field.state.meta.errors[0] &&
                       (field.state.meta.isDirty || form.state.isSubmitting) && (
@@ -312,9 +245,9 @@ export default function SignUp() {
                   onClick={form.handleSubmit}
                   disabled={!allFieldsFilled || !isValid}
                   aria-disabled={!allFieldsFilled || !isValid}
-                  loading={isSubmitting || isAuthenticating}
+                  loading={isSubmitting || isResetting}
                 >
-                  Sign Up
+                  Reset Password
                 </Button>
               );
             }}
@@ -331,7 +264,7 @@ export default function SignUp() {
           className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
           href={"/sign-in"}
         >
-          Already have an account? Sign In
+          Return to Sign In
         </Link>
       </CardFooter>
     </Card>

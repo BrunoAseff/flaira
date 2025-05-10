@@ -17,6 +17,14 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
+    sendResetPassword: async ({ user, token }) => {
+      await resend.emails.send({
+        from: "Flaira <welcome@flaira.net>",
+        to: [user.email],
+        subject: "Reset your password",
+        text: `Click the link to reset your password: ${env.FRONTEND_URL}/forgot-password/${token}\n\nThis link will expire in 24 hours.`,
+      });
+    },
   },
   emailVerification: {
     sendOnSignUp: true,

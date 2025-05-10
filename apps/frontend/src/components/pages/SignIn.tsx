@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import type { z } from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signInSchema } from "@/schemas/auth";
 import { auth } from "@/auth/client";
 import { useRouter } from "next/navigation";
@@ -26,8 +26,16 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const { data: session } = auth.useSession();
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      router.push("/");
+    }
+  }, [session, router]);
+
   const form = useForm({
     defaultValues: {
       email: "",
@@ -53,7 +61,7 @@ export default function SignIn() {
             } else if (ctx.error.code === "INVALID_EMAIL_OR_PASSWORD") {
               setErrorMessage("Incorrect username or password.");
             } else {
-              setErrorMessage("Sorry, something went wrong. Please try again.");
+              setErrorMessage("Sorry, something went wrong.");
             }
           },
           onSuccess: () => {
@@ -146,11 +154,17 @@ export default function SignIn() {
                   iconRight={
                     showPassword ? (
                       <Eye
+                        aria-label="Hide password"
+                        role="button"
+                        tabIndex={0}
                         className="text-accent cursor-pointer"
                         onClick={() => setShowPassword(false)}
                       />
                     ) : (
                       <EyeOff
+                        aria-label="Show password"
+                        role="button"
+                        tabIndex={0}
                         className="text-accent cursor-pointer"
                         onClick={() => setShowPassword(true)}
                       />

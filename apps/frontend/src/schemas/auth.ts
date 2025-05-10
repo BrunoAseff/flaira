@@ -28,3 +28,12 @@ export const signInSchema = z.object({
   email,
   password: signInPassword,
 });
+
+export const forgotPasswordSchema = z.object({
+  email,
+});
+
+export const resetPasswordSchema = z.object({
+  password: signUpPassword,
+  confirmPassword: signUpPassword,
+});
