@@ -36,8 +36,8 @@ export default function UserButton() {
         </SidebarMenuButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        side="top"
-        className="w-[--radix-popper-anchor-width] ml-4"
+        side="right"
+        className="w-[--radix-popper-anchor-width] mb-4"
       >
         <DropdownMenuItem>
           <span>Account</span>
