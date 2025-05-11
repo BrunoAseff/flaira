@@ -3,6 +3,8 @@
 import { auth } from "@/auth/client";
 import ErrorPage from "@/components/pages/ErrorPage";
 import LoadingPage from "@/components/pages/LoadingPage";
+import { AppSidebar } from "@/components/sidebar/AppSidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -20,10 +22,14 @@ export default function Home() {
   if (error) return <ErrorPage />;
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-dvh p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <h1 className="text-2xl font-semibold">Logado</h1>
-      </main>
-    </div>
+    <SidebarProvider defaultOpen={true}>
+      <AppSidebar />
+
+      <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-dvh p-5">
+        <main className="flex flex-col gap-[32px] w-full">
+          <SidebarTrigger className="absolute left-2 top-2 z-50" />
+        </main>
+      </div>
+    </SidebarProvider>
   );
 }
