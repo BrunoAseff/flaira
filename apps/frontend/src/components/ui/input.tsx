@@ -13,7 +13,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div className="relative flex items-center w-full max-w-[32rem]">
         {iconLeft && (
           <div className={cn(
-            "absolute left-3 flex items-center pointer-events-none text-accent",
+            "absolute left-3 flex items-center pointer-events-none text-muted-foreground",
             success && "text-success transition-colors"
           )}>
             {iconLeft}
