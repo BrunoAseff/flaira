@@ -1,4 +1,11 @@
-import { Compass, Images, Map as MapIcon, ScrollText } from "lucide-react";
+import {
+  Compass,
+  Images,
+  Map as MapIcon,
+  PlaneTakeoff,
+  ScrollText,
+  Settings2,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -21,6 +28,11 @@ const items = [
     icon: Compass,
   },
   {
+    title: "Trips",
+    url: "#",
+    icon: PlaneTakeoff,
+  },
+  {
     title: "Memories",
     url: "#",
     icon: Images,
@@ -35,6 +47,11 @@ const items = [
     url: "#",
     icon: ScrollText,
   },
+  {
+    title: "Preferences",
+    url: "#",
+    icon: Settings2,
+  },
 ];
 
 export function AppSidebar() {
@@ -44,7 +61,7 @@ export function AppSidebar() {
         <Logo />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup className="mt-22 group-data-[collapsible=icon]:mt-36">
+        <SidebarGroup className="mt-3 group-data-[collapsible=icon]:mt-16">
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

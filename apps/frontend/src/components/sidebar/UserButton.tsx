@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth/client";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { ArrowRightFromLine, User } from "lucide-react";
+import { ArrowRightFromLine, Settings, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,10 +14,14 @@ import { SidebarMenuButton } from "../ui/sidebar";
 export default function UserButton() {
   const { data: session } = auth.useSession();
 
+  async function handleSignOut() {
+    await auth.signOut();
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <SidebarMenuButton>
+        <SidebarMenuButton className="py-6">
           <Avatar className="h-8 w-8 rounded-lg">
             <AvatarImage
               src={session?.user.image ?? ""}
@@ -40,17 +44,12 @@ export default function UserButton() {
         className="w-[--radix-popper-anchor-width] mb-4"
       >
         <DropdownMenuItem>
-          <span>Account</span>
+          <Settings />
+          <span>Settings</span>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <span>Billing</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="flex w-full justify-between"
-          variant="destructive"
-        >
-          <span>Sign out</span>
+        <DropdownMenuItem onClick={handleSignOut}>
           <ArrowRightFromLine />
+          <span>Sign out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
