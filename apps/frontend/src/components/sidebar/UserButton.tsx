@@ -14,6 +14,10 @@ import { SidebarMenuButton } from "../ui/sidebar";
 export default function UserButton() {
   const { data: session } = auth.useSession();
 
+  async function HandleSignOut() {
+    await auth.signOut();
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -43,7 +47,7 @@ export default function UserButton() {
           <Settings />
           <span>Settings</span>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={HandleSignOut}>
           <ArrowRightFromLine />
           <span>Sign out</span>
         </DropdownMenuItem>
