@@ -10,9 +10,11 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { SidebarMenuButton } from "../ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function UserButton() {
   const { data: session } = auth.useSession();
+  const isMobile = useIsMobile();
 
   async function handleSignOut() {
     await auth.signOut();
@@ -40,7 +42,7 @@ export default function UserButton() {
         </SidebarMenuButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        side="right"
+        side={isMobile ? "right" : "top"}
         className="w-[--radix-popper-anchor-width] mb-4"
       >
         <DropdownMenuItem>
