@@ -42,7 +42,7 @@ export default function UserButton() {
         </SidebarMenuButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        side={isMobile ? "right" : "top"}
+        side={isMobile ? "top" : "right"}
         className="w-[--radix-popper-anchor-width] mb-4"
       >
         <DropdownMenuItem>
