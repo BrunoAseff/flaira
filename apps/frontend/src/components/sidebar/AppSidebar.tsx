@@ -3,6 +3,7 @@ import {
   Images,
   Map as MapIcon,
   PlaneTakeoff,
+  Plus,
   ScrollText,
   Settings2,
 } from "lucide-react";
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import Logo from "../brand/Logo";
 import UserButton from "../sidebar/UserButton";
+import { Button } from "../ui/button";
 
 const items = [
   {
@@ -61,7 +63,17 @@ export function AppSidebar() {
         <Logo />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup className="mt-3 group-data-[collapsible=icon]:mt-16">
+        <SidebarGroup className="group-data-[collapsible=icon]:mt-16">
+          <SidebarMenuButton
+            className="hover:text-background font-medium"
+            asChild
+          >
+            <Button className="my-3">
+              <Plus />
+              <p className="group-data-[collapsible=icon]:hidden"> Add trip</p>
+            </Button>
+          </SidebarMenuButton>
+
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
