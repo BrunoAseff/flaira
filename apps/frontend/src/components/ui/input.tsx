@@ -35,7 +35,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {iconRight && (
-          <div className="absolute right-3 flex items-center">
+          <div className="absolute right-3 flex items-center text-muted-foreground">
             {iconRight}
           </div>
         )}
