@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${parkinsans.variable} antialiased  font-sans`}>
+      <body className={`${parkinsans.variable} antialiased font-sans`}>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
