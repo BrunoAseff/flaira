@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

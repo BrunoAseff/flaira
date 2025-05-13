@@ -195,7 +195,6 @@ export default function SignUp() {
                         aria-label="Hide password"
                         role="button"
                         tabIndex={0}
-                        className="text-accent cursor-pointer"
                         onClick={() => setShowPassword(false)}
                       />
                     ) : (
@@ -203,7 +202,6 @@ export default function SignUp() {
                         aria-label="Show password"
                         role="button"
                         tabIndex={0}
-                        className="text-accent cursor-pointer"
                         onClick={() => setShowPassword(true)}
                       />
                     )

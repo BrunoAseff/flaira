@@ -128,7 +128,6 @@ export default function ResetPassword({ token }: { token: string }) {
                         aria-label="Hide password"
                         role="button"
                         tabIndex={0}
-                        className="text-accent cursor-pointer"
                         onClick={() => setShowPassword(false)}
                       />
                     ) : (
@@ -136,7 +135,6 @@ export default function ResetPassword({ token }: { token: string }) {
                         aria-label="Show password"
                         role="button"
                         tabIndex={0}
-                        className="text-accent cursor-pointer"
                         onClick={() => setShowPassword(true)}
                       />
                     )
