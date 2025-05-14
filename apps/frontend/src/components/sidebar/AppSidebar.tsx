@@ -90,7 +90,7 @@ export function AppSidebar() {
                   </Button>
                 </SidebarMenuButton>
               </TooltipTrigger>
-              {!open && <TooltipContent>Add trip</TooltipContent>}
+              <TooltipContent>{!open ? "Add trip" : null}</TooltipContent>
             </Tooltip>
             <SidebarGroupContent>
               <SidebarMenu>
@@ -106,7 +106,9 @@ export function AppSidebar() {
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     </TooltipTrigger>
-                    {!open && <TooltipContent>{item.title}</TooltipContent>}
+                    <TooltipContent>
+                      {!open ? `${item.title}` : null}
+                    </TooltipContent>
                   </Tooltip>
                 ))}
               </SidebarMenu>
