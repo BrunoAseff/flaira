@@ -68,9 +68,9 @@ export function AppSidebar() {
             className="hover:text-background font-medium"
             asChild
           >
-            <Button className="my-3">
+            <Button className="mt-3 mb-6">
               <Plus />
-              <p className="group-data-[collapsible=icon]:hidden"> Add trip</p>
+              <p className="group-data-[collapsible=icon]:hidden">Add trip</p>
             </Button>
           </SidebarMenuButton>
 

@@ -9,7 +9,7 @@ export function SidebarTrigger() {
 
   return (
     <Button
-      className="absolute left-2 top-2 z-50 size-9 p-2 hover:bg-sidebar-accent"
+      className="absolute left-2 top-2 z-50 size-10 p-2 hover:bg-sidebar-accent"
       variant="ghost"
       size="icon"
       onClick={toggleSidebar}

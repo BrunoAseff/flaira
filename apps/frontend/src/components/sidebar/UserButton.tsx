@@ -23,7 +23,7 @@ export default function UserButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <SidebarMenuButton className="py-6">
+        <SidebarMenuButton className="py-6 hover:bg-background">
           <Avatar className="h-8 w-8 rounded-lg">
             <AvatarImage
               src={session?.user.image ?? ""}
