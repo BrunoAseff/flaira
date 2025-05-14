@@ -111,14 +111,6 @@ export default function ResetPassword({ token }: { token: string }) {
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="password">New Password</Label>
-                  <div className="h-6">
-                    {field.state.meta.errors[0] &&
-                      (field.state.meta.isDirty || form.state.isSubmitting) && (
-                        <p className="text-error text-base font-medium">
-                          {field.state.meta.errors[0].message}
-                        </p>
-                      )}
-                  </div>
                 </div>{" "}
                 <Input
                   iconLeft={<KeyRound />}
@@ -159,6 +151,14 @@ export default function ResetPassword({ token }: { token: string }) {
                     field.handleBlur();
                   }}
                 />
+                <em className="ml-auto h-1">
+                  {field.state.meta.errors[0] &&
+                    (field.state.meta.isDirty || form.state.isSubmitting) && (
+                      <p className="text-error text-base font-medium">
+                        {field.state.meta.errors[0].message}
+                      </p>
+                    )}
+                </em>
               </div>
             )}
           />
@@ -178,14 +178,6 @@ export default function ResetPassword({ token }: { token: string }) {
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="confirmPassword">Confirm new password</Label>
-                  <div className="h-6">
-                    {field.state.meta.errors[0] &&
-                      (field.state.meta.isDirty || form.state.isSubmitting) && (
-                        <p className="text-error text-base font-medium">
-                          {field.state.meta.errors[0]}
-                        </p>
-                      )}
-                  </div>
                 </div>{" "}
                 <Input
                   iconLeft={<KeyRound />}
@@ -221,6 +213,14 @@ export default function ResetPassword({ token }: { token: string }) {
                     field.handleBlur();
                   }}
                 />
+                <em className="ml-auto h-1">
+                  {field.state.meta.errors[0] &&
+                    (field.state.meta.isDirty || form.state.isSubmitting) && (
+                      <p className="text-error text-base font-medium">
+                        {field.state.meta.errors[0]}
+                      </p>
+                    )}
+                </em>
               </div>
             )}
           />
@@ -239,6 +239,7 @@ export default function ResetPassword({ token }: { token: string }) {
 
               return (
                 <Button
+                  className="mt-3 mb-2"
                   type="submit"
                   onClick={form.handleSubmit}
                   disabled={!allFieldsFilled || !isValid}
