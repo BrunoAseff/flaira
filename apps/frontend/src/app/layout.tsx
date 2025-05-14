@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
-import QueryProvider from "@/hooks/useQuery";
+import QueryProvider from "@/hooks/use-query";
 
 const parkinsans = Quicksand({
   variable: "--font-parkinsans",

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCooldown } from "@/hooks/useCooldown";
+import { useCooldown } from "@/hooks/use-cooldown";
 
 export default function EmailConfirmed({
   isVerified,
