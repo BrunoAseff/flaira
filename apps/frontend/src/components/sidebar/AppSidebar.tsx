@@ -30,7 +30,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip";
+} from "@/components/ui/tooltip";
 
 const items = [
   {
@@ -69,18 +69,17 @@ export function AppSidebar() {
   const { open } = useSidebar();
 
   return (
-    <TooltipProvider>
+    <TooltipProvider openDelay={0}>
       <Sidebar collapsible="icon">
         <SidebarHeader className="group-data-[collapsible=icon]:hidden mx-auto py-3">
           <Logo />
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup className="group-data-[collapsible=icon]:mt-16">
-            <Tooltip>
+            <Tooltip side="right">
               <TooltipTrigger>
-                {" "}
                 <SidebarMenuButton
-                  className="hover:text-background gap-2 text-background hover:bg-primary/90 h-13 rounded-xl text-lg font-medium"
+                  className="hover:text-background active:text-foreground gap-2 text-background h-13 rounded-xl text-lg font-medium data-[state=open]:hover:text-background data-[state=open]:hover:bg-primary/90"
                   asChild
                 >
                   <Button className="mt-3 mb-6">
@@ -91,29 +90,24 @@ export function AppSidebar() {
                   </Button>
                 </SidebarMenuButton>
               </TooltipTrigger>
-              {!open && <TooltipContent side="right">Add trip</TooltipContent>}
+              {!open && <TooltipContent>Add trip</TooltipContent>}
             </Tooltip>
-
             <SidebarGroupContent>
               <SidebarMenu>
                 {items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
+                  <Tooltip side="right" key={item.title}>
+                    <TooltipTrigger>
+                      <SidebarMenuItem>
                         <SidebarMenuButton asChild>
                           <a href={item.url}>
                             <item.icon className="ml-0.5" />
                             <span>{item.title}</span>
                           </a>
                         </SidebarMenuButton>
-                      </TooltipTrigger>
-                      {!open && (
-                        <TooltipContent side="right">
-                          {item.title}
-                        </TooltipContent>
-                      )}
-                    </Tooltip>
-                  </SidebarMenuItem>
+                      </SidebarMenuItem>
+                    </TooltipTrigger>
+                    {!open && <TooltipContent>{item.title}</TooltipContent>}
+                  </Tooltip>
                 ))}
               </SidebarMenu>
             </SidebarGroupContent>
