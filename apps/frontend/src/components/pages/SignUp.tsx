@@ -115,7 +115,7 @@ export default function SignUp() {
                 />
                 <em className="ml-auto h-1">
                   {field.state.meta.errors[0] && (
-                    <p className="text-error text-base font-medium">
+                    <p className="text-error text-sm md:text-base font-medium">
                       {field.state.meta.errors[0].message}
                     </p>
                   )}
@@ -157,7 +157,7 @@ export default function SignUp() {
                 />
                 <em className="ml-auto h-1">
                   {field.state.meta.errors[0] && (
-                    <p className="text-error text-base font-medium">
+                    <p className="text-error text-sm md:text-base font-medium">
                       {field.state.meta.errors[0].message}
                     </p>
                   )}
@@ -219,7 +219,7 @@ export default function SignUp() {
                 <em className="ml-auto h-1">
                   {field.state.meta.errors[0] &&
                     (field.state.meta.isDirty || form.state.isSubmitting) && (
-                      <p className="text-error text-base font-medium">
+                      <p className="text-error text-sm md:text-base font-medium">
                         {field.state.meta.errors[0].message}
                       </p>
                     )}
@@ -285,7 +285,7 @@ export default function SignUp() {
                 <em className="ml-auto h-1">
                   {field.state.meta.errors[0] &&
                     (field.state.meta.isDirty || form.state.isSubmitting) && (
-                      <p className="text-error text-base font-medium">
+                      <p className="text-error text-sm md:text-base font-medium">
                         {field.state.meta.errors[0]}
                       </p>
                     )}
