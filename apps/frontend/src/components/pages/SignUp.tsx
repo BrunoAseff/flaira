@@ -259,12 +259,10 @@ export default function SignUp() {
                   iconRight={
                     showConfirmPassword ? (
                       <Eye
-                        className="text-accent cursor-pointer"
                         onClick={() => setShowConfirmPassword(false)}
                       />
                     ) : (
                       <EyeOff
-                        className="text-accent cursor-pointer"
                         onClick={() => setShowConfirmPassword(true)}
                       />
                     )
