@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { auth } from "@/auth/client";
-import { useCooldown } from "@/hooks/useCooldown";
+import { useCooldown } from "@/hooks/use-cooldown";
 
 export default function VerifyEmail() {
   const { timer, isCooldown, startCooldown } = useCooldown();

@@ -98,13 +98,6 @@ export default function SignIn() {
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between">
                   <Label htmlFor="email">Email</Label>
-                  <div className="h-6">
-                    {field.state.meta.errors[0] && (
-                      <p className="text-error text-base font-medium">
-                        {field.state.meta.errors[0].message}
-                      </p>
-                    )}
-                  </div>
                 </div>
                 <Input
                   iconLeft={<Mail />}
@@ -127,6 +120,13 @@ export default function SignIn() {
                     field.handleBlur();
                   }}
                 />
+                <em className="ml-auto h-1">
+                  {field.state.meta.errors[0] && (
+                    <p className="text-error text-sm md:text-base font-medium">
+                      {field.state.meta.errors[0].message}
+                    </p>
+                  )}
+                </em>
               </div>
             )}
           />
@@ -141,13 +141,12 @@ export default function SignIn() {
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="password">Password</Label>
-                  <div className="h-6">
-                    {field.state.meta.errors[0] && (
-                      <p className="text-error text-base font-medium">
-                        {field.state.meta.errors[0].message}
-                      </p>
-                    )}
-                  </div>
+                  <Link
+                    className="text-base mt-1 w-fit text-link hover:underline transition-all duration-300 font-medium"
+                    href={"/forgot-password"}
+                  >
+                    Forgot my password
+                  </Link>
                 </div>{" "}
                 <Input
                   iconLeft={<KeyRound />}
@@ -187,12 +186,13 @@ export default function SignIn() {
                     field.handleBlur();
                   }}
                 />
-                <Link
-                  className="text-base mt-1 w-fit text-link hover:underline transition-all duration-300 font-medium"
-                  href={"/forgot-password"}
-                >
-                  Forgot my password
-                </Link>
+                <em className="ml-auto h-1">
+                  {field.state.meta.errors[0] && (
+                    <p className="text-error text-sm md:text-base font-medium">
+                      {field.state.meta.errors[0].message}
+                    </p>
+                  )}
+                </em>
               </div>
             )}
           />
@@ -211,6 +211,7 @@ export default function SignIn() {
 
               return (
                 <Button
+                  className="mt-3 mb-2"
                   type="submit"
                   onClick={form.handleSubmit}
                   disabled={!allFieldsFilled || !isValid}

@@ -90,14 +90,6 @@ export default function SignUp() {
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between">
                   <Label htmlFor="name">Full name</Label>
-                  <div className="h-6">
-                    {field.state.meta.errors[0] &&
-                      (field.state.meta.isDirty || form.state.isSubmitting) && (
-                        <p className="text-error text-base font-medium">
-                          {field.state.meta.errors[0].message}
-                        </p>
-                      )}
-                  </div>
                 </div>
                 <Input
                   iconLeft={<UserIcon />}
@@ -121,6 +113,13 @@ export default function SignUp() {
                     field.handleBlur();
                   }}
                 />
+                <em className="ml-auto h-1">
+                  {field.state.meta.errors[0] && (
+                    <p className="text-error text-sm md:text-base font-medium">
+                      {field.state.meta.errors[0].message}
+                    </p>
+                  )}
+                </em>
               </div>
             )}
           />
@@ -134,14 +133,6 @@ export default function SignUp() {
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between">
                   <Label htmlFor="email">Email</Label>
-                  <div className="h-6">
-                    {field.state.meta.errors[0] &&
-                      (field.state.meta.isDirty || form.state.isSubmitting) && (
-                        <p className="text-error text-base font-medium">
-                          {field.state.meta.errors[0].message}
-                        </p>
-                      )}
-                  </div>
                 </div>
                 <Input
                   iconLeft={<Mail />}
@@ -164,6 +155,13 @@ export default function SignUp() {
                     field.handleBlur();
                   }}
                 />
+                <em className="ml-auto h-1">
+                  {field.state.meta.errors[0] && (
+                    <p className="text-error text-sm md:text-base font-medium">
+                      {field.state.meta.errors[0].message}
+                    </p>
+                  )}
+                </em>
               </div>
             )}
           />
@@ -178,14 +176,6 @@ export default function SignUp() {
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="password">Password</Label>
-                  <div className="h-6">
-                    {field.state.meta.errors[0] &&
-                      (field.state.meta.isDirty || form.state.isSubmitting) && (
-                        <p className="text-error text-base font-medium">
-                          {field.state.meta.errors[0].message}
-                        </p>
-                      )}
-                  </div>
                 </div>{" "}
                 <Input
                   iconLeft={<KeyRound />}
@@ -226,6 +216,14 @@ export default function SignUp() {
                     field.handleBlur();
                   }}
                 />
+                <em className="ml-auto h-1">
+                  {field.state.meta.errors[0] &&
+                    (field.state.meta.isDirty || form.state.isSubmitting) && (
+                      <p className="text-error text-sm md:text-base font-medium">
+                        {field.state.meta.errors[0].message}
+                      </p>
+                    )}
+                </em>
               </div>
             )}
           />
@@ -245,26 +243,22 @@ export default function SignUp() {
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="confirmPassword">Confirm your password</Label>
-                  <div className="h-6">
-                    {field.state.meta.errors[0] &&
-                      (field.state.meta.isDirty || form.state.isSubmitting) && (
-                        <p className="text-error text-base font-medium">
-                          {field.state.meta.errors[0]}
-                        </p>
-                      )}
-                  </div>
                 </div>{" "}
                 <Input
                   iconLeft={<KeyRound />}
                   iconRight={
                     showConfirmPassword ? (
                       <Eye
-                        className="text-accent cursor-pointer"
+                        aria-label="Hide password"
+                        role="button"
+                        tabIndex={0}
                         onClick={() => setShowConfirmPassword(false)}
                       />
                     ) : (
                       <EyeOff
-                        className="text-accent cursor-pointer"
+                        aria-label="Show password"
+                        role="button"
+                        tabIndex={0}
                         onClick={() => setShowConfirmPassword(true)}
                       />
                     )
@@ -288,6 +282,14 @@ export default function SignUp() {
                     field.handleBlur();
                   }}
                 />
+                <em className="ml-auto h-1">
+                  {field.state.meta.errors[0] &&
+                    (field.state.meta.isDirty || form.state.isSubmitting) && (
+                      <p className="text-error text-sm md:text-base font-medium">
+                        {field.state.meta.errors[0]}
+                      </p>
+                    )}
+                </em>
               </div>
             )}
           />
@@ -306,6 +308,7 @@ export default function SignUp() {
 
               return (
                 <Button
+                  className="mt-3 mb-2"
                   type="submit"
                   onClick={form.handleSubmit}
                   disabled={!allFieldsFilled || !isValid}
