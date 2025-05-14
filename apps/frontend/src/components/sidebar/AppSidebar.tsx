@@ -31,6 +31,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { auth } from "@/auth/client";
 
 const items = [
   {
@@ -67,6 +68,8 @@ const items = [
 
 export function AppSidebar() {
   const { open } = useSidebar();
+  const { data: session, isPending } = auth.useSession();
+  if (isPending || !session) return null;
 
   return (
     <TooltipProvider openDelay={0}>
