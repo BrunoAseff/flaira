@@ -109,9 +109,7 @@ export function AppSidebar() {
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     </TooltipTrigger>
-                    <TooltipContent>
-                      {!open ? `${item.title}` : null}
-                    </TooltipContent>
+                    <TooltipContent>{!open ? item.title : null}</TooltipContent>
                   </Tooltip>
                 ))}
               </SidebarMenu>
