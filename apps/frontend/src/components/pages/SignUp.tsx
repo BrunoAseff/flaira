@@ -258,13 +258,9 @@ export default function SignUp() {
                   iconLeft={<KeyRound />}
                   iconRight={
                     showConfirmPassword ? (
-                      <Eye
-                        onClick={() => setShowConfirmPassword(false)}
-                      />
+                      <Eye onClick={() => setShowConfirmPassword(false)} />
                     ) : (
-                      <EyeOff
-                        onClick={() => setShowConfirmPassword(true)}
-                      />
+                      <EyeOff onClick={() => setShowConfirmPassword(true)} />
                     )
                   }
                   id="confirmPassword"
