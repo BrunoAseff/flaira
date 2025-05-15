@@ -2,8 +2,12 @@
 
 import { useSidebar } from "@/components/ui/sidebar";
 import { Button } from "../ui/button";
-import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { auth } from "@/auth/client";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  SidebarRight01Icon,
+  SidebarLeft01Icon,
+} from "@hugeicons/core-free-icons";
 
 export function SidebarTrigger() {
   const { toggleSidebar, open } = useSidebar();
@@ -16,7 +20,11 @@ export function SidebarTrigger() {
       size="icon"
       onClick={toggleSidebar}
     >
-      {open ? <PanelLeftClose /> : <PanelLeftOpen />}
+      <HugeiconsIcon
+        icon={open ? SidebarLeft01Icon : SidebarRight01Icon}
+        color="currentColor"
+        strokeWidth={2}
+      />
     </Button>
   );
 }

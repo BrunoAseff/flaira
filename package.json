@@ -33,7 +33,17 @@
     "vitest": "^3.1.1"
   },
   "pnpm": {
-    "ignoredBuiltDependencies": ["@biomejs/biome", "esbuild"],
-    "onlyBuiltDependencies": ["@biomejs/biome", "sharp"]
+    "ignoredBuiltDependencies": [
+      "@biomejs/biome",
+      "esbuild"
+    ],
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "sharp"
+    ]
+  },
+  "dependencies": {
+    "@hugeicons/core-free-icons": "^1.0.14",
+    "@hugeicons/react": "^1.0.5"
   }
 }
