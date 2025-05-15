@@ -3,8 +3,8 @@ import { Quicksand } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/hooks/use-query";
 
-const parkinsans = Quicksand({
-  variable: "--font-parkinsans",
+const quicksand = Quicksand({
+  variable: "--font-quicksand",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${parkinsans.variable} antialiased font-sans`}>
+      <body className={`${quicksand.variable} antialiased font-sans`}>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
