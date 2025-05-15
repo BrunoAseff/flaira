@@ -1,16 +1,6 @@
 "use client";
 
 import {
-  Compass,
-  Images,
-  Map as MapIcon,
-  PlaneTakeoff,
-  Plus,
-  ScrollText,
-  Settings2,
-} from "lucide-react";
-
-import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -32,37 +22,47 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { auth } from "@/auth/client";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  DiscoverCircleIcon,
+  AirplaneTakeOff01Icon,
+  Image02Icon,
+  MapsGlobal01Icon,
+  News01Icon,
+  Settings05Icon,
+  PlusSignIcon,
+} from "@hugeicons/core-free-icons";
 
 const items = [
   {
     title: "Overview",
-    url: "#",
-    icon: Compass,
+    url: "/",
+    icon: DiscoverCircleIcon,
   },
   {
     title: "Trips",
-    url: "#",
-    icon: PlaneTakeoff,
+    url: "/trips",
+    icon: AirplaneTakeOff01Icon,
   },
   {
     title: "Memories",
-    url: "#",
-    icon: Images,
+    url: "/memories",
+    icon: Image02Icon,
   },
   {
     title: "Map",
-    url: "#",
-    icon: MapIcon,
+    url: "/map",
+    icon: MapsGlobal01Icon,
   },
   {
     title: "Logbook",
-    url: "#",
-    icon: ScrollText,
+    url: "/logbook",
+    icon: News01Icon,
   },
   {
     title: "Preferences",
-    url: "#",
-    icon: Settings2,
+    url: "/preferences",
+    icon: Settings05Icon,
   },
 ];
 
@@ -82,11 +82,15 @@ export function AppSidebar() {
             <Tooltip side="right">
               <TooltipTrigger>
                 <SidebarMenuButton
-                  className="hover:text-background active:text-foreground gap-2 text-background h-13 rounded-xl text-lg font-medium data-[state=open]:hover:text-background data-[state=open]:hover:bg-primary/90"
+                  className="hover:text-background active:text-foreground [&>svg]:text-background hover:[&>svg]:text-background gap-2 text-background h-13 rounded-xl text-lg font-medium data-[state=open]:hover:text-background  data-[state=open]:hover:bg-primary/90"
                   asChild
                 >
                   <Button className="mt-3 mb-6">
-                    <Plus />
+                    <HugeiconsIcon
+                      icon={PlusSignIcon}
+                      color="currentColor"
+                      strokeWidth={2}
+                    />
                     <p className="group-data-[collapsible=icon]:hidden">
                       Add trip
                     </p>
@@ -103,7 +107,12 @@ export function AppSidebar() {
                       <SidebarMenuItem>
                         <SidebarMenuButton asChild>
                           <a href={item.url}>
-                            <item.icon className="ml-0.5" />
+                            <HugeiconsIcon
+                              icon={item.icon}
+                              color="currentColor"
+                              strokeWidth={2}
+                              className="ml-0.5"
+                            />
                             <span>{item.title}</span>
                           </a>
                         </SidebarMenuButton>
