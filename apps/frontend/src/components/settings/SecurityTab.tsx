@@ -21,6 +21,7 @@ import {
 import { ScrollArea } from "../ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "../ui/skeleton";
 
 export default function SecurityTab() {
   const [sessionList, setSessionList] = useState<Session[] | null>(null);
@@ -28,11 +29,13 @@ export default function SecurityTab() {
   const [loadingSessionIds, setLoadingSessionIds] = useState<Set<string>>(
     new Set(),
   );
+  const [isFetching, setIsFetching] = useState(true);
 
   const router = useRouter();
   async function getSessionList() {
     const sessionsData = await auth.listSessions();
     setSessionList(sessionsData.data);
+    setIsFetching(false);
 
     const currentSessionData = await auth.getSession();
     setCurrentSession(currentSessionData.data?.session ?? null);
@@ -87,74 +90,82 @@ export default function SecurityTab() {
               <h1 className="text-base font-bold text-foreground/90">
                 Sessions
               </h1>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-                {sessionList?.map((session) => (
-                  <div
-                    key={session.id}
-                    className="flex w-full items-center justify-between relative border border-muted rounded-lg bg-popover p-3"
-                  >
-                    <div className="flex items-center gap-3">
-                      <HugeiconsIcon
-                        icon={ComputerPhoneSyncIcon}
-                        className="text-accent-foreground"
-                        color="currentColor"
-                        strokeWidth={2}
-                        size={42}
-                      />
-                      <div className="flex flex-col gap-1">
-                        {currentSession?.id === session.id ? (
-                          <div className="text-xs w-fit bg-primary-foreground text-primary font-bold p-1 rounded-md">
-                            Current device
-                          </div>
-                        ) : null}
-                        <div className="text-foreground/65 font-semibold text-sm flex">
-                          <FormatUserAgent
-                            userAgent={session.userAgent ?? ""}
-                          />
-                        </div>
 
-                        <div className="text-foreground/65 font-semibold text-sm">
-                          {format(
-                            new Date(session.createdAt),
-                            "dd/MM/yyyy 'at' HH:mm",
-                          )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                {isFetching && (
+                  <>
+                    <Skeleton className="flex w-full h-24 items-center justify-between relative rounded-lg p-3" />
+                    <Skeleton className="flex w-full h-24 items-center justify-between relative rounded-lg p-3" />
+                  </>
+                )}
+                {!isFetching &&
+                  sessionList?.map((session) => (
+                    <div
+                      key={session.id}
+                      className="flex w-full items-center justify-between relative border border-muted rounded-lg bg-popover p-3"
+                    >
+                      <div className="flex items-center gap-3">
+                        <HugeiconsIcon
+                          icon={ComputerPhoneSyncIcon}
+                          className="text-accent-foreground"
+                          color="currentColor"
+                          strokeWidth={2}
+                          size={42}
+                        />
+                        <div className="flex flex-col gap-1">
+                          {currentSession?.id === session.id ? (
+                            <div className="text-xs w-fit bg-primary-foreground text-primary font-bold p-1 rounded-md">
+                              Current device
+                            </div>
+                          ) : null}
+                          <div className="text-foreground/65 font-semibold text-sm flex">
+                            <FormatUserAgent
+                              userAgent={session.userAgent ?? ""}
+                            />
+                          </div>
+
+                          <div className="text-foreground/65 font-semibold text-sm">
+                            {format(
+                              new Date(session.createdAt),
+                              "dd/MM/yyyy 'at' HH:mm",
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        {currentSession?.id !== session.id ? (
-                          <Button
-                            onClick={() =>
-                              handleRevokeSession(session.token, session.id)
-                            }
-                            className="text-muted-foreground transition-all duration-300 hover:text-error hover:bg-error/10"
-                            variant="ghost"
-                            disabled={loadingSessionIds.has(session.id)}
-                            size="icon"
-                          >
-                            <HugeiconsIcon
-                              className={cn(
-                                loadingSessionIds.has(session.id) &&
-                                  "animate-spin",
-                              )}
-                              icon={
-                                loadingSessionIds.has(session.id)
-                                  ? Loading02Icon
-                                  : SquareArrowRight02Icon
+                      <Tooltip>
+                        <TooltipTrigger>
+                          {currentSession?.id !== session.id ? (
+                            <Button
+                              onClick={() =>
+                                handleRevokeSession(session.token, session.id)
                               }
-                              color="currentColor"
-                              strokeWidth={2}
-                            />
-                          </Button>
-                        ) : (
-                          <div />
-                        )}
-                      </TooltipTrigger>
-                      <TooltipContent>Remove session</TooltipContent>
-                    </Tooltip>
-                  </div>
-                ))}
+                              className="text-muted-foreground transition-all duration-300 hover:text-error hover:bg-error/10"
+                              variant="ghost"
+                              disabled={loadingSessionIds.has(session.id)}
+                              size="icon"
+                            >
+                              <HugeiconsIcon
+                                className={cn(
+                                  loadingSessionIds.has(session.id) &&
+                                    "animate-spin",
+                                )}
+                                icon={
+                                  loadingSessionIds.has(session.id)
+                                    ? Loading02Icon
+                                    : SquareArrowRight02Icon
+                                }
+                                color="currentColor"
+                                strokeWidth={2}
+                              />
+                            </Button>
+                          ) : (
+                            <div />
+                          )}
+                        </TooltipTrigger>
+                        <TooltipContent>Remove session</TooltipContent>
+                      </Tooltip>
+                    </div>
+                  ))}
               </div>
             </div>
             <Separator />
