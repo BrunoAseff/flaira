@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/hooks/use-query";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const quicksand = Quicksand({
   variable: "--font-quicksand",
@@ -22,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${quicksand.variable} antialiased font-sans`}>
-        <QueryProvider>{children}</QueryProvider>
+        <TooltipProvider openDelay={0}>
+          <QueryProvider>{children}</QueryProvider>
+        </TooltipProvider>
       </body>
     </html>
   );
