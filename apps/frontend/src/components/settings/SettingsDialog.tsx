@@ -16,7 +16,7 @@ export function SettingsDialog({
 }: { isOpen: boolean; setIsOpen: (open: boolean) => void }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="max-w-4xl w-[90%] md:w-[75%] lg:w-[55%] h-[85%] bg-background p-4">
+      <DialogContent className="min-w-full sm:min-w-96 md:min-w-96 w-full md:w-[75%] lg:w-[55%] h-full md:h-[90%] bg-background p-4 overflow-hidden">
         {" "}
         <DialogHeader>
           <DialogTitle className=" ml-5 text-foreground text-2xl font-semibold">
@@ -49,10 +49,10 @@ export function SettingsDialog({
                 Security
               </TabsTrigger>
             </TabsList>
-            <TabsContent className="w-full" value="profile">
+            <TabsContent tabIndex={-1} className="w-full" value="profile">
               Content 1
             </TabsContent>
-            <TabsContent className="w-full" value="security">
+            <TabsContent tabIndex={-1} className="w-full" value="security">
               <SecurityTab />
             </TabsContent>
           </Tabs>
