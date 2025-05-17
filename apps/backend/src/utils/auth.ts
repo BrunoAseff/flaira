@@ -14,6 +14,11 @@ export const auth = betterAuth({
   }),
   trustedOrigins: [env.FRONTEND_URL],
   basePath: "/auth",
+  user: {
+    deleteUser: {
+      enabled: true,
+    },
+  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,

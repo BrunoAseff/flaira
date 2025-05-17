@@ -33,6 +33,10 @@ export const forgotPasswordSchema = z.object({
   email,
 });
 
+export const deleteAccountSchema = z.object({
+  password: signInPassword,
+});
+
 export const resetPasswordSchema = z.object({
   password: signUpPassword,
   confirmPassword: signUpPassword,
