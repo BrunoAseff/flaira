@@ -10,6 +10,7 @@ import { Separator } from "../ui/separator";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ComputerPhoneSyncIcon,
+  Loading02Icon,
   SquareArrowRight02Icon,
 } from "@hugeicons/core-free-icons";
 import {
@@ -18,20 +19,48 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ScrollArea } from "../ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 export default function SecurityTab() {
   const [sessionList, setSessionList] = useState<Session[] | null>(null);
   const [currentSession, setCurrentSession] = useState<Session | null>(null);
-  useEffect(() => {
-    async function getSessionList() {
-      const sessionsData = await auth.listSessions();
-      setSessionList(sessionsData.data);
+  const [loadingSessionIds, setLoadingSessionIds] = useState<Set<string>>(
+    new Set(),
+  );
 
-      const currentSessionData = await auth.getSession();
-      setCurrentSession(currentSessionData.data?.session ?? null);
-    }
+  async function getSessionList() {
+    const sessionsData = await auth.listSessions();
+    setSessionList(sessionsData.data);
+
+    const currentSessionData = await auth.getSession();
+    setCurrentSession(currentSessionData.data?.session ?? null);
+  }
+
+  // biome-ignore lint:
+  useEffect(() => {
     getSessionList();
   }, []);
+
+  async function handleRevokeSession(token: string, sessionId: string) {
+    setLoadingSessionIds((prev) => new Set(prev).add(sessionId));
+
+    await auth.revokeSession(
+      {
+        token,
+      },
+      {
+        onSuccess: () => {
+          setLoadingSessionIds((prev) => {
+            const newSet = new Set(prev);
+            newSet.delete(sessionId);
+            return newSet;
+          });
+
+          getSessionList();
+        },
+      },
+    );
+  }
 
   return (
     <div className="w-full h-full">
@@ -88,17 +117,33 @@ export default function SecurityTab() {
                     </div>
                     <Tooltip>
                       <TooltipTrigger>
-                        <Button
-                          className="text-muted-foreground transition-all duration-300 hover:text-error hover:bg-error/10"
-                          variant="ghost"
-                          size="icon"
-                        >
-                          <HugeiconsIcon
-                            icon={SquareArrowRight02Icon}
-                            color="currentColor"
-                            strokeWidth={2}
-                          />
-                        </Button>
+                        {currentSession?.id !== session.id ? (
+                          <Button
+                            onClick={() =>
+                              handleRevokeSession(session.token, session.id)
+                            }
+                            className="text-muted-foreground transition-all duration-300 hover:text-error hover:bg-error/10"
+                            variant="ghost"
+                            disabled={loadingSessionIds.has(session.id)}
+                            size="icon"
+                          >
+                            <HugeiconsIcon
+                              className={cn(
+                                loadingSessionIds.has(session.id) &&
+                                  "animate-spin",
+                              )}
+                              icon={
+                                loadingSessionIds.has(session.id)
+                                  ? Loading02Icon
+                                  : SquareArrowRight02Icon
+                              }
+                              color="currentColor"
+                              strokeWidth={2}
+                            />
+                          </Button>
+                        ) : (
+                          <div />
+                        )}
                       </TooltipTrigger>
                       <TooltipContent>Remove session</TooltipContent>
                     </Tooltip>
