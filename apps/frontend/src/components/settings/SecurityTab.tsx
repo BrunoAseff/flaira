@@ -21,11 +21,14 @@ import { ScrollArea } from "../ui/scroll-area";
 
 export default function SecurityTab() {
   const [sessionList, setSessionList] = useState<Session[] | null>(null);
-
+  const [currentSession, setCurrentSession] = useState<Session | null>(null);
   useEffect(() => {
     async function getSessionList() {
       const sessionsData = await auth.listSessions();
       setSessionList(sessionsData.data);
+
+      const currentSessionData = await auth.getSession();
+      setCurrentSession(currentSessionData.data?.session ?? null);
     }
     getSessionList();
   }, []);
@@ -64,11 +67,17 @@ export default function SecurityTab() {
                         size={42}
                       />
                       <div className="flex flex-col gap-1">
-                        <div className="text-foreground/65 font-semibold text-sm">
+                        {currentSession?.id === session.id ? (
+                          <div className="text-xs w-fit bg-primary-foreground text-primary font-bold p-1 rounded-md">
+                            Current device
+                          </div>
+                        ) : null}
+                        <div className="text-foreground/65 font-semibold text-sm flex">
                           <FormatUserAgent
                             userAgent={session.userAgent ?? ""}
                           />
                         </div>
+
                         <div className="text-foreground/65 font-semibold text-sm">
                           {format(
                             new Date(session.createdAt),
