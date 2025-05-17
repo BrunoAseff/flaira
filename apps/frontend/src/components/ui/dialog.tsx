@@ -4,10 +4,9 @@ import React, { createContext, useContext, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { useId } from 'react';
 import { createPortal } from 'react-dom';
-import { usePreventScroll } from '@/hooks/use-prevent-scroll';
-import { Button } from './button';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Cancel01Icon } from '@hugeicons/core-free-icons';
+import { usePreventScroll } from '@/hooks/use-prevent-scroll';
 
 const DialogContext = createContext<{
   isOpen: boolean;
@@ -64,6 +63,7 @@ function Dialog({
   const dialogRef = useRef<HTMLDialogElement>(null);
   const isOpen = open !== undefined ? open : uncontrolledOpen;
 
+  // prevent scroll when dialog is open on iOS
   usePreventScroll({
     isDisabled: !isOpen,
   });
@@ -201,6 +201,7 @@ function DialogContent({ children, className, container }: DialogContentProps) {
   if (!context) throw new Error('DialogContent must be used within Dialog');
   const {
     isOpen,
+    setIsOpen,
     dialogRef,
     variants,
     transition,
@@ -219,6 +220,11 @@ function DialogContent({ children, className, container }: DialogContentProps) {
           aria-describedby={ids.description}
           aria-modal='true'
           role='dialog'
+          onClick={(e) => {
+            if (e.target === dialogRef.current) {
+              setIsOpen(false);
+            }
+          }}
           initial='initial'
           animate='animate'
           exit='exit'
@@ -232,16 +238,7 @@ function DialogContent({ children, className, container }: DialogContentProps) {
             className
           )}
         >
-          <div
-            className="absolute inset-0 z-0"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
-
-          <div className='relative z-10 w-full'>
-            {children}
-          </div>
+          <div className='w-full'>{children}</div>
         </motion.dialog>
       )}
     </AnimatePresence>
@@ -249,7 +246,6 @@ function DialogContent({ children, className, container }: DialogContentProps) {
 
   return <DialogPortal container={container}>{content}</DialogPortal>;
 }
-
 
 export type DialogHeaderProps = {
   children: React.ReactNode;
@@ -293,8 +289,7 @@ function DialogDescription({ children, className }: DialogDescriptionProps) {
   return (
     <p
       id={context.ids.description}
-      className={cn('text-base text-foreground', className)}
-    >
+      className={cn('text-base text-foreground', className)}>
       {children}
     </p>
   );
@@ -306,27 +301,31 @@ export type DialogCloseProps = {
   disabled?: boolean;
 };
 
-function DialogClose({ className, disabled }: DialogCloseProps) {
+function DialogClose({ className, children, disabled }: DialogCloseProps) {
   const context = useContext(DialogContext);
   if (!context) throw new Error('DialogClose must be used within Dialog');
 
-  return (<Button
-className={cn(
-  'absolute -right-2 -top-2 z-50 hover:bg-sidebar-accent',
-  className
-)}variant="ghost"
-size="icon"
-onClick={() => context.setIsOpen(false)}
-disabled={disabled}
-
->
-<HugeiconsIcon
+  return (
+    <button
+      onClick={() => context.setIsOpen(false)}
+      type='button'
+      aria-label='Close dialog'
+      className={cn(
+        'absolute top-4 right-4 rounded-xs opacity-70 transition-opacity',
+        'hover:opacity-100 focus:ring-2 focus:outline-hidden',
+        'focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none',
+        className
+      )}
+      disabled={disabled}
+    >
+      {children || <HugeiconsIcon
   icon={Cancel01Icon}
   className='foreground/70'
   color="currentColor"
   strokeWidth={2}
-/>
-</Button>
+/>}
+      <span className='sr-only'>Close</span>
+    </button>
   );
 }
 
