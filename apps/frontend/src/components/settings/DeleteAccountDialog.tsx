@@ -48,9 +48,13 @@ export function DeleteAccountDialog({
           onSuccess: () => {
             router.push("/sign-up");
           },
-          onError: () => {
+          onError: (ctx) => {
             setIsAuthenticating(false);
-            setErrorMessage("Sorry, something went wrong.");
+            if (ctx.error.code === "INVALID_PASSWORD") {
+              setErrorMessage("Invalid password.");
+            } else {
+              setErrorMessage("Sorry, something went wrong.");
+            }
           },
         },
       );
