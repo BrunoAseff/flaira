@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { auth } from "@/auth/client";
 import type { Session } from "better-auth/types";
-import { formatDistance } from "date-fns";
+import { format } from "date-fns";
 import FormatUserAgent from "@/lib/formatUserAgent";
 import { Separator } from "../ui/separator";
 
@@ -48,9 +48,10 @@ export default function SecurityTab() {
                     <div className="text-foreground/65 font-semibold">Date</div>
                     <span className="p-2 font-bold text-xs rounded-lg bg-primary-foreground text-primary">
                       {" "}
-                      {formatDistance(session.createdAt, new Date(), {
-                        addSuffix: true,
-                      })}
+                      {format(
+                        new Date(session.createdAt),
+                        "dd/MM/yyyy 'at' HH:mm",
+                      )}
                     </span>
                   </div>
                   <Button key={session.id} size="sm">
