@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/tooltip";
 import { ScrollArea } from "../ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function SecurityTab() {
   const [sessionList, setSessionList] = useState<Session[] | null>(null);
@@ -28,6 +29,7 @@ export default function SecurityTab() {
     new Set(),
   );
 
+  const router = useRouter();
   async function getSessionList() {
     const sessionsData = await auth.listSessions();
     setSessionList(sessionsData.data);
@@ -72,7 +74,11 @@ export default function SecurityTab() {
               <h1 className="text-base font-bold text-foreground/90">
                 Password
               </h1>
-              <Button size="sm" variant="outline">
+              <Button
+                onClick={() => router.push("/forgot-password")}
+                size="sm"
+                variant="outline"
+              >
                 Reset password
               </Button>
             </div>
