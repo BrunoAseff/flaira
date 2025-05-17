@@ -22,6 +22,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
+import { DeleteAccountDialog } from "./DeleteAccountDialog";
 
 export default function SecurityTab() {
   const [sessionList, setSessionList] = useState<Session[] | null>(null);
@@ -30,6 +31,7 @@ export default function SecurityTab() {
     new Set(),
   );
   const [isFetching, setIsFetching] = useState(true);
+  const [isDeleteAccountOpen, setIsDeleteAccountOpen] = useState(false);
 
   const router = useRouter();
   async function getSessionList() {
@@ -69,7 +71,7 @@ export default function SecurityTab() {
 
   return (
     <div className="w-full h-full">
-      <ScrollArea className="h-[calc(100vh-16rem)]">
+      <ScrollArea className="flex-1 overflow-y-auto">
         {" "}
         <div className="px-10 pb-10 w-full">
           <div className="w-full flex flex-col gap-6">
@@ -173,13 +175,21 @@ export default function SecurityTab() {
               <h1 className="text-base font-bold text-foreground/90">
                 Delete account
               </h1>
-              <Button size="sm" variant="destructive">
+              <Button
+                onClick={() => setIsDeleteAccountOpen(true)}
+                size="sm"
+                variant="destructive"
+              >
                 Delete account
               </Button>
             </div>
           </div>
         </div>
       </ScrollArea>
+      <DeleteAccountDialog
+        isOpen={isDeleteAccountOpen}
+        setIsOpen={setIsDeleteAccountOpen}
+      />
     </div>
   );
 }
