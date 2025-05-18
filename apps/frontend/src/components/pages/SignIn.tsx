@@ -19,6 +19,7 @@ import { signInSchema } from "@/schemas/auth";
 import { auth } from "@/auth/client";
 import { useRouter } from "next/navigation";
 import { Banner } from "../ui/banner";
+import Logo from "../brand/Logo";
 
 type User = z.infer<typeof signInSchema>;
 
@@ -75,8 +76,9 @@ export default function SignIn() {
   return (
     <Card className="w-[90%] md:w-[32rem] bg-background p-6 rounded-2xl border-none shadow-none">
       <CardHeader>
-        <CardTitle className="text-left mr-auto font-semibold text-foreground text-2xl mb-1 md:mb-6">
-          Sign in to Flaira
+        <Logo size="md" />
+        <CardTitle className="text-left mr-auto font-semibold text-foreground text-xl mt-1 md:mt-3">
+          Sign in
         </CardTitle>
       </CardHeader>
       <CardContent>
