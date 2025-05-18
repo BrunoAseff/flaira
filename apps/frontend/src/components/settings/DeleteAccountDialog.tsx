@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -63,11 +64,18 @@ export function DeleteAccountDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="bg-background p-4 min-w-[25%] overflow-hidden">
+      <DialogContent className="bg-background p-4 max-w-[30rem] overflow-hidden">
         <DialogHeader>
-          <DialogTitle className="ml-5 mb-6 text-foreground text-2xl font-semibold">
+          <DialogTitle className="ml-5 mb-1 text-foreground text-2xl font-semibold">
             Delete account
           </DialogTitle>
+          <DialogDescription className="ml-5 mb-6 text-foreground/40 text-base font-semibold">
+            This action is permanent and cannot be undone.{" "}
+            <span className="font-bold text-error">
+              {" "}
+              All your data will be permanently deleted.
+            </span>
+          </DialogDescription>
         </DialogHeader>
 
         <form
