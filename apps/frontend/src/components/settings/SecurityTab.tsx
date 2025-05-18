@@ -51,22 +51,29 @@ export default function SecurityTab() {
   async function handleRevokeSession(token: string, sessionId: string) {
     setLoadingSessionIds((prev) => new Set(prev).add(sessionId));
 
-    await auth.revokeSession(
-      {
-        token,
-      },
-      {
-        onSuccess: () => {
-          setLoadingSessionIds((prev) => {
-            const newSet = new Set(prev);
-            newSet.delete(sessionId);
-            return newSet;
-          });
+    if (sessionList) {
+      const filteredSessions = sessionList.filter(
+        (session) => session.id !== sessionId,
+      );
+      setSessionList(filteredSessions);
+    }
 
-          getSessionList();
-        },
-      },
-    );
+    try {
+      await auth.revokeSession({ token });
+      setLoadingSessionIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(sessionId);
+        return newSet;
+      });
+    } catch (_error) {
+      await getSessionList();
+
+      setLoadingSessionIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(sessionId);
+        return newSet;
+      });
+    }
   }
 
   return (
