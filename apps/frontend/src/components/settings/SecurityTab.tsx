@@ -35,12 +35,20 @@ export default function SecurityTab() {
 
   const router = useRouter();
   async function getSessionList() {
-    const sessionsData = await auth.listSessions();
-    setSessionList(sessionsData.data);
-    setIsFetching(false);
-
     const currentSessionData = await auth.getSession();
+    const currentSessionId = currentSessionData.data?.session?.id ?? null;
     setCurrentSession(currentSessionData.data?.session ?? null);
+
+    const sessionsData = await auth.listSessions();
+
+    const sortedSessions = sessionsData?.data?.sort((a, b) => {
+      if (a.id === currentSessionId) return -1;
+      if (b.id === currentSessionId) return 1;
+      return 0;
+    });
+
+    setSessionList(sortedSessions ?? null);
+    setIsFetching(false);
   }
 
   // biome-ignore lint:
