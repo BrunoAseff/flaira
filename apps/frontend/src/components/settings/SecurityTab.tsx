@@ -108,11 +108,11 @@ export default function SecurityTab() {
                 Sessions
               </h1>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-4 w-full">
                 {isFetching && (
                   <>
-                    <Skeleton className="flex w-full h-24 items-center justify-between relative rounded-lg p-3" />
-                    <Skeleton className="flex w-full h-24 items-center justify-between relative rounded-lg p-3" />
+                    <Skeleton className="flex w-full h-[4.651rem] items-center justify-between relative rounded-lg p-3" />
+                    <Skeleton className="flex w-full h-[4.651rem] items-center justify-between relative rounded-lg p-3" />
                   </>
                 )}
                 {!isFetching &&
@@ -130,15 +130,15 @@ export default function SecurityTab() {
                           size={42}
                         />
                         <div className="flex flex-col gap-1">
-                          {currentSession?.id === session.id ? (
-                            <div className="text-xs w-fit bg-primary-foreground text-primary font-bold p-1 rounded-md">
-                              Current device
-                            </div>
-                          ) : null}
-                          <div className="text-foreground/65 font-semibold text-sm flex">
+                          <div className="text-foreground/65 font-semibold text-sm flex gap-3">
                             <FormatUserAgent
                               userAgent={session.userAgent ?? ""}
                             />
+                            {currentSession?.id === session.id ? (
+                              <div className="text-xs w-fit bg-primary-foreground text-primary font-bold p-1 rounded-md">
+                                Current device
+                              </div>
+                            ) : null}
                           </div>
 
                           <div className="text-foreground/65 font-semibold text-sm">
