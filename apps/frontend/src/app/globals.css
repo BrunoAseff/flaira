@@ -132,6 +132,20 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    &::-webkit-scrollbar {
+      width: 10px; 
+      height: 10px; 
+    }
+    &::-webkit-scrollbar-track {
+      background: var(--background);
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--input); 
+      border-radius: 5px;
+      border: 1px solid var(--background); 
+    }
+    scrollbar-width: thin;
+    scrollbar-color: var(--input) var(--background); 
   }
   body {
     @apply bg-background text-foreground;
