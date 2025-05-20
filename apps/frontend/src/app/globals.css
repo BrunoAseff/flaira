@@ -131,6 +131,10 @@
 
 @layer base {
   * {
+    ::selection {
+      background: var(--primary);
+      color: var(--background);
+    }
     @apply border-border outline-ring/50;
     &::-webkit-scrollbar {
       width: 10px; 
