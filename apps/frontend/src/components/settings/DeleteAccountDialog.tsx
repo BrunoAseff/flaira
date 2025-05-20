@@ -70,11 +70,8 @@ export function DeleteAccountDialog({
             Delete account
           </DialogTitle>
           <DialogDescription className="ml-5 mb-6 text-foreground/40 text-base font-semibold">
-            This action is permanent and cannot be undone.{" "}
-            <span className="font-bold text-error">
-              {" "}
-              All your data will be permanently deleted.
-            </span>
+            This action is permanent and cannot be undone. All your data will be
+            permanently deleted.
           </DialogDescription>
         </DialogHeader>
 
@@ -170,6 +167,7 @@ export function DeleteAccountDialog({
               return (
                 <Button
                   type="submit"
+                  variant="destructive"
                   onClick={form.handleSubmit}
                   disabled={!deleteConfirmed || !allFieldsValid || !isValid}
                   aria-disabled={

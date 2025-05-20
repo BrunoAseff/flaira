@@ -85,10 +85,9 @@ export default function SecurityTab() {
   }
 
   return (
-    <div className="w-full h-full">
-      <ScrollArea className="flex-1 overflow-y-auto">
-        {" "}
-        <div className="px-10 pb-10 w-full">
+    <div className="w-full flex flex-col h-full">
+      <ScrollArea className="flex-1 pb-16 max-h-[85vh] overflow-y-auto">
+        <div className="w-full py-0 px-4 pb-10">
           <div className="w-full flex flex-col gap-6">
             <div className="flex w-full justify-between">
               <h1 className="text-base font-bold text-foreground/90">
