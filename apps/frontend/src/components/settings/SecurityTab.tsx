@@ -41,7 +41,7 @@ export default function SecurityTab() {
 
     const sessionsData = await auth.listSessions();
 
-    const sortedSessions = sessionsData?.data?.sort((a, b) => {
+    const sortedSessions = sessionsData?.data?.slice().sort((a, b) => {
       if (a.id === currentSessionId) return -1;
       if (b.id === currentSessionId) return 1;
       return 0;
