@@ -1,66 +1,55 @@
 # FLAIRA PROJECT LICENSE
+**Version 1.0**
 
 **Effective Date:** May 21, 2025
 
 ## 1. DEFINITIONS
 
-1.1. "License" means the terms and conditions for use, reproduction, modification, and distribution as defined in this document.
+1.1. "License" means the terms and conditions for use, reproduction, and distribution as defined in this document.
 
 1.2. "Licensor" means Bruno de Almeida Aseff, the copyright owner authorizing use under this License.
 
 1.3. "Project" means the software known as "Flaira" in any form, including but not limited to source code, object code, and documentation.
 
-1.4. "Derivative Work" means any work that is based on or derived from the Project, such as modifications, extensions, or any other alteration thereof.
+1.4. "You" means an individual or legal entity exercising permissions granted by this License.
 
-1.5. "You" means an individual or legal entity exercising permissions granted by this License.
+## 2. GRANT OF RIGHTS AND RESTRICTIONS
 
-## 2. GRANT OF RIGHTS
+2.1. Subject to the terms and conditions of this License, the Licensor hereby grants You a worldwide, non-exclusive, royalty-free license to use the Project for personal, non-commercial, and educational purposes only.
 
-2.1. Subject to the terms and conditions of this License, the Licensor hereby grants You a worldwide, non-exclusive, royalty-free license to:
+2.2. **Non-Commercial Use Only:** This Project may not be used for commercial purposes. "Commercial purposes" includes but is not limited to:
 
-   a. Use the Project for any purpose consistent with the restrictions herein;
+   a. Using the Project to generate revenue directly or indirectly;
    
-   b. Produce, reproduce, and share Derivative Works;
+   b. Using the Project in a commercial product or service;
    
-   c. Publicly display and perform the Project and Derivative Works.
+   c. Using the Project in any manner intended for commercial advantage or private monetary compensation.
 
-## 3. CONDITIONS AND RESTRICTIONS
+2.3. **Source Code Modification Restrictions:** While You may view and study the source code, any modifications You make must be solely for personal use. You may not distribute modified versions of the Project.
 
-3.1. **Open Source Requirement:** Any Derivative Work You distribute or make publicly available must be made available as open source under the terms of this License or a compatible open source license that maintains all restrictions herein. Closed-source distribution of the Project or any Derivative Work is expressly prohibited.
+2.4. **Attribution Requirement:** Any use of the Project must maintain all copyright notices and include prominent attribution to the original Licensor, Bruno de Almeida Aseff, and must identify the Project as "Flaira".
 
-3.2. **Non-Commercial Use:** Neither the Project nor any Derivative Work may be used for commercial purposes. "Commercial purposes" includes but is not limited to:
+2.5. **No Distribution Rights:** You may not redistribute, publish, or otherwise make the Project available to third parties, whether in original or modified form.
 
-   a. Using the Project or Derivative Works to generate revenue directly or indirectly;
-   
-   b. Using the Project or Derivative Works in a commercial product or service;
-   
-   c. Using the Project or Derivative Works in any manner intended for commercial advantage or private monetary compensation.
+## 3. DISCLAIMER OF WARRANTY AND LIMITATION OF LIABILITY
 
-3.3. **Attribution Requirement:** Any distribution of the Project or Derivative Works must include prominent attribution to the original Licensor, Bruno de Almeida Aseff, and must identify the Project as "Flaira" in documentation and other materials provided with the distribution.
+3.1. THE PROJECT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE PROJECT OR THE USE OR OTHER DEALINGS IN THE PROJECT.
 
-3.4. **License Preservation:** This License document must be included, unmodified, with every copy or substantial portion of the Project or any Derivative Work that You distribute.
+## 4. TERMINATION
 
-## 4. DISCLAIMER OF WARRANTY AND LIMITATION OF LIABILITY
+4.1. This License and the rights granted hereunder will terminate automatically upon any breach by You of the terms of this License.
 
-4.1. THE PROJECT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE PROJECT OR THE USE OR OTHER DEALINGS IN THE PROJECT.
+## 5. MISCELLANEOUS
 
-## 5. TERMINATION
+5.1. If any provision of this License is held to be unenforceable, such provision shall be reformed only to the extent necessary to make it enforceable.
 
-5.1. This License and the rights granted hereunder will terminate automatically upon any breach by You of the terms of this License.
+5.2. This License constitutes the entire agreement between the parties with respect to the Project licensed here. There are no understandings, agreements or representations with respect to the Project not specified here.
 
-5.2. Individuals or entities who have received the Project or Derivative Works from You under this License will not have their licenses terminated provided such individuals or entities remain in full compliance.
-
-## 6. MISCELLANEOUS
-
-6.1. If any provision of this License is held to be unenforceable, such provision shall be reformed only to the extent necessary to make it enforceable.
-
-6.2. This License constitutes the entire agreement between the parties with respect to the Project licensed here. There are no understandings, agreements or representations with respect to the Project not specified here.
-
-6.3. This License shall be governed by and construed in accordance with the laws of the jurisdiction in which the Licensor resides, excluding its conflict of law provisions.
+5.3. This License shall be governed by and construed in accordance with the laws of the jurisdiction in which the Licensor resides, excluding its conflict of law provisions.
 
 ---
 
-**By using, modifying, or distributing the Project, You indicate Your acceptance of this License.**
+**By using the Project, You indicate Your acceptance of this License.**
 
 Bruno de Almeida Aseff  
 Flaira Project  
