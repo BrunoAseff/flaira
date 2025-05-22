@@ -212,13 +212,14 @@ function DialogContent({ children, className, container: portalTargetForDialog }
 
   const [currentDialogElement, setCurrentDialogElement] = React.useState<HTMLDialogElement | null>(null);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (isOpen && dialogRef.current) {
       setCurrentDialogElement(dialogRef.current);
     } else {
       setCurrentDialogElement(null);
     }
-  }, [isOpen, dialogRef, dialogRef.current]); 
+  }, [isOpen, dialogRef]); 
+  
   const dialogActualContent = (
     <AnimatePresence mode='wait'>
       {isOpen && (
