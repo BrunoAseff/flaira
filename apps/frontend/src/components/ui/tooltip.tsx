@@ -171,6 +171,7 @@ type TooltipProviderProps = {
   openDelay?: number;
   closeDelay?: number;
   transition?: Transition;
+  portalContainer?: HTMLElement | null; 
 };
 
 function TooltipProvider({
@@ -178,11 +179,12 @@ function TooltipProvider({
   openDelay = 700,
   closeDelay = 300,
   transition = { type: "spring", stiffness: 300, damping: 25 },
+  portalContainer,
 }: TooltipProviderProps) {
   const globalId = React.useId();
   const [currentTooltip, setCurrentTooltip] =
     React.useState<TooltipData | null>(null);
-  const timeoutRef = React.useRef<number>(null);
+  const timeoutRef = React.useRef<number | null>(null); 
   const lastCloseTimeRef = React.useRef<number>(0);
 
   const showTooltip = React.useCallback(
@@ -232,7 +234,7 @@ function TooltipProvider({
       }}
     >
       <LayoutGroup>{children}</LayoutGroup>
-      <TooltipOverlay />
+      <TooltipOverlay container={portalContainer} />
     </GlobalTooltipContext.Provider>
   );
 }
@@ -259,52 +261,85 @@ function TooltipArrow({ side }: TooltipArrowProps) {
 
 type TooltipPortalProps = {
   children: React.ReactNode;
+  container?: HTMLElement | null; 
 };
 
-function TooltipPortal({ children }: TooltipPortalProps) {
+function TooltipPortal({ children, container }: TooltipPortalProps) {
   const [isMounted, setIsMounted] = React.useState(false);
-  React.useEffect(() => setIsMounted(true), []);
-  return isMounted ? createPortal(children, document.body) : null;
+  const portalTarget = container || (typeof window !== 'undefined' ? document.body : null);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
+  if (!isMounted || !portalTarget) {
+    return null;
+  }
+
+  return createPortal(children, portalTarget);
 }
 
-function TooltipOverlay() {
+type TooltipOverlayProps = {
+  container?: HTMLElement | null; 
+};
+
+function TooltipOverlay({ container }: TooltipOverlayProps) {
   const { currentTooltip, transition, globalId } = useGlobalTooltip();
 
   const position = React.useMemo(() => {
-    if (!currentTooltip) return null;
-    return getTooltipPosition({
-      rect: currentTooltip.rect,
+    if (!currentTooltip || !currentTooltip.rect) return null; // trigger's rect
+
+    // Get initial position based on viewport coordinates
+    const viewportPosition = getTooltipPosition({
+      rect: currentTooltip.rect, // Trigger's rect relative to viewport
       side: currentTooltip.side,
       sideOffset: currentTooltip.sideOffset,
       align: currentTooltip.align,
       alignOffset: currentTooltip.alignOffset,
     });
-  }, [currentTooltip]);
+
+    let adjustedX = viewportPosition.x;
+    let adjustedY = viewportPosition.y;
+
+    // If portalling into a specific container (like the dialog)
+    // which might be transformed, adjust the coordinates.
+    if (container && container !== document.body) {
+      const portalContainerRect = container.getBoundingClientRect();
+      adjustedX -= portalContainerRect.left;
+      adjustedY -= portalContainerRect.top;
+    }
+
+    return {
+      ...viewportPosition, // Keep original transform and initial animation values
+      x: adjustedX,         // Use adjusted x for positioning relative to the container
+      y: adjustedY,         // Use adjusted y for positioning relative to the container
+    };
+  }, [currentTooltip, container]); // Add container to dependency array
 
   return (
     <AnimatePresence>
       {currentTooltip && currentTooltip.content && position && (
-        <TooltipPortal>
+        <TooltipPortal container={container}>
           <motion.div
             data-slot="tooltip-overlay-container"
             className="fixed z-50"
             style={{
               top: position.y,
-              left: position.x,
-              transform: position.transform,
+              left: position.x,  
+              transform: position.transform, 
             }}
           >
             <motion.div
               data-slot="tooltip-overlay"
               layoutId={`tooltip-overlay-${globalId}`}
               initial={{ opacity: 0, scale: 0, ...position.initial }}
-              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }} 
               exit={{ opacity: 0, scale: 0, ...position.initial }}
               transition={transition}
-              className="relative rounded-md fill-foreground font-medium px-4 py-2 text-base bg-foreground text-background shadow-md w-fit text-balance"
+              className="relative rounded-md fill-foreground text-nowrap font-medium px-4 py-2 text-base bg-foreground text-background shadow-md w-fit"
             >
               {currentTooltip.content}
-
               {currentTooltip.arrow && (
                 <TooltipArrow side={currentTooltip.side} />
               )}

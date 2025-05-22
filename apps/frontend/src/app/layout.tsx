@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Quicksand, K2D } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/hooks/use-query";
-import { TooltipProvider } from "@/components/ui/tooltip";
 
 const quicksand = Quicksand({
   variable: "--font-quicksand",
@@ -31,9 +30,7 @@ export default function RootLayout({
       <body
         className={`${quicksand.variable} ${k2d.variable} antialiased font-sans`}
       >
-        <TooltipProvider openDelay={0}>
-          <QueryProvider>{children}</QueryProvider>
-        </TooltipProvider>
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );

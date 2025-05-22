@@ -7,6 +7,7 @@ import { createPortal } from 'react-dom';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Cancel01Icon } from '@hugeicons/core-free-icons';
 import { usePreventScroll } from '@/hooks/use-prevent-scroll';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const DialogContext = createContext<{
   isOpen: boolean;
@@ -196,20 +197,29 @@ export type DialogContentProps = {
   container?: HTMLElement;
 };
 
-function DialogContent({ children, className, container }: DialogContentProps) {
+function DialogContent({ children, className, container: portalTargetForDialog }: DialogContentProps) {
   const context = useContext(DialogContext);
   if (!context) throw new Error('DialogContent must be used within Dialog');
   const {
     isOpen,
     setIsOpen,
-    dialogRef,
+    dialogRef, 
     variants,
     transition,
     ids,
     onAnimationComplete,
   } = context;
 
-  const content = (
+  const [currentDialogElement, setCurrentDialogElement] = React.useState<HTMLDialogElement | null>(null);
+
+  React.useEffect(() => {
+    if (isOpen && dialogRef.current) {
+      setCurrentDialogElement(dialogRef.current);
+    } else {
+      setCurrentDialogElement(null);
+    }
+  }, [isOpen, dialogRef, dialogRef.current]); 
+  const dialogActualContent = (
     <AnimatePresence mode='wait'>
       {isOpen && (
         <motion.dialog
@@ -235,16 +245,27 @@ function DialogContent({ children, className, container }: DialogContentProps) {
             'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-lg border border-border shadow-lg',
             'backdrop:bg-foreground/50 backdrop:backdrop-blur-xs',
             'open:flex open:flex-col',
+           
             className
           )}
         >
-          <div className='w-full'>{children}</div>
+         
+          {currentDialogElement ? (
+            <TooltipProvider openDelay={0} portalContainer={currentDialogElement}>
+              <div className='w-full' data-slot="dialog-inner-content-wrapper">
+                {children} 
+              </div>
+            </TooltipProvider>
+          ) : (
+            <div className='w-full' data-slot="dialog-inner-content-wrapper-fallback">
+              {children}
+            </div>
+          )}
         </motion.dialog>
       )}
     </AnimatePresence>
   );
-
-  return <DialogPortal container={container}>{content}</DialogPortal>;
+  return <DialogPortal container={portalTargetForDialog}>{dialogActualContent}</DialogPortal>;
 }
 
 export type DialogHeaderProps = {
