@@ -66,17 +66,17 @@ export function DeleteAccountDialog({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="bg-background p-4 max-w-[30rem] overflow-hidden">
         <DialogHeader>
-          <DialogTitle className="ml-5 mb-1 text-foreground text-2xl font-semibold">
+          <DialogTitle className="ml-5 mb-2 text-foreground text-xl font-semibold">
             Delete account
           </DialogTitle>
-          <DialogDescription className="ml-5 mb-6 text-foreground/40 text-base font-semibold">
+          <DialogDescription className="ml-5 mb-6 text-foreground/60 text-base font-semibold">
             This action is permanent and cannot be undone. All your data will be
             permanently deleted.
           </DialogDescription>
         </DialogHeader>
 
         <form
-          className="flex flex-col gap-4 px-5 pt-2 pb-6"
+          className="flex flex-col gap-4 px-2 pt-2 pb-1"
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -149,38 +149,46 @@ export function DeleteAccountDialog({
               </div>
             )}
           />
+          <div className="w-full ml-auto flex items-end justify-end gap-4">
+            <Button
+              onClick={() => setIsOpen(false)}
+              variant="outline"
+              size="sm"
+            >
+              Close
+            </Button>
+            <form.Subscribe
+              selector={(state) => ({
+                isSubmitting: state.isSubmitting,
+                isValid: state.isValid,
+                fieldMeta: state.fieldMeta,
+              })}
+              children={({ isSubmitting, isValid, fieldMeta }) => {
+                const allFieldsValid = Object.entries(fieldMeta).every(
+                  ([_, meta]) =>
+                    meta.isDirty && !meta.errors.length && !meta.isValidating,
+                );
+                const deleteConfirmed =
+                  deleteText.trim().toLowerCase() === "delete my account";
 
-          <form.Subscribe
-            selector={(state) => ({
-              isSubmitting: state.isSubmitting,
-              isValid: state.isValid,
-              fieldMeta: state.fieldMeta,
-            })}
-            children={({ isSubmitting, isValid, fieldMeta }) => {
-              const allFieldsValid = Object.entries(fieldMeta).every(
-                ([_, meta]) =>
-                  meta.isDirty && !meta.errors.length && !meta.isValidating,
-              );
-              const deleteConfirmed =
-                deleteText.trim().toLowerCase() === "delete my account";
-
-              return (
-                <Button
-                  type="submit"
-                  variant="destructive"
-                  onClick={form.handleSubmit}
-                  disabled={!deleteConfirmed || !allFieldsValid || !isValid}
-                  aria-disabled={
-                    !deleteConfirmed || !allFieldsValid || !isValid
-                  }
-                  loading={isSubmitting || isAuthenticating}
-                >
-                  Delete Account
-                </Button>
-              );
-            }}
-          />
-
+                return (
+                  <Button
+                    type="submit"
+                    size="sm"
+                    variant="destructive"
+                    onClick={form.handleSubmit}
+                    disabled={!deleteConfirmed || !allFieldsValid || !isValid}
+                    aria-disabled={
+                      !deleteConfirmed || !allFieldsValid || !isValid
+                    }
+                    loading={isSubmitting || isAuthenticating}
+                  >
+                    Delete Account
+                  </Button>
+                );
+              }}
+            />
+          </div>
           {errorMessage && (
             <Banner role="alert" aria-live="assertive" variant="error">
               {errorMessage}
