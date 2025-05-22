@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "../ui/button";
 import { auth } from "@/auth/client";
 import type { Session } from "better-auth/types";
@@ -23,65 +24,88 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
+import { Banner } from "../ui/banner";
 
-export default function SecurityTab() {
-  const [sessionList, setSessionList] = useState<Session[] | null>(null);
-  const [currentSession, setCurrentSession] = useState<Session | null>(null);
+interface SecurityTabProps {
+  sessionList: Session[] | null;
+  currentSession: Session | null;
+  isLoading: boolean;
+  error: Error | null;
+}
+
+export default function SecurityTab({
+  sessionList,
+  currentSession,
+  isLoading,
+  error,
+}: SecurityTabProps) {
   const [loadingSessionIds, setLoadingSessionIds] = useState<Set<string>>(
     new Set(),
   );
-  const [isFetching, setIsFetching] = useState(true);
   const [isDeleteAccountOpen, setIsDeleteAccountOpen] = useState(false);
-
   const router = useRouter();
-  async function getSessionList() {
-    const currentSessionData = await auth.getSession();
-    const currentSessionId = currentSessionData.data?.session?.id ?? null;
-    setCurrentSession(currentSessionData.data?.session ?? null);
+  const query = useQueryClient();
 
-    const sessionsData = await auth.listSessions();
+  const revokeSessionMutation = useMutation({
+    mutationFn: async (params: { token: string; sessionId: string }) => {
+      const response = await auth.revokeSession({ token: params.token });
+      return { ...response.data, sessionId: params.sessionId };
+    },
+    onMutate: async (variables: { token: string; sessionId: string }) => {
+      setLoadingSessionIds((prev) => new Set(prev).add(variables.sessionId));
 
-    const sortedSessions = sessionsData?.data?.slice().sort((a, b) => {
-      if (a.id === currentSessionId) return -1;
-      if (b.id === currentSessionId) return 1;
-      return 0;
-    });
+      await query.cancelQueries({ queryKey: ["sessions"] });
 
-    setSessionList(sortedSessions ?? null);
-    setIsFetching(false);
-  }
+      const previousSessions = query.getQueryData<Session[]>(["sessions"]);
 
-  // biome-ignore lint:
-  useEffect(() => {
-    getSessionList();
-  }, []);
+      if (previousSessions) {
+        query.setQueryData<Session[]>(
+          ["sessions"],
+          previousSessions.filter(
+            (session: Session) => session.id !== variables.sessionId,
+          ),
+        );
+      }
+
+      return { previousSessions, sessionId: variables.sessionId };
+    },
+    onError: (
+      err: Error & { sessionId?: string },
+      _variables,
+      context?: { previousSessions?: Session[]; sessionId: string },
+    ) => {
+      console.error("Failed to revoke session:", err);
+      if (context?.previousSessions) {
+        query.setQueryData<Session[]>(["sessions"], context.previousSessions);
+      }
+    },
+    onSuccess: () => {
+      query.invalidateQueries({ queryKey: ["sessions"] });
+      query.invalidateQueries({ queryKey: ["currentSession"] });
+    },
+    onSettled: (_data, error, variables, context) => {
+      const sessionIdToClear =
+        variables.sessionId || error?.sessionId || context?.sessionId;
+      if (sessionIdToClear) {
+        setLoadingSessionIds((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(sessionIdToClear);
+          return newSet;
+        });
+      }
+    },
+  });
 
   async function handleRevokeSession(token: string, sessionId: string) {
-    setLoadingSessionIds((prev) => new Set(prev).add(sessionId));
+    revokeSessionMutation.mutate({ token, sessionId });
+  }
 
-    if (sessionList) {
-      const filteredSessions = sessionList.filter(
-        (session) => session.id !== sessionId,
-      );
-      setSessionList(filteredSessions);
-    }
-
-    try {
-      await auth.revokeSession({ token });
-      setLoadingSessionIds((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(sessionId);
-        return newSet;
-      });
-    } catch (_error) {
-      await getSessionList();
-
-      setLoadingSessionIds((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(sessionId);
-        return newSet;
-      });
-    }
+  if (error) {
+    return (
+      <div className="w-full mt-12 flex flex-col h-full items-center justify-center">
+        <Banner variant="error">We could not load the content</Banner>
+      </div>
+    );
   }
 
   return (
@@ -108,13 +132,13 @@ export default function SecurityTab() {
               </h1>
 
               <div className="grid grid-cols-1 md:grid-cols-1 gap-4 w-full">
-                {isFetching && (
+                {isLoading && (
                   <>
                     <Skeleton className="flex w-full h-[4.651rem] items-center justify-between relative rounded-lg p-3" />
                     <Skeleton className="flex w-full h-[4.651rem] items-center justify-between relative rounded-lg p-3" />
                   </>
                 )}
-                {!isFetching &&
+                {!isLoading &&
                   sessionList?.map((session) => (
                     <div
                       key={session.id}
@@ -129,7 +153,7 @@ export default function SecurityTab() {
                           size={42}
                         />
                         <div className="flex flex-col gap-1">
-                          <div className="text-foreground/65 font-semibold text-sm flex gap-3">
+                          <div className="text-foreground/65 font-semibold text-sm flex gap-3 items-center">
                             <FormatUserAgent
                               userAgent={session.userAgent ?? ""}
                             />
@@ -157,7 +181,11 @@ export default function SecurityTab() {
                               }
                               className="text-muted-foreground transition-all duration-300 hover:text-error hover:bg-error/10"
                               variant="ghost"
-                              disabled={loadingSessionIds.has(session.id)}
+                              disabled={
+                                loadingSessionIds.has(session.id) ||
+                                (revokeSessionMutation.isPending &&
+                                  loadingSessionIds.has(session.id))
+                              }
                               size="icon"
                             >
                               <HugeiconsIcon
@@ -175,13 +203,20 @@ export default function SecurityTab() {
                               />
                             </Button>
                           ) : (
-                            <div />
+                            <div className="size-10" />
                           )}
                         </TooltipTrigger>
-                        <TooltipContent>Remove session</TooltipContent>
+                        {currentSession?.id !== session.id && (
+                          <TooltipContent>Remove session</TooltipContent>
+                        )}
                       </Tooltip>
                     </div>
                   ))}
+                {!isLoading && sessionList && sessionList.length === 0 && (
+                  <p className="text-foreground/65 text-sm">
+                    No active sessions found.
+                  </p>
+                )}
               </div>
             </div>
             <Separator />
