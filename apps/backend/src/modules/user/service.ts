@@ -16,5 +16,6 @@ export const getUserAvatar = async ({ key }: { key: string }) => {
 };
 
 export const deleteUserAvatar = async ({ key }: { key: string }) => {
-  await deleteObject({ key });
+  const result = await deleteObject({ key });
+  return result;
 };

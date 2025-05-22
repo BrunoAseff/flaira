@@ -2,8 +2,11 @@ import { Hono } from "hono";
 import { deleteAvatar, getAvatar, uploadAvatar } from "./controller";
 import { zValidator } from "@hono/zod-validator";
 import { uploadAvatarSchema } from "./validator";
+import { middleware } from "@/utils/middleware";
 
 const user = new Hono();
+
+user.use(middleware);
 
 user.post(
   "/upload-avatar",
