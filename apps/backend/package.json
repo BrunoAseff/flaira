@@ -17,9 +17,10 @@
     "drizzle:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.816.0",
-    "@aws-sdk/s3-request-presigner": "^3.816.0",
+    "@aws-sdk/client-s3": "3.816.0",
+    "@aws-sdk/s3-request-presigner": "3.816.0",
     "@hono/node-server": "1.2.0",
+    "@hono/zod-validator": "0.5.0",
     "better-auth": "1.2.7",
     "dotenv": "16.4.7",
     "drizzle-orm": "0.40.0",
