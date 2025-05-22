@@ -1,3 +1,9 @@
+"use client";
+
+import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { auth } from "@/auth/client";
+
 import {
   Dialog,
   DialogContent,
@@ -5,11 +11,11 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { LockKeyIcon, UserSquareIcon } from "@hugeicons/core-free-icons";
 import SecurityTab from "./SecurityTab";
-import { Separator } from "../ui/separator";
+import { Separator } from "@/components/ui/separator";
 
 export function SettingsDialog({
   isOpen,
@@ -18,6 +24,48 @@ export function SettingsDialog({
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 }) {
+  const {
+    data: currentSessionData,
+    isLoading: isLoadingCurrentSession,
+    error: currentSessionError,
+  } = useQuery({
+    queryKey: ["currentSession"],
+    queryFn: async () => {
+      const response = await auth.getSession();
+      if (response.error) throw response.error;
+      return response.data?.session ?? null;
+    },
+    enabled: isOpen,
+  });
+
+  const currentSessionId = currentSessionData?.id ?? null;
+
+  const {
+    data: sessionsData,
+    isLoading: isLoadingSessions,
+    error: sessionsError,
+  } = useQuery({
+    queryKey: ["sessions"],
+    queryFn: async () => {
+      const response = await auth.listSessions();
+      if (response.error) throw response.error;
+      return response.data ?? [];
+    },
+    enabled: isOpen,
+  });
+
+  const sortedSessions = useMemo(() => {
+    if (!sessionsData) return null;
+    return sessionsData.slice().sort((a, b) => {
+      if (a.id === currentSessionId) return -1;
+      if (b.id === currentSessionId) return 1;
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }, [sessionsData, currentSessionId]);
+
+  const isLoading = isLoadingCurrentSession || isLoadingSessions;
+  const fetchError = currentSessionError || sessionsError;
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="min-w-full sm:min-w-96 md:min-w-96 w-full md:w-[75%] lg:w-[50%] h-full md:h-[90%] bg-background p-0 flex flex-col overflow-hidden">
@@ -70,7 +118,12 @@ export function SettingsDialog({
               className="w-full flex-1 h-full overflow-hidden pl-4"
               value="security"
             >
-              <SecurityTab />
+              <SecurityTab
+                sessionList={sortedSessions}
+                currentSession={currentSessionData ?? null}
+                isLoading={isLoading}
+                error={fetchError as Error | null}
+              />
             </TabsContent>
           </Tabs>
         </div>
