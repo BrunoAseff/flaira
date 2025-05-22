@@ -81,7 +81,6 @@ export default function SecurityTab({
     },
     onSuccess: () => {
       query.invalidateQueries({ queryKey: ["sessions"] });
-      query.invalidateQueries({ queryKey: ["currentSession"] });
     },
     onSettled: (_data, error, variables, context) => {
       const sessionIdToClear =

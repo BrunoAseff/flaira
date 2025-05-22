@@ -16,6 +16,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { LockKeyIcon, UserSquareIcon } from "@hugeicons/core-free-icons";
 import SecurityTab from "./SecurityTab";
 import { Separator } from "@/components/ui/separator";
+import ProfileTab from "./ProfileTab";
 
 export function SettingsDialog({
   isOpen,
@@ -24,21 +25,7 @@ export function SettingsDialog({
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 }) {
-  const {
-    data: currentSessionData,
-    isLoading: isLoadingCurrentSession,
-    error: currentSessionError,
-  } = useQuery({
-    queryKey: ["currentSession"],
-    queryFn: async () => {
-      const response = await auth.getSession();
-      if (response.error) throw response.error;
-      return response.data?.session ?? null;
-    },
-    enabled: isOpen,
-  });
-
-  const currentSessionId = currentSessionData?.id ?? null;
+  const { data: session, isPending, error } = auth.useSession();
 
   const {
     data: sessionsData,
@@ -57,14 +44,14 @@ export function SettingsDialog({
   const sortedSessions = useMemo(() => {
     if (!sessionsData) return null;
     return sessionsData.slice().sort((a, b) => {
-      if (a.id === currentSessionId) return -1;
-      if (b.id === currentSessionId) return 1;
+      if (a.id === session?.session.id) return -1;
+      if (b.id === session?.session.id) return 1;
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
-  }, [sessionsData, currentSessionId]);
+  }, [sessionsData, session?.session.id]);
 
-  const isLoading = isLoadingCurrentSession || isLoadingSessions;
-  const fetchError = currentSessionError || sessionsError;
+  const isLoading = isPending || isLoadingSessions;
+  const fetchError = error || sessionsError;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -108,9 +95,10 @@ export function SettingsDialog({
               className="w-full flex-1 h-full overflow-hidden pl-4"
               value="profile"
             >
-              <div className="flex flex-col min-h-[80vh] items-center justify-center">
-                Profile Tab Content
-              </div>
+              <ProfileTab
+                user={session?.user ?? null}
+                error={error as Error | null}
+              />
             </TabsContent>
 
             <TabsContent
@@ -120,7 +108,7 @@ export function SettingsDialog({
             >
               <SecurityTab
                 sessionList={sortedSessions}
-                currentSession={currentSessionData ?? null}
+                currentSession={session?.session ?? null}
                 isLoading={isLoading}
                 error={fetchError as Error | null}
               />
