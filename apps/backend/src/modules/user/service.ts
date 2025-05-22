@@ -1,8 +1,16 @@
-import { getS3Url } from "@/utils/s3";
+import { deleteObject, getUrl, uploadUrl } from "@/utils/s3";
 
 export const uploadUserAvatar = async ({
   fileName,
   type,
 }: { fileName: string; type: string }) => {
-  await getS3Url({ key: `avatar/${fileName}`, type });
+  await uploadUrl({ key: `avatar/${fileName}`, type });
+};
+
+export const getUserAvatar = async ({ key }: { key: string }) => {
+  await getUrl({ key });
+};
+
+export const deleteUserAvatar = async ({ key }: { key: string }) => {
+  await deleteObject({ key });
 };
