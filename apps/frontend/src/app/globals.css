@@ -159,5 +159,5 @@
 @layer utilities {
   .scrollbar-gutter-stable {
     scrollbar-gutter: stable;
-   }
-   }
+  }
+}
