@@ -18,6 +18,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { useState } from "react";
 import { SettingsDialog } from "../settings/SettingsDialog";
+import { useQuery } from "@tanstack/react-query";
 
 export default function UserButton() {
   const { data: session } = auth.useSession();
@@ -28,6 +29,36 @@ export default function UserButton() {
     await auth.signOut();
   }
 
+  const { data: imageUrl } = useQuery({
+    queryKey: ["image-url", session?.user.image],
+    queryFn: async () => {
+      if (!session?.user.image) {
+        return null;
+      }
+
+      const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/user/get-avatar`);
+      url.searchParams.append("key", session.user.image);
+
+      const presignedUrlResponse = await fetch(url.toString(), {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+
+      if (!presignedUrlResponse.ok) {
+        throw new Error(
+          `Failed to fetch avatar URL: ${presignedUrlResponse.status}`,
+        );
+      }
+
+      const presignedUrlData = await presignedUrlResponse.json();
+      return presignedUrlData.data || null;
+    },
+    enabled: !!session && !!session.user.image,
+    staleTime: 5 * 60 * 1000,
+    retry: 2,
+  });
+
   return (
     <>
       <DropdownMenu>
@@ -35,7 +66,7 @@ export default function UserButton() {
           <SidebarMenuButton className="py-6 hover:bg-background">
             <Avatar className="size-8 rounded-lg">
               <AvatarImage
-                src={session?.user.image ?? ""}
+                src={imageUrl ?? ""}
                 alt={`${session?.user.name} profile picture`}
               />
               <AvatarFallback className="text-foreground/70">

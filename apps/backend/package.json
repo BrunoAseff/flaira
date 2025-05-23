@@ -17,13 +17,18 @@
     "drizzle:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.816.0",
+    "@aws-sdk/s3-request-presigner": "3.816.0",
     "@hono/node-server": "1.2.0",
+    "@hono/zod-validator": "0.5.0",
+    "@types/uuid": "10.0.0",
     "better-auth": "1.2.7",
     "dotenv": "16.4.7",
     "drizzle-orm": "0.40.0",
     "hono": "4.7.4",
     "pg": "8.14.1",
     "resend": "4.5.0",
+    "uuid": "11.1.0",
     "zod": "3.24.2"
   },
   "devDependencies": {

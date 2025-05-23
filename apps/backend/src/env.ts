@@ -9,6 +9,10 @@ const envSchema = z.object({
   BETTER_AUTH_URL: z.string(),
   FRONTEND_URL: z.string(),
   RESEND_API: z.string(),
+  S3_BUCKET: z.string(),
+  AWS_REGION: z.string(),
+  AWS_SECRET_ACCESS_KEY: z.string(),
+  AWS_ACCESS_KEY_ID: z.string(),
 });
 
 const _env = envSchema.safeParse(process.env);
