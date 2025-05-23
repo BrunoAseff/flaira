@@ -80,8 +80,8 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
         const errorData = await presignedUrlResponse.json().catch(() => ({}));
         throw new Error(errorData.message || "Upload failed.");
       }
-      const presignedUrlData = await presignedUrlResponse.json();
-      const { url, key } = presignedUrlData.data;
+
+      const { url, key } = (await presignedUrlResponse.json()).data;
 
       const uploadResponse = await fetch(url, {
         method: "PUT",
@@ -93,27 +93,32 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
         throw new Error("File upload to storage failed.");
       }
 
+      if (user?.image) {
+        await deleteAvatarMutation.mutateAsync(user.image);
+      }
+
       const updateUserResponse = await auth.updateUser({ image: key });
       if (updateUserResponse.error) {
         throw new Error(
           updateUserResponse.error.message || "Failed to update user profile.",
         );
       }
+
       return updateUserResponse.data;
     },
+
     onMutate: async (file: File) => {
       const localUrl = URL.createObjectURL(file);
       setOptimisticAvatarUrl(localUrl);
       return { localUrl };
     },
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentSession"] });
     },
-    onError: (
-      _error: Error,
-      _variables,
-      _context?: { localUrl?: string },
-    ) => {},
+
+    onError: (_error, _variables, _context?: { localUrl?: string }) => {},
+
     onSettled: (_data, _error, _variables, context?: { localUrl?: string }) => {
       if (context?.localUrl) {
         URL.revokeObjectURL(context.localUrl);
@@ -121,6 +126,28 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
       if (_error) {
         setOptimisticAvatarUrl(null);
       }
+    },
+  });
+
+  const deleteAvatarMutation = useMutation({
+    mutationFn: async (key: string) => {
+      const url = new URL(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/delete-avatar`,
+      );
+      url.searchParams.append("key", key);
+
+      const response = await fetch(url.toString(), {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "Failed to delete avatar.");
+      }
+
+      return response.json();
     },
   });
 
