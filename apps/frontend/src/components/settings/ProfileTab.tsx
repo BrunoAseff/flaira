@@ -162,7 +162,6 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
   }
 
   const imageSrc = optimisticAvatarUrl || imageUrl || "";
-  console.log(imageUrl);
 
   return (
     <div className="w-full flex flex-col h-full">
@@ -211,7 +210,7 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
                 id="avatarUpload"
                 type="file"
                 className="hidden"
-                accept="image/png, image/jpeg, image/webp, image/gif"
+                accept="image/png, image/jpeg, image/webp, image/jpg"
                 onChange={handleFileChange}
                 disabled={uploadAvatarMutation.isPending}
               />

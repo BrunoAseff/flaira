@@ -49,6 +49,12 @@ export const getAvatar = async (context: Context) => {
 export const deleteAvatar = async (context: Context) => {
   try {
     const { key } = await context.req.json();
+
+    if (!key) {
+      const headers = getHeaders();
+      const body = getBody(400, null, new Error("Missing required field: key"));
+      return getResponse(context, 400, headers, body);
+    }
     const result = await deleteUserAvatar({ key });
 
     const headers = getHeaders();
