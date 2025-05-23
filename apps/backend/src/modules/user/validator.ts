@@ -9,3 +9,7 @@ export const uploadAvatarSchema = z.object({
     ),
   type: z.string().regex(/^image\/(jpeg|jpg|png|webp)$/),
 });
+
+export const getAvatarSchema = z.object({
+  key: z.string().regex(/^avatar\/[\w-]+\/[\w-]+\.(jpeg|png|jpg|webp)$/),
+});
