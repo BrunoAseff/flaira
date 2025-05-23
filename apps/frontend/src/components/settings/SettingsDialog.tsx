@@ -91,7 +91,6 @@ export function SettingsDialog({
             <Separator orientation="vertical" className="h-auto" />
 
             <TabsContent
-              tabIndex={-1}
               className="w-full flex-1 h-full overflow-hidden pl-4"
               value="profile"
             >
@@ -102,7 +101,6 @@ export function SettingsDialog({
             </TabsContent>
 
             <TabsContent
-              tabIndex={-1}
               className="w-full flex-1 h-full overflow-hidden pl-4"
               value="security"
             >

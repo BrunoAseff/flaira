@@ -6,8 +6,9 @@ export const uploadUserAvatar = async ({
   type,
 }: { fileName: string; type: string }) => {
   const id = uuidv4();
-  const url = await uploadUrl({ key: `avatar/${id}/${fileName}`, type });
-  return url;
+  const key = `avatar/${id}/${fileName}`;
+  const url = await uploadUrl({ key, type });
+  return { url, key };
 };
 
 export const getUserAvatar = async ({ key }: { key: string }) => {

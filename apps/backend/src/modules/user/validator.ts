@@ -6,9 +6,6 @@ export const uploadAvatarSchema = z.object({
     .min(1)
     .refine(
       (val) => !val.includes("..") && !val.includes("/") && !val.includes("\\"),
-      {
-        message: "Invalid filename",
-      },
     ),
-  type: z.string().regex(/^image\/(jpeg|png|gif)$/),
+  type: z.string().regex(/^image\/(jpeg|jpg|png|webp)$/),
 });
