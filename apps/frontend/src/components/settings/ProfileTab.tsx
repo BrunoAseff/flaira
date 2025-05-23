@@ -93,15 +93,15 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
         throw new Error("File upload to storage failed.");
       }
 
-      if (user?.image) {
-        await deleteAvatarMutation.mutateAsync(user.image);
-      }
-
       const updateUserResponse = await auth.updateUser({ image: key });
       if (updateUserResponse.error) {
         throw new Error(
           updateUserResponse.error.message || "Failed to update user profile.",
         );
+      }
+
+      if (user?.image) {
+        deleteAvatarMutation.mutateAsync(user.image);
       }
 
       return updateUserResponse.data;
