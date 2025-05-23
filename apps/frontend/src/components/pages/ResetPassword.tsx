@@ -191,7 +191,7 @@ export default function ResetPassword({ token }: { token: string }) {
                       />
                     ) : (
                       <EyeOff
-                        aria-label="Hide password"
+                        aria-label="Show password"
                         role="button"
                         tabIndex={0}
                         onClick={() => setShowConfirmPassword(true)}
