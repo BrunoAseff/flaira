@@ -184,12 +184,16 @@ export default function ResetPassword({ token }: { token: string }) {
                   iconRight={
                     showConfirmPassword ? (
                       <Eye
-                        className="text-accent cursor-pointer"
+                        aria-label="Hide password"
+                        role="button"
+                        tabIndex={0}
                         onClick={() => setShowConfirmPassword(false)}
                       />
                     ) : (
                       <EyeOff
-                        className="text-accent cursor-pointer"
+                        aria-label="Show password"
+                        role="button"
+                        tabIndex={0}
                         onClick={() => setShowConfirmPassword(true)}
                       />
                     )

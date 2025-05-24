@@ -24,6 +24,7 @@ export const uploadAvatar = async (context: Context) => {
 export const getAvatar = async (context: Context) => {
   try {
     const key = context.req.query("key");
+
     if (!key) {
       const headers = getHeaders();
       const body = getBody(400, null);
@@ -48,7 +49,7 @@ export const getAvatar = async (context: Context) => {
 
 export const deleteAvatar = async (context: Context) => {
   try {
-    const { key } = await context.req.json();
+    const key = context.req.query("key");
 
     if (!key) {
       const headers = getHeaders();

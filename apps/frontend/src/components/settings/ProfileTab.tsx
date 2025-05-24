@@ -9,8 +9,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   User03Icon,
-  Loading02Icon,
   PaintBrush01Icon,
+  Loading01Icon,
 } from "@hugeicons/core-free-icons";
 import { Banner } from "../ui/banner";
 import { Input } from "../ui/input";
@@ -80,8 +80,8 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
         const errorData = await presignedUrlResponse.json().catch(() => ({}));
         throw new Error(errorData.message || "Upload failed.");
       }
-      const presignedUrlData = await presignedUrlResponse.json();
-      const { url, key } = presignedUrlData.data;
+
+      const { url, key } = (await presignedUrlResponse.json()).data;
 
       const uploadResponse = await fetch(url, {
         method: "PUT",
@@ -99,21 +99,26 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
           updateUserResponse.error.message || "Failed to update user profile.",
         );
       }
+
+      if (user?.image) {
+        deleteAvatarMutation.mutateAsync(user.image);
+      }
+
       return updateUserResponse.data;
     },
+
     onMutate: async (file: File) => {
       const localUrl = URL.createObjectURL(file);
       setOptimisticAvatarUrl(localUrl);
       return { localUrl };
     },
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentSession"] });
     },
-    onError: (
-      _error: Error,
-      _variables,
-      _context?: { localUrl?: string },
-    ) => {},
+
+    onError: (_error, _variables, _context?: { localUrl?: string }) => {},
+
     onSettled: (_data, _error, _variables, context?: { localUrl?: string }) => {
       if (context?.localUrl) {
         URL.revokeObjectURL(context.localUrl);
@@ -121,6 +126,28 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
       if (_error) {
         setOptimisticAvatarUrl(null);
       }
+    },
+  });
+
+  const deleteAvatarMutation = useMutation({
+    mutationFn: async (key: string) => {
+      const url = new URL(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/delete-avatar`,
+      );
+      url.searchParams.append("key", key);
+
+      const response = await fetch(url.toString(), {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "Failed to delete avatar.");
+      }
+
+      return response.json();
     },
   });
 
@@ -197,10 +224,10 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
                   </label>
                 )}
                 {uploadAvatarMutation.isPending && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 rounded-full">
+                  <div className="absolute inset-0 flex items-center justify-center bg-muted bg-opacity-60 rounded-full">
                     <HugeiconsIcon
-                      icon={Loading02Icon}
-                      className="animate-spin text-foreground"
+                      icon={Loading01Icon}
+                      className="animate-spin text-primary"
                       size={32}
                     />
                   </div>
