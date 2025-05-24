@@ -9,8 +9,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   User03Icon,
-  Loading02Icon,
   PaintBrush01Icon,
+  Loading01Icon,
 } from "@hugeicons/core-free-icons";
 import { Banner } from "../ui/banner";
 import { Input } from "../ui/input";
@@ -224,10 +224,10 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
                   </label>
                 )}
                 {uploadAvatarMutation.isPending && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 rounded-full">
+                  <div className="absolute inset-0 flex items-center justify-center bg-muted bg-opacity-60 rounded-full">
                     <HugeiconsIcon
-                      icon={Loading02Icon}
-                      className="animate-spin text-foreground"
+                      icon={Loading01Icon}
+                      className="animate-spin text-primary"
                       size={32}
                     />
                   </div>
