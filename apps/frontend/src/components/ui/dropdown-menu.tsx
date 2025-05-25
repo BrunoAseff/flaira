@@ -74,7 +74,7 @@ function DropdownMenuItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "focus:bg-primary-foreground rounded-xl transition-all duration-300 font-bold hover:[&>svg]:text-primary data-[variant=destructive]:focus:bg-error/10 dark:data-[variant=destructive]:focus:bg-error/20 data-[variant=destructive]:hover:[&>svg]:text-error data-[variant=destructive]:[&_svg:not([class*='text-'])]:text-accent-foreground relative flex cursor-default items-center gap-2 p-3 text-base outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+        "focus:bg-primary-foreground rounded-xl transition-all duration-300 font-bold hover:[&>svg]:text-primary data-[variant=destructive]:focus:bg-error/10 dark:data-[variant=destructive]:focus:bg-error/20 data-[variant=destructive]:hover:[&>svg]:text-error data-[variant=destructive]:[&_svg:not([class*='text-'])]:text-accent-foreground relative flex cursor-default gap-2 p-3 text-base outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
         
         className
       )}

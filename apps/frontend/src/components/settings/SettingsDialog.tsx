@@ -67,7 +67,7 @@ export function SettingsDialog({
             defaultValue="profile"
             orientation="vertical"
           >
-            <TabsList className="flex flex-col mt-10 min-h-full bg-transparent gap-2 w-fit pr-4">
+            <TabsList className="flex flex-col mt-10 bg-transparent gap-2 w-fit pr-4">
               <TabsTrigger value="profile">
                 <HugeiconsIcon
                   icon={UserSquareIcon}

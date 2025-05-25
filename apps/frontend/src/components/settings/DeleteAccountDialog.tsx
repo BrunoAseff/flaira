@@ -64,7 +64,7 @@ export function DeleteAccountDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="bg-background p-4 max-w-[30rem] overflow-hidden">
+      <DialogContent className="bg-background p-4 pb-0 max-w-[30rem] overflow-hidden">
         <DialogHeader>
           <DialogTitle className="ml-5 mb-2 text-foreground text-xl font-semibold">
             Delete account
@@ -149,7 +149,7 @@ export function DeleteAccountDialog({
               </div>
             )}
           />
-          <div className="w-full ml-auto flex items-end justify-end gap-4">
+          <div className="w-full ml-auto mt-2 flex items-end justify-end gap-4">
             <Button
               onClick={() => setIsOpen(false)}
               variant="outline"
