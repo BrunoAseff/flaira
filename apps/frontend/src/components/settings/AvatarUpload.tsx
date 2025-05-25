@@ -267,7 +267,6 @@ export default function AvatarUpload({ user }: { user: User | null }) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild disabled={isActionPending}>
           <div className="relative group cursor-pointer">
-            {" "}
             <Avatar className="size-24 border-2 border-muted">
               <AvatarImage
                 src={displayImageSrc || ""}
