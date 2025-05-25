@@ -316,7 +316,7 @@ export default function AvatarUpload({ user }: { user: User | null }) {
           <DropdownMenuItem
             onClick={handleUpdateAvatarClick}
             disabled={isActionPending}
-            className="group flex items-center justify-between cursor-pointer"
+            className="group flex items-center justify-between"
           >
             <HugeiconsIcon
               icon={PaintBrush01Icon}
