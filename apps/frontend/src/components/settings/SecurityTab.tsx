@@ -158,7 +158,7 @@ export default function SecurityTab({
                             />
                             {currentSession?.id === session.id ? (
                               <>
-                                <div className="text-xs md:hidden flex absolute -top-3 -left-3 top- w-fit bg-primary-foreground text-primary font-bold p-1 rounded-md">
+                                <div className="text-xs md:hidden flex absolute -top-3 -left-3 w-fit bg-primary-foreground text-primary font-bold p-1 rounded-md">
                                   Current device
                                 </div>
                                 <div className="text-xs hidden md:flex top- w-fit bg-primary-foreground text-primary font-bold p-1 rounded-md">
