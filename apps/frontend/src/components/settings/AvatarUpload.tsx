@@ -294,7 +294,7 @@ export default function AvatarUpload({ user }: { user: User | null }) {
             {!isActionPending && !optimisticAvatarUrl && (
               <div
                 className={cn(
-                  "absolute inset-0 flex items-center justify-center bg-primary-foreground/80 text-primary rounded-full",
+                  "absolute inset-0 flex items-center justify-center bg-primary-foreground text-primary rounded-full",
                   "opacity-0 group-hover:opacity-100 transition-opacity duration-200",
                 )}
               >
