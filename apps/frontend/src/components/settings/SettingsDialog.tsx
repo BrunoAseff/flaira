@@ -17,6 +17,7 @@ import { LockKeyIcon, UserSquareIcon } from "@hugeicons/core-free-icons";
 import SecurityTab from "./SecurityTab";
 import { Separator } from "@/components/ui/separator";
 import ProfileTab from "./ProfileTab";
+import { cn } from "@/lib/utils";
 
 export function SettingsDialog({
   isOpen,
@@ -63,54 +64,69 @@ export function SettingsDialog({
         </DialogHeader>
         <div className="flex flex-1 w-full overflow-hidden px-6 pt-4">
           <Tabs
-            className="flex w-full h-full"
+            className="flex flex-col md:flex-row w-full h-full"
             defaultValue="profile"
-            orientation="vertical"
+            orientation="horizontal"
           >
-            <TabsList className="flex flex-col mt-10 min-h-full bg-transparent gap-2 w-fit pr-4">
-              <TabsTrigger value="profile">
+            <TabsList
+              className={cn(
+                "flex-shrink-0 bg-transparent gap-3 my-3 w-full md:w-44 justify-center md:justify-start",
+                "flex-row md:flex-col md:mt-0 md:pr-4 mb-4 md:mb-0",
+              )}
+            >
+              <TabsTrigger
+                value="profile"
+                className="flex-col sm:flex-row items-center px-4 py-3 text-sm sm:text-base"
+              >
                 <HugeiconsIcon
                   icon={UserSquareIcon}
                   color="currentColor"
                   strokeWidth={2}
-                  size={28}
+                  size={20}
+                  className="size-5 sm:size-6"
                 />
                 Profile
               </TabsTrigger>
-              <TabsTrigger value="security">
+              <TabsTrigger
+                value="security"
+                className="flex-col sm:flex-row items-center px-4 py-3 text-sm sm:text-base"
+              >
                 <HugeiconsIcon
                   icon={LockKeyIcon}
                   color="currentColor"
                   strokeWidth={2}
-                  size={28}
+                  size={20}
+                  className="size-5 sm:size-6"
                 />
                 Security
               </TabsTrigger>
             </TabsList>
 
-            <Separator orientation="vertical" className="h-auto" />
+            <Separator orientation="horizontal" className="md:hidden mr-2" />
+            <Separator
+              orientation="vertical"
+              className="h-auto hidden md:block mx-2 md:mx-4"
+            />
 
-            <TabsContent
-              className="w-full flex-1 h-full overflow-hidden pl-4"
-              value="profile"
-            >
-              <ProfileTab
-                user={session?.user ?? null}
-                error={error as Error | null}
-              />
-            </TabsContent>
-
-            <TabsContent
-              className="w-full flex-1 h-full overflow-hidden pl-4"
-              value="security"
-            >
-              <SecurityTab
-                sessionList={sortedSessions}
-                currentSession={session?.session ?? null}
-                isLoading={isLoading}
-                error={fetchError as Error | null}
-              />
-            </TabsContent>
+            <div className="flex-1 w-full h-full overflow-y-auto">
+              <TabsContent
+                className="w-full h-full mt-6 md:mt-0 outline-none ring-0 focus-visible:ring-0 focus-visible:outline-none :pl-2 lg:pl-4"
+                value="profile"
+              >
+                <ProfileTab user={session?.user ?? null} error={null} />
+              </TabsContent>
+              <TabsContent
+                className="w-full h-full outline-none ring-0 focus-visible:ring-0 focus-visible:outline-none mt-0 md:pl-2 lg:pl-4"
+                value="security"
+              >
+                <SecurityTab
+                  sessionList={sortedSessions}
+                  currentSession={session?.session ?? null}
+                  isLoading={isLoading}
+                  error={fetchError instanceof Error ? fetchError : null}
+                />
+              </TabsContent>
+            </div>
           </Tabs>
         </div>
         <DialogClose />

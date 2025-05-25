@@ -1,362 +1,131 @@
-'use client';
-import { AnimatePresence, motion, Transition, Variants } from 'motion/react';
-import React, { createContext, useContext, useEffect, useRef } from 'react';
-import { cn } from '@/lib/utils';
-import { useId } from 'react';
-import { createPortal } from 'react-dom';
-import { HugeiconsIcon } from '@hugeicons/react';
-import { Cancel01Icon } from '@hugeicons/core-free-icons';
-import { usePreventScroll } from '@/hooks/use-prevent-scroll';
-import { TooltipProvider } from '@/components/ui/tooltip';
+"use client"
 
-const DialogContext = createContext<{
-  isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
-  dialogRef: React.RefObject<HTMLDialogElement | null>;
-  variants: Variants;
-  transition?: Transition;
-  ids: {
-    dialog: string;
-    title: string;
-    description: string;
-  };
-  onAnimationComplete: (definition: string) => void;
-  handleTrigger: () => void;
-} | null>(null);
+import * as React from "react"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
 
-const defaultVariants: Variants = {
-  initial: {
-    opacity: 0,
-    scale: 0.9,
-  },
-  animate: {
-    opacity: 1,
-    scale: 1,
-  },
-};
+  Cancel01Icon,
+} from "@hugeicons/core-free-icons";
 
-const defaultTransition: Transition = {
-  ease: 'easeOut',
-  duration: 0.2,
-};
+import { cn } from "@/lib/utils"
 
-export type DialogProps = {
-  children: React.ReactNode;
-  variants?: Variants;
-  transition?: Transition;
-  className?: string;
-  defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  open?: boolean;
-};
+const Dialog = DialogPrimitive.Root
 
-function Dialog({
-  children,
-  variants = defaultVariants,
-  transition = defaultTransition,
-  defaultOpen,
-  onOpenChange,
-  open,
-}: DialogProps) {
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(
-    defaultOpen || false
-  );
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const isOpen = open !== undefined ? open : uncontrolledOpen;
+const DialogTrigger = DialogPrimitive.Trigger
 
-  // prevent scroll when dialog is open on iOS
-  usePreventScroll({
-    isDisabled: !isOpen,
-  });
+const DialogPortal = DialogPrimitive.Portal
 
-  const setIsOpen = React.useCallback(
-    (value: boolean) => {
-      setUncontrolledOpen(value);
-      onOpenChange?.(value);
-    },
-    [onOpenChange]
-  );
+const DialogClose = DialogPrimitive.Close
 
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
+const DialogOverlay = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Overlay
+    ref={ref}
+    className={cn(
+      "fixed inset-0 z-50 bg-black/50  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className
+    )}
+    {...props}
+  />
+))
+DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
-    if (isOpen) {
-      document.body.classList.add('overflow-hidden');
-    } else {
-      document.body.classList.remove('overflow-hidden');
-    }
-
-    const handleCancel = (e: Event) => {
-      e.preventDefault();
-      if (isOpen) {
-        setIsOpen(false);
-      }
-    };
-
-    dialog.addEventListener('cancel', handleCancel);
-    return () => {
-      dialog.removeEventListener('cancel', handleCancel);
-      document.body.classList.remove('overflow-hidden');
-    };
-  }, [dialogRef, isOpen, setIsOpen]);
-
-  useEffect(() => {
-    if (isOpen && dialogRef.current) {
-      dialogRef.current.showModal();
-    }
-  }, [isOpen]);
-
-  const handleTrigger = () => {
-    setIsOpen(true);
-  };
-
-  const onAnimationComplete = (definition: string) => {
-    if (definition === 'exit' && !isOpen) {
-      dialogRef.current?.close();
-    }
-  };
-
-  const baseId = useId();
-  const ids = {
-    dialog: `motion-ui-dialog-${baseId}`,
-    title: `motion-ui-dialog-title-${baseId}`,
-    description: `motion-ui-dialog-description-${baseId}`,
-  };
-
-  return (
-    <DialogContext.Provider
-      value={{
-        isOpen,
-        setIsOpen,
-        dialogRef,
-        variants,
-        transition,
-        ids,
-        onAnimationComplete,
-        handleTrigger,
-      }}
-    >
-      {children}
-    </DialogContext.Provider>
-  );
-}
-
-export type DialogTriggerProps = {
-  children: React.ReactNode;
-  className?: string;
-};
-
-function DialogTrigger({ children, className }: DialogTriggerProps) {
-  const context = useContext(DialogContext);
-  if (!context) throw new Error('DialogTrigger must be used within Dialog');
-
-  return (
-    <button
-      onClick={context.handleTrigger}
+const DialogContent = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <DialogPortal>
+    <DialogOverlay />
+    <DialogPrimitive.Content
+      ref={ref}
       className={cn(
-        'inline-flex items-center justify-center rounded-md text-sm font-medium',
-        'transition-colors focus-visible:ring-2 focus-visible:outline-hidden',
-        'focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+        "fixed left-[50%] top-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg",
         className
       )}
+      {...props}
     >
       {children}
-    </button>
-  );
-}
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        <HugeiconsIcon
+          className="text-foreground/70"
+          icon={Cancel01Icon}
+          color="currentColor"
+          strokeWidth={2}
+        />
+        <span className="sr-only">Close</span>
+      </DialogPrimitive.Close>
+    </DialogPrimitive.Content>
+  </DialogPortal>
+))
+DialogContent.displayName = DialogPrimitive.Content.displayName
 
-export type DialogPortalProps = {
-  children: React.ReactNode;
-  container?: HTMLElement | null;
-};
+const DialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col space-y-1.5 text-center sm:text-left",
+      className
+    )}
+    {...props}
+  />
+)
+DialogHeader.displayName = "DialogHeader"
 
-function DialogPortal({
-  children,
-  container = typeof window !== 'undefined' ? document.body : null,
-}: DialogPortalProps) {
-  const [mounted, setMounted] = React.useState(false);
-  const [portalContainer, setPortalContainer] =
-    React.useState<HTMLElement | null>(null);
+const DialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      className
+    )}
+    {...props}
+  />
+)
+DialogFooter.displayName = "DialogFooter"
 
-  useEffect(() => {
-    setMounted(true);
-    setPortalContainer(container || document.body);
-    return () => setMounted(false);
-  }, [container]);
+const DialogTitle = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Title
+    ref={ref}
+    className={cn(
+      "text-lg font-semibold leading-none tracking-tight",
+      className
+    )}
+    {...props}
+  />
+))
+DialogTitle.displayName = DialogPrimitive.Title.displayName
 
-  if (!mounted || !portalContainer) {
-    return null;
-  }
-
-  return createPortal(children, portalContainer);
-}
-export type DialogContentProps = {
-  children: React.ReactNode;
-  className?: string;
-  container?: HTMLElement;
-};
-
-function DialogContent({ children, className, container: portalTargetForDialog }: DialogContentProps) {
-  const context = useContext(DialogContext);
-  if (!context) throw new Error('DialogContent must be used within Dialog');
-  const {
-    isOpen,
-    setIsOpen,
-    dialogRef, 
-    variants,
-    transition,
-    ids,
-    onAnimationComplete,
-  } = context;
-
-  const [currentDialogElement, setCurrentDialogElement] = React.useState<HTMLDialogElement | null>(null);
-
-  React.useLayoutEffect(() => {
-    if (isOpen && dialogRef.current) {
-      setCurrentDialogElement(dialogRef.current);
-    } else {
-      setCurrentDialogElement(null);
-    }
-  }, [isOpen, dialogRef]); 
-  
-  const dialogActualContent = (
-    <AnimatePresence mode='wait'>
-      {isOpen && (
-        <motion.dialog
-          key={ids.dialog}
-          ref={dialogRef as React.RefObject<HTMLDialogElement>}
-          id={ids.dialog}
-          aria-labelledby={ids.title}
-          aria-describedby={ids.description}
-          aria-modal='true'
-          role='dialog'
-          onClick={(e) => {
-            if (e.target === dialogRef.current) {
-              setIsOpen(false);
-            }
-          }}
-          initial='initial'
-          animate='animate'
-          exit='exit'
-          variants={variants}
-          transition={transition}
-          onAnimationComplete={onAnimationComplete}
-          className={cn(
-            'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-lg border border-border shadow-lg',
-            'backdrop:bg-foreground/50 backdrop:backdrop-blur-xs',
-            'open:flex open:flex-col',
-           
-            className
-          )}
-        >
-         
-          {currentDialogElement ? (
-            <TooltipProvider openDelay={0} portalContainer={currentDialogElement}>
-              <div className='w-full' data-slot="dialog-inner-content-wrapper">
-                {children} 
-              </div>
-            </TooltipProvider>
-          ) : (
-            <div className='w-full' data-slot="dialog-inner-content-wrapper-fallback">
-              {children}
-            </div>
-          )}
-        </motion.dialog>
-      )}
-    </AnimatePresence>
-  );
-  return <DialogPortal container={portalTargetForDialog}>{dialogActualContent}</DialogPortal>;
-}
-
-export type DialogHeaderProps = {
-  children: React.ReactNode;
-  className?: string;
-};
-
-function DialogHeader({ children, className }: DialogHeaderProps) {
-  return (
-    <div className={cn('flex flex-col space-y-1.5', className)}>{children}</div>
-  );
-}
-
-export type DialogTitleProps = {
-  children: React.ReactNode;
-  className?: string;
-};
-
-function DialogTitle({ children, className }: DialogTitleProps) {
-  const context = useContext(DialogContext);
-  if (!context) throw new Error('DialogTitle must be used within Dialog');
-
-  return (
-    <h2
-      id={context.ids.title}
-      className={cn('text-base font-medium', className)}
-    >
-      {children}
-    </h2>
-  );
-}
-
-export type DialogDescriptionProps = {
-  children: React.ReactNode;
-  className?: string;
-};
-
-function DialogDescription({ children, className }: DialogDescriptionProps) {
-  const context = useContext(DialogContext);
-  if (!context) throw new Error('DialogDescription must be used within Dialog');
-
-  return (
-    <p
-      id={context.ids.description}
-      className={cn('text-base text-foreground', className)}>
-      {children}
-    </p>
-  );
-}
-
-export type DialogCloseProps = {
-  className?: string;
-  children?: React.ReactNode;
-  disabled?: boolean;
-};
-
-function DialogClose({ className, children, disabled }: DialogCloseProps) {
-  const context = useContext(DialogContext);
-  if (!context) throw new Error('DialogClose must be used within Dialog');
-
-  return (
-    <button
-      onClick={() => context.setIsOpen(false)}
-      type='button'
-      aria-label='Close dialog'
-      className={cn(
-        'absolute top-4 right-4 rounded-xs opacity-70 transition-opacity',
-        'hover:opacity-100 focus:ring-2 focus:outline-hidden',
-        'focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none',
-        className
-      )}
-      disabled={disabled}
-    >
-      {children || <HugeiconsIcon
-  icon={Cancel01Icon}
-  className='foreground/70'
-  color="currentColor"
-  strokeWidth={2}
-/>}
-      <span className='sr-only'>Close</span>
-    </button>
-  );
-}
+const DialogDescription = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
+>(({ className, ...props }, ref) => (
+  <DialogPrimitive.Description
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+))
+DialogDescription.displayName = DialogPrimitive.Description.displayName
 
 export {
   Dialog,
+  DialogPortal,
+  DialogOverlay,
   DialogTrigger,
+  DialogClose,
   DialogContent,
   DialogHeader,
+  DialogFooter,
   DialogTitle,
   DialogDescription,
-  DialogClose,
-};
+}
