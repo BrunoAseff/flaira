@@ -63,7 +63,7 @@ export default function UserButton() {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <SidebarMenuButton className="py-6 hover:bg-background">
+          <SidebarMenuButton size="lg" className="py-6 hover:bg-background">
             <Avatar className="size-8 rounded-lg">
               <AvatarImage
                 src={imageUrl ?? ""}
@@ -77,9 +77,11 @@ export default function UserButton() {
                 />
               </AvatarFallback>
             </Avatar>
-            <div className="flex flex-col items-left w-full">
-              <h2>{session?.user.name}</h2>
-              <h2 className="text-sm text-muted-foreground">
+            <div className="flex flex-col items-left text-ellipsis w-full">
+              <h2 className="text-ellipsis overflow-hidden whitespace-nowrap">
+                {session?.user.name}
+              </h2>
+              <h2 className="text-sm text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
                 {session?.user.email}
               </h2>
             </div>
