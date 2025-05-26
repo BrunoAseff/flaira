@@ -44,6 +44,8 @@
   },
   "dependencies": {
     "@hugeicons/core-free-icons": "^1.0.14",
-    "@hugeicons/react": "^1.0.5"
+    "@hugeicons/react": "^1.0.5",
+    "maplibre-gl": "^5.5.0",
+    "react-map-gl": "^8.0.4"
   }
 }

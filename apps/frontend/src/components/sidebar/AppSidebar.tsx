@@ -32,6 +32,9 @@ import {
   Settings05Icon,
   PlusSignIcon,
 } from "@hugeicons/core-free-icons";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const items = [
   {
@@ -69,7 +72,16 @@ const items = [
 export function AppSidebar() {
   const { open } = useSidebar();
   const { data: session, isPending } = auth.useSession();
+  const pathname = usePathname();
+
   if (isPending || !session) return null;
+
+  const isActive = (url: string) => {
+    if (url === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(url);
+  };
 
   return (
     <TooltipProvider openDelay={0}>
@@ -82,7 +94,7 @@ export function AppSidebar() {
             <Tooltip side="right">
               <TooltipTrigger>
                 <SidebarMenuButton
-                  className="hover:text-background active:text-foreground [&>svg]:text-background hover:[&>svg]:text-background gap-2 text-background h-13 rounded-xl text-lg font-medium data-[state=open]:hover:text-background  data-[state=open]:hover:bg-primary/90"
+                  className="hover:text-background active:text-primary [&>svg]:text-background hover:[&>svg]:text-background gap-2 text-background h-13 rounded-xl text-lg font-medium data-[state=open]:hover:text-background  data-[state=open]:hover:bg-primary/90"
                   asChild
                 >
                   <Button className="mt-3 mb-6">
@@ -101,26 +113,45 @@ export function AppSidebar() {
             </Tooltip>
             <SidebarGroupContent>
               <SidebarMenu>
-                {items.map((item) => (
-                  <Tooltip side="right" key={item.title}>
-                    <TooltipTrigger>
-                      <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                          <a href={item.url}>
-                            <HugeiconsIcon
-                              icon={item.icon}
-                              color="currentColor"
-                              strokeWidth={2}
-                              className="ml-0.5"
-                            />
-                            <span>{item.title}</span>
-                          </a>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    </TooltipTrigger>
-                    <TooltipContent>{!open ? item.title : null}</TooltipContent>
-                  </Tooltip>
-                ))}
+                {items.map((item) => {
+                  const active = isActive(item.url);
+                  return (
+                    <Tooltip side="right" key={item.title}>
+                      <TooltipTrigger>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton
+                            asChild
+                            isActive={active}
+                            className={cn(
+                              active &&
+                                "bg-primary text-primary-foreground hover:bg-primary/90",
+                            )}
+                          >
+                            <Link
+                              href={item.url}
+                              onClick={(e) => {
+                                if (active) {
+                                  e.preventDefault();
+                                }
+                              }}
+                            >
+                              <HugeiconsIcon
+                                icon={item.icon}
+                                color="currentColor"
+                                strokeWidth={2}
+                                className="ml-0.5"
+                              />
+                              <span>{item.title}</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {!open ? item.title : null}
+                      </TooltipContent>
+                    </Tooltip>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
