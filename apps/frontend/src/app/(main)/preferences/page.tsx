@@ -2,10 +2,10 @@
 
 import ErrorPage from "@/components/pages/ErrorPage";
 import LoadingPage from "@/components/pages/LoadingPage";
-import UseAuth from "@/hooks/use-auth";
+import useAuth from "@/hooks/use-auth";
 
 export default function Preferences() {
-  const { session, isPending, error } = UseAuth();
+  const { session, isPending, error } = useAuth();
 
   if (isPending || !session) return <LoadingPage />;
   if (error) return <ErrorPage />;
