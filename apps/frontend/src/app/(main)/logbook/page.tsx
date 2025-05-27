@@ -1,18 +1,12 @@
-import { auth } from "@/auth/client";
 import ErrorPage from "@/components/pages/ErrorPage";
 import LoadingPage from "@/components/pages/LoadingPage";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import UseAuth from "@/hooks/use-auth";
 
 export default function Logbook() {
-  const { data: session, isPending, error } = auth.useSession();
-  const router = useRouter();
+  const { session, isPending, error } = UseAuth();
 
-  useEffect(() => {
-    if (!isPending && !session) {
-      router.push("/sign-in");
-    }
-  }, [session, isPending, router]);
+  if (isPending || !session) return <LoadingPage />;
+  if (error) return <ErrorPage />;
 
   if (isPending || !session) return <LoadingPage />;
   if (error) return <ErrorPage />;
