@@ -1,3 +1,5 @@
+"use client";
+
 import ErrorPage from "@/components/pages/ErrorPage";
 import LoadingPage from "@/components/pages/LoadingPage";
 import UseAuth from "@/hooks/use-auth";
