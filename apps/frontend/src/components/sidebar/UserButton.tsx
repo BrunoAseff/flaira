@@ -30,7 +30,7 @@ export default function UserButton() {
   }
 
   const { data: imageUrl } = useQuery({
-    queryKey: ["image-url", session?.user.image],
+    queryKey: ["avatar-url", session?.user.image],
     queryFn: async () => {
       if (!session?.user.image) {
         return null;

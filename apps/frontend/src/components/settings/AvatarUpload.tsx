@@ -34,7 +34,7 @@ export default function AvatarUpload({ user }: { user: User | null }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: imageUrl, isLoading: isImageUrlLoading } = useQuery({
-    queryKey: ["image-url", user?.id, user?.image],
+    queryKey: ["avatar-url", user?.id, user?.image],
     queryFn: async () => {
       if (!user?.image) {
         return null;
@@ -141,13 +141,13 @@ export default function AvatarUpload({ user }: { user: User | null }) {
       const localUrl = URL.createObjectURL(file);
       setOptimisticAvatarUrl(localUrl);
       await queryClient.cancelQueries({
-        queryKey: ["image-url", user?.id, user?.image],
+        queryKey: ["avatar-url", user?.id, user?.image],
       });
       return { localUrl };
     },
     onSuccess: (_data, _variables, _context) => {
       queryClient.invalidateQueries({ queryKey: ["currentSession"] });
-      queryClient.invalidateQueries({ queryKey: ["image-url"] });
+      queryClient.invalidateQueries({ queryKey: ["avatar-url"], exact: false });
       setOptimisticAvatarUrl(null);
     },
     onError: (error, _variables, context) => {
@@ -188,19 +188,19 @@ export default function AvatarUpload({ user }: { user: User | null }) {
     onMutate: async () => {
       setOptimisticAvatarUrl(null);
       await queryClient.cancelQueries({
-        queryKey: ["image-url", user?.id, user?.image],
+        queryKey: ["avatar-url", user?.id, user?.image],
       });
       const previousImageUrl = queryClient.getQueryData([
-        "image-url",
+        "avatar-url",
         user?.id,
         user?.image,
       ]);
-      queryClient.setQueryData(["image-url", user?.id, user?.image], null);
+      queryClient.setQueryData(["avatar-url", user?.id, user?.image], null);
       return { previousImageUrl };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentSession"] });
-      queryClient.invalidateQueries({ queryKey: ["image-url"] });
+      queryClient.invalidateQueries({ queryKey: ["avatar-url"] });
       setOptimisticAvatarUrl(null);
       setClientSideUploadError(null);
     },
@@ -208,7 +208,7 @@ export default function AvatarUpload({ user }: { user: User | null }) {
       setClientSideUploadError(error.message || "Failed to remove avatar.");
       if (context?.previousImageUrl) {
         queryClient.setQueryData(
-          ["image-url", user?.id, user?.image],
+          ["avatar-url", user?.id, user?.image],
           context.previousImageUrl,
         );
       }
