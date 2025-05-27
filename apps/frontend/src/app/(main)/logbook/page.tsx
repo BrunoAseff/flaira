@@ -10,8 +10,5 @@ export default function Logbook() {
   if (isPending || !session) return <LoadingPage />;
   if (error) return <ErrorPage />;
 
-  if (isPending || !session) return <LoadingPage />;
-  if (error) return <ErrorPage />;
-
   return <div>Logbook</div>;
 }
