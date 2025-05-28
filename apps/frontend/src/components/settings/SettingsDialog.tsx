@@ -71,38 +71,37 @@ export function SettingsDialog({
             <TabsList
               className={cn(
                 "flex-shrink-0 bg-transparent gap-3 my-3 w-full md:w-44 justify-center md:justify-start",
-                "flex-row md:flex-col md:mt-0 md:pr-4 mb-4 md:mb-0",
+                "flex-row md:flex-col mt-6 md:mt-0 md:pr-4 mb-4 md:mb-0",
               )}
             >
               <TabsTrigger
                 value="profile"
-                className="flex-col sm:flex-row items-center px-4 py-3 text-sm sm:text-base"
+                className="flex-col sm:flex-row items-center px-4 py-3 text-xl md:text-base"
               >
                 <HugeiconsIcon
                   icon={UserSquareIcon}
                   color="currentColor"
                   strokeWidth={2}
                   size={20}
-                  className="size-5 sm:size-6"
+                  className="size-8 sm:size-6"
                 />
                 Profile
               </TabsTrigger>
               <TabsTrigger
                 value="security"
-                className="flex-col sm:flex-row items-center px-4 py-3 text-sm sm:text-base"
+                className="flex-col sm:flex-row items-center px-4 py-3 text-xl md:text-base"
               >
                 <HugeiconsIcon
                   icon={LockKeyIcon}
                   color="currentColor"
                   strokeWidth={2}
                   size={20}
-                  className="size-5 sm:size-6"
+                  className="size-8 sm:size-6"
                 />
                 Security
               </TabsTrigger>
             </TabsList>
 
-            <Separator orientation="horizontal" className="md:hidden mr-2" />
             <Separator
               orientation="vertical"
               className="h-auto hidden md:block mx-2 md:mx-4"
@@ -110,13 +109,13 @@ export function SettingsDialog({
 
             <div className="flex-1 w-full h-full overflow-y-auto">
               <TabsContent
-                className="w-full h-full mt-6 md:mt-0 outline-none ring-0 focus-visible:ring-0 focus-visible:outline-none :pl-2 lg:pl-4"
+                className="w-full h-full mt-12 md:mt-0 outline-none ring-0 focus-visible:ring-0 focus-visible:outline-none :pl-2 lg:pl-4"
                 value="profile"
               >
                 <ProfileTab user={session?.user ?? null} error={null} />
               </TabsContent>
               <TabsContent
-                className="w-full h-full outline-none ring-0 focus-visible:ring-0 focus-visible:outline-none mt-0 md:pl-2 lg:pl-4"
+                className="w-full h-full mt-12 md:mt-0 outline-none ring-0 focus-visible:ring-0 focus-visible:outline-none  md:pl-2 lg:pl-4"
                 value="security"
               >
                 <SecurityTab

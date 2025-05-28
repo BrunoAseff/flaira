@@ -5,7 +5,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import type { User } from "better-auth/types";
 import { name as nameSchema } from "../../schemas/auth";
 import { Banner } from "../ui/banner";
-import AvatarUpload from "./AvatarUpload";
+import AvatarUpload from "./avatar/AvatarUpload";
 import { Input } from "../ui/input";
 import { auth } from "@/auth/client";
 import { useState, useEffect, useRef } from "react";
@@ -94,7 +94,7 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
                   onChange={(e) =>
                     handleNameInputChange({ name: e.target.value })
                   }
-                  className=" text-foreground/80 p-2 max-w-64 ml-auto text-xs"
+                  className=" text-foreground/80 p-2 max-w-64 ml-auto text-base"
                 />
               </div>
               <em className="ml-auto h-1">
@@ -116,7 +116,7 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
                 type="email"
                 autoComplete="email"
                 defaultValue={user?.email || "N/A"}
-                className=" text-foreground/80 p-2 max-w-64 ml-auto text-xs"
+                className=" text-foreground/80 p-2 max-w-64 ml-auto text-base"
                 disabled
               />
             </div>
