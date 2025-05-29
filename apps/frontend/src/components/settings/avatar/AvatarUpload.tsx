@@ -170,19 +170,19 @@ export default function AvatarUpload({ user }: { user: User | null }) {
         setClientSideUploadError={setClientSideUploadError}
       />
 
-      {uploadAvatarMutation.isError ||
+      {(uploadAvatarMutation.isError ||
         removeAvatarMutation.isError ||
-        (!!clientSideUploadError && (
-          <Banner
-            variant="error"
-            className="w-full max-w-xs text-sm text-center mt-2"
-          >
-            {clientSideUploadError ||
-              uploadAvatarMutation.error ||
-              removeAvatarMutation.error ||
-              "An error occurred."}
-          </Banner>
-        ))}
+        !!clientSideUploadError) && (
+        <Banner
+          variant="error"
+          className="w-full max-w-xs text-sm text-center mt-2"
+        >
+          {clientSideUploadError ||
+            uploadAvatarMutation.error?.message ||
+            removeAvatarMutation.error?.message ||
+            "An error occurred."}
+        </Banner>
+      )}
     </div>
   );
 }

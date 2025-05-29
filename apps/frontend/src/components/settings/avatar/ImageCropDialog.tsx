@@ -111,15 +111,12 @@ export default function ImageCropDialog({
   const imgRef = useRef<HTMLImageElement>(null);
 
   const onImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const { width, height, naturalWidth } = e.currentTarget;
+    const { width, height } = e.currentTarget;
 
     const crop = makeAspectCrop(
       {
         unit: "%",
-        width: Math.min(
-          90,
-          (OUTPUT_AVATAR_SIZE / naturalWidth) * 100 * (naturalWidth / width),
-        ),
+        width: 80,
       },
       1,
       width,
