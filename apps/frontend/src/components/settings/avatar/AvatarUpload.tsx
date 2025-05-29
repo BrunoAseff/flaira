@@ -9,113 +9,166 @@ import ImageCropDialog from "./ImageCropDialog";
 import { useAvatarMutations } from "@/hooks/use-avatar";
 import { Banner } from "@/components/ui/banner";
 
-export default function AvatarUpload({ user }: { user: User | null }) {
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ALLOWED_FILE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/jpg",
+];
+const AVATAR_URL_CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+const OPTIMISTIC_CLEAR_DELAY = 100;
+
+interface AvatarUploadProps {
+  user: User | null;
+}
+
+export default function AvatarUpload({ user }: AvatarUploadProps) {
   const queryClient = useQueryClient();
-  const [clientSideUploadError, setClientSideUploadError] = useState<
-    string | null
-  >(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [clientSideError, setClientSideError] = useState<string | null>(null);
   const [optimisticAvatarUrl, setOptimisticAvatarUrl] = useState<string | null>(
     null,
   );
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [imageToCropSrc, setImageToCropSrc] = useState<string | null>(null);
-  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [isCropModalOpen, setIsCropModalOpen] = useState(false);
   const [originalFile, setOriginalFile] = useState<File | null>(null);
 
-  const { data: imageUrl, isLoading: isImageUrlLoading } = useQuery({
+  const { data: avatarUrl, isLoading: isAvatarUrlLoading } = useQuery({
     queryKey: ["avatar-url", user?.id, user?.image],
-    queryFn: async () => {
-      if (!user?.image) {
-        return null;
-      }
-      const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/user/get-avatar`);
-      url.searchParams.append("key", user.image);
-
-      const presignedUrlResponse = await fetch(url.toString(), {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-
-      if (!presignedUrlResponse.ok) {
-        console.error(
-          "Failed to fetch avatar URL:",
-          presignedUrlResponse.status,
-        );
-        return null;
-      }
-      const presignedUrlData = await presignedUrlResponse.json();
-      return presignedUrlData.data || null;
-    },
-    enabled: !!user && !!user.image && !optimisticAvatarUrl,
-    staleTime: 5 * 60 * 1000,
+    queryFn: fetchAvatarUrl,
+    enabled: shouldFetchAvatarUrl(),
+    staleTime: AVATAR_URL_CACHE_TIME,
     retry: 2,
+    refetchOnMount: !optimisticAvatarUrl,
+    refetchOnWindowFocus: !optimisticAvatarUrl,
+    refetchOnReconnect: !optimisticAvatarUrl,
+    placeholderData: (previousData) => previousData,
   });
 
   const { uploadAvatarMutation, removeAvatarMutation } = useAvatarMutations({
     user,
     queryClient,
-    setClientSideUploadError,
-    setOptimisticAvatarUrl,
+    setClientSideUploadError: setClientSideError,
+    setOptimisticAvatarUrl: handleOptimisticAvatarUpdate,
     fileInputRef,
-    setCropModalOpen,
+    setCropModalOpen: setIsCropModalOpen,
   });
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setClientSideUploadError("File is too large (max 5MB).");
-        uploadAvatarMutation.reset();
-        return;
-      }
-      if (
-        !["image/jpeg", "image/png", "image/webp", "image/jpg"].includes(
-          file.type,
-        )
-      ) {
-        setClientSideUploadError(
-          "Invalid file type. Please use JPG, PNG, or WEBP.",
-        );
-        uploadAvatarMutation.reset();
-        return;
-      }
-      setClientSideUploadError(null);
-      setOriginalFile(file);
-      setImageToCropSrc(URL.createObjectURL(file));
-      setCropModalOpen(true);
+  async function fetchAvatarUrl() {
+    if (!user?.image) return null;
+
+    const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/user/get-avatar`);
+    url.searchParams.append("key", user.image);
+
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      console.error("Failed to fetch avatar URL:", response.status);
+      return null;
     }
-  };
 
-  const handleUpdateAvatarClick = () => {
+    const data = await response.json();
+    return data.data || null;
+  }
+
+  function shouldFetchAvatarUrl(): boolean {
+    return !!user && !!user.image && !optimisticAvatarUrl;
+  }
+
+  function handleOptimisticAvatarUpdate(url: string | null) {
+    setOptimisticAvatarUrl(url);
+    if (url) {
+      queryClient.cancelQueries({ queryKey: ["avatar-url", user?.id] });
+    }
+  }
+
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const validationError = validateFile(file);
+    if (validationError) {
+      setClientSideError(validationError);
+      uploadAvatarMutation.reset();
+      return;
+    }
+    setClientSideError(null);
+    setOriginalFile(file);
+    setImageToCropSrc(URL.createObjectURL(file));
+    setIsCropModalOpen(true);
+  }
+
+  function handleUpdateAvatarClick() {
     fileInputRef.current?.click();
-  };
+  }
 
-  const handleRemoveAvatarClick = () => {
+  function handleRemoveAvatarClick() {
     if (user?.image || optimisticAvatarUrl) {
       removeAvatarMutation.mutate();
-    } else {
-      setClientSideUploadError("No avatar to remove.");
     }
-  };
+  }
 
-  const handleCropConfirm = (croppedImageFile: File) => {
-    setCropModalOpen(false);
+  function handleCropConfirm(croppedImageFile: File) {
+    setIsCropModalOpen(false);
     uploadAvatarMutation.mutate(croppedImageFile);
-  };
+  }
 
-  const handleCropCancel = () => {
-    setCropModalOpen(false);
+  function handleCropCancel() {
+    setIsCropModalOpen(false);
+    cleanupImageResources();
+    resetFileInput();
+    setOriginalFile(null);
+  }
+
+  function validateFile(file: File): string | null {
+    if (file.size > MAX_FILE_SIZE) {
+      return "File is too large (max 5MB).";
+    }
+
+    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+      return "Invalid file type. Please use JPG, PNG, or WEBP.";
+    }
+
+    return null;
+  }
+
+  function cleanupImageResources() {
     if (imageToCropSrc) {
       URL.revokeObjectURL(imageToCropSrc);
       setImageToCropSrc(null);
     }
+  }
+
+  function resetFileInput() {
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-    setOriginalFile(null);
-  };
+  }
+
+  const displayImageSrc = optimisticAvatarUrl || avatarUrl;
+  const showRemoveOption = !!(user?.image || optimisticAvatarUrl);
+  const isActionPending =
+    uploadAvatarMutation.isPending ||
+    removeAvatarMutation.isPending ||
+    (isAvatarUrlLoading && !optimisticAvatarUrl);
+
+  const hasError =
+    uploadAvatarMutation.isError ||
+    removeAvatarMutation.isError ||
+    !!clientSideError;
+
+  const errorMessage =
+    clientSideError ||
+    uploadAvatarMutation.error?.message ||
+    removeAvatarMutation.error?.message ||
+    "An error occurred.";
 
   useEffect(() => {
     return () => {
@@ -129,12 +182,23 @@ export default function AvatarUpload({ user }: { user: User | null }) {
     };
   }, [optimisticAvatarUrl, imageToCropSrc]);
 
-  const displayImageSrc = optimisticAvatarUrl || imageUrl;
-  const showRemoveOption = !!(user?.image || optimisticAvatarUrl);
-  const isActionPending =
-    uploadAvatarMutation.isPending ||
-    removeAvatarMutation.isPending ||
-    isImageUrlLoading;
+  useEffect(() => {
+    if (
+      optimisticAvatarUrl &&
+      !uploadAvatarMutation.isPending &&
+      !uploadAvatarMutation.isError
+    ) {
+      const timer = setTimeout(() => {
+        setOptimisticAvatarUrl(null);
+      }, OPTIMISTIC_CLEAR_DELAY);
+
+      return () => clearTimeout(timer);
+    }
+  }, [
+    optimisticAvatarUrl,
+    uploadAvatarMutation.isPending,
+    uploadAvatarMutation.isError,
+  ]);
 
   return (
     <div className="flex flex-col items-center gap-3 pt-6">
@@ -142,7 +206,7 @@ export default function AvatarUpload({ user }: { user: User | null }) {
         displayImageSrc={displayImageSrc}
         user={user}
         isActionPending={isActionPending}
-        isImageUrlLoading={isImageUrlLoading}
+        isImageUrlLoading={isAvatarUrlLoading && !optimisticAvatarUrl}
         optimisticAvatarUrl={optimisticAvatarUrl}
         uploadAvatarMutation={uploadAvatarMutation}
         showRemoveOption={showRemoveOption}
@@ -157,30 +221,25 @@ export default function AvatarUpload({ user }: { user: User | null }) {
         className="hidden"
         accept="image/png, image/jpeg, image/webp, image/jpg"
         onChange={handleFileChange}
-        disabled={uploadAvatarMutation.isPending || cropModalOpen}
+        disabled={uploadAvatarMutation.isPending || isCropModalOpen}
       />
 
       <ImageCropDialog
-        open={cropModalOpen}
+        open={isCropModalOpen}
         imageToCropSrc={imageToCropSrc}
         originalFile={originalFile}
         onCropConfirm={handleCropConfirm}
         onCropCancel={handleCropCancel}
         uploadAvatarMutation={uploadAvatarMutation}
-        setClientSideUploadError={setClientSideUploadError}
+        setClientSideUploadError={setClientSideError}
       />
 
-      {(uploadAvatarMutation.isError ||
-        removeAvatarMutation.isError ||
-        !!clientSideUploadError) && (
+      {hasError && (
         <Banner
           variant="error"
           className="w-full max-w-xs text-sm text-center mt-2"
         >
-          {clientSideUploadError ||
-            uploadAvatarMutation.error?.message ||
-            removeAvatarMutation.error?.message ||
-            "An error occurred."}
+          {errorMessage}
         </Banner>
       )}
     </div>
