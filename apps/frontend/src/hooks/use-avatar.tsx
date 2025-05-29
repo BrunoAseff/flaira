@@ -136,7 +136,7 @@ export function useAvatarMutations({
       if (context?.localUrl) {
         URL.revokeObjectURL(context.localUrl);
       }
-      // biome-ignore lint: shut up biome
+      // biome-ignore lint:
       if (fileInputRef && fileInputRef.current) {
         fileInputRef.current.value = "";
       }
