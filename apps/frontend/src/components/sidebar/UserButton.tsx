@@ -68,6 +68,7 @@ export default function UserButton() {
               <AvatarImage
                 src={imageUrl ?? ""}
                 alt={`${session?.user.name} profile picture`}
+                className="object-cover w-full h-full"
               />
               <AvatarFallback className="text-foreground/70">
                 <HugeiconsIcon

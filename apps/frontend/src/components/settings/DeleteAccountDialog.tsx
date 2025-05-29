@@ -64,12 +64,12 @@ export function DeleteAccountDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="bg-background p-4 pb-0 max-w-[30rem] overflow-hidden">
+      <DialogContent className="bg-background p-4 pb-0 max-w-full h-[100dvh] md:h-fit md:max-w-[30rem] overflow-hidden">
         <DialogHeader>
-          <DialogTitle className="ml-5 mb-2 text-foreground text-xl font-semibold">
+          <DialogTitle className="ml-2 mb-2 md:font-semibold text-foreground mt-auto md:mt-0 text-xl font-bold">
             Delete account
           </DialogTitle>
-          <DialogDescription className="ml-5 mb-6 text-foreground/60 text-base font-semibold">
+          <DialogDescription className="ml-2 mt-1 max-w-none md:max-w-[85%]  mb-3 text-foreground/60 text-base font-semibold">
             This action is permanent and cannot be undone. All your data will be
             permanently deleted.
           </DialogDescription>
