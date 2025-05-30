@@ -76,27 +76,27 @@ export function SettingsDialog({
             >
               <TabsTrigger
                 value="profile"
-                className="flex-col sm:flex-row items-center px-4 py-3 text-xl md:text-base"
+                className="flex-col sm:flex-row items-center px-4 py-3 text-base"
               >
                 <HugeiconsIcon
                   icon={UserSquareIcon}
                   color="currentColor"
                   strokeWidth={2}
                   size={20}
-                  className="size-8 sm:size-6"
+                  className="size-6"
                 />
                 Profile
               </TabsTrigger>
               <TabsTrigger
                 value="security"
-                className="flex-col sm:flex-row items-center px-4 py-3 text-xl md:text-base"
+                className="flex-col sm:flex-row items-center px-4 py-3 text-base"
               >
                 <HugeiconsIcon
                   icon={LockKeyIcon}
                   color="currentColor"
                   strokeWidth={2}
                   size={20}
-                  className="size-8 sm:size-6"
+                  className="size-6"
                 />
                 Security
               </TabsTrigger>

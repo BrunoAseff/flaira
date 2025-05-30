@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Quicksand, K2D } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/hooks/use-query";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const quicksand = Quicksand({
   variable: "--font-quicksand",
@@ -31,6 +32,7 @@ export default function RootLayout({
         className={`${quicksand.variable} ${k2d.variable} antialiased font-sans`}
       >
         <QueryProvider>{children}</QueryProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
