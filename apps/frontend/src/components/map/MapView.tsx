@@ -1,17 +1,13 @@
 "use client";
 
-import { Map as MapLibreMap } from "react-map-gl/maplibre";
+import { Map as MapLibreMap, type ViewState } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { CSSProperties } from "react";
 
 interface MapViewProps {
   mapStyle?: string;
   containerStyle?: CSSProperties;
-  initialViewState?: {
-    zoom: number;
-    longitude: number;
-    latitude: number;
-  };
+  initialViewState?: Partial<ViewState>;
 }
 
 export default function MapView({
