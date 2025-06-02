@@ -16,5 +16,6 @@ This is a **travel tracking platform**, where users can log and explore their tr
 - Everything runs in Docker.
 - GitHub Actions builds and ships the backend image to AWS ECR.
 - Once it lands there, ECS picks it up and runs it.
-- The backend chats with a PostgreSQL database hosted on RDS.
+- The backend connects to a PostgreSQL database hosted on RDS.
+- S3 is used to store images, videos and other files.
 - The frontend is on Vercel, and it connects to the backend on ECS.
