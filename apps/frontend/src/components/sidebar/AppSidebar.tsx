@@ -35,6 +35,8 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { AddTripDialog } from "../trips/AddTripDialog";
 
 const items = [
   {
@@ -73,6 +75,7 @@ export function AppSidebar() {
   const { open } = useSidebar();
   const { data: session, isPending } = auth.useSession();
   const pathname = usePathname();
+  const [isTripDialogOpen, setIsTripDialogOpen] = useState(false);
 
   if (isPending || !session) return null;
 
@@ -84,86 +87,95 @@ export function AppSidebar() {
   };
 
   return (
-    <TooltipProvider openDelay={0}>
-      <Sidebar collapsible="icon">
-        <SidebarHeader className="group-data-[collapsible=icon]:hidden mx-auto py-3">
-          <Logo />
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup className="group-data-[collapsible=icon]:mt-16">
-            <Tooltip side="right">
-              <TooltipTrigger>
-                <SidebarMenuButton
-                  className="hover:text-background active:text-primary [&>svg]:text-background hover:[&>svg]:text-background gap-2 text-background h-13 rounded-xl text-lg font-medium data-[state=open]:hover:text-background  data-[state=open]:hover:bg-primary/90"
-                  asChild
-                >
-                  <Button className="mt-3 mb-6">
-                    <HugeiconsIcon
-                      icon={PlusSignIcon}
-                      color="currentColor"
-                      strokeWidth={2}
-                    />
-                    <p className="group-data-[collapsible=icon]:hidden">
-                      Add trip
-                    </p>
-                  </Button>
-                </SidebarMenuButton>
-              </TooltipTrigger>
-              <TooltipContent>{!open ? "Add trip" : null}</TooltipContent>
-            </Tooltip>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {items.map((item) => {
-                  const active = isActive(item.url);
-                  return (
-                    <Tooltip side="right" key={item.title}>
-                      <TooltipTrigger>
-                        <SidebarMenuItem>
-                          <SidebarMenuButton
-                            asChild
-                            isActive={active}
-                            className={cn(
-                              active &&
-                                "bg-primary text-primary-foreground hover:bg-primary/90",
-                            )}
-                          >
-                            <Link
-                              href={item.url}
-                              onClick={(e) => {
-                                if (active) {
-                                  e.preventDefault();
-                                }
-                              }}
+    <>
+      <TooltipProvider openDelay={0}>
+        <Sidebar collapsible="icon">
+          <SidebarHeader className="group-data-[collapsible=icon]:hidden mx-auto py-3">
+            <Logo />
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarGroup className="group-data-[collapsible=icon]:mt-16">
+              <Tooltip side="right">
+                <TooltipTrigger>
+                  <SidebarMenuButton
+                    className="hover:text-background active:text-primary [&>svg]:text-background hover:[&>svg]:text-background gap-2 text-background h-13 rounded-xl text-lg font-medium data-[state=open]:hover:text-background  data-[state=open]:hover:bg-primary/90"
+                    asChild
+                  >
+                    <Button
+                      onClick={() => setIsTripDialogOpen(true)}
+                      className="mt-3 mb-6"
+                    >
+                      <HugeiconsIcon
+                        icon={PlusSignIcon}
+                        color="currentColor"
+                        strokeWidth={2}
+                      />
+                      <p className="group-data-[collapsible=icon]:hidden">
+                        Add trip
+                      </p>
+                    </Button>
+                  </SidebarMenuButton>
+                </TooltipTrigger>
+                <TooltipContent>{!open ? "Add trip" : null}</TooltipContent>
+              </Tooltip>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {items.map((item) => {
+                    const active = isActive(item.url);
+                    return (
+                      <Tooltip side="right" key={item.title}>
+                        <TooltipTrigger>
+                          <SidebarMenuItem>
+                            <SidebarMenuButton
+                              asChild
+                              isActive={active}
+                              className={cn(
+                                active &&
+                                  "bg-primary text-primary-foreground hover:bg-primary/90",
+                              )}
                             >
-                              <HugeiconsIcon
-                                icon={item.icon}
-                                color="currentColor"
-                                strokeWidth={2}
-                                className="ml-0.5"
-                              />
-                              <span>{item.title}</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        {!open ? item.title : null}
-                      </TooltipContent>
-                    </Tooltip>
-                  );
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <UserButton />
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-      </Sidebar>
-    </TooltipProvider>
+                              <Link
+                                href={item.url}
+                                onClick={(e) => {
+                                  if (active) {
+                                    e.preventDefault();
+                                  }
+                                }}
+                              >
+                                <HugeiconsIcon
+                                  icon={item.icon}
+                                  color="currentColor"
+                                  strokeWidth={2}
+                                  className="ml-0.5"
+                                />
+                                <span>{item.title}</span>
+                              </Link>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {!open ? item.title : null}
+                        </TooltipContent>
+                      </Tooltip>
+                    );
+                  })}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarFooter>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <UserButton />
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarFooter>
+        </Sidebar>
+      </TooltipProvider>
+      <AddTripDialog
+        isOpen={isTripDialogOpen}
+        setIsOpen={setIsTripDialogOpen}
+      />
+    </>
   );
 }
