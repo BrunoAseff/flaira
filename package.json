@@ -30,24 +30,10 @@
     "pino-pretty": "13.0.0",
     "turbo": "2.4.4",
     "typescript": "5",
-    "vitest": "^3.1.1"
+    "vitest": "3.1.1"
   },
   "pnpm": {
-    "ignoredBuiltDependencies": [
-      "@biomejs/biome",
-      "esbuild"
-    ],
-    "onlyBuiltDependencies": [
-      "@biomejs/biome",
-      "sharp"
-    ]
-  },
-  "dependencies": {
-    "@hugeicons/core-free-icons": "^1.0.14",
-    "@hugeicons/react": "^1.0.5",
-    "@vercel/speed-insights": "^1.2.0",
-    "maplibre-gl": "^5.5.0",
-    "react-image-crop": "^11.0.10",
-    "react-map-gl": "^8.0.4"
+    "ignoredBuiltDependencies": ["@biomejs/biome", "esbuild"],
+    "onlyBuiltDependencies": ["@biomejs/biome", "sharp"]
   }
 }

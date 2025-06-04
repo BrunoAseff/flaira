@@ -1,61 +1,17 @@
-const parseUserAgent = (userAgent: string) => {
-  let deviceInfo = "";
-  let browserInfo = "";
+import { UAParser } from "ua-parser-js";
 
-  if (userAgent.includes("Windows")) {
-    deviceInfo = "Windows";
-    if (userAgent.includes("Windows NT 10.0")) deviceInfo = "Windows 10";
-    else if (userAgent.includes("Windows NT 6.3")) deviceInfo = "Windows 8.1";
-    else if (userAgent.includes("Windows NT 6.2")) deviceInfo = "Windows 8";
-    else if (userAgent.includes("Windows NT 6.1")) deviceInfo = "Windows 7";
-  } else if (
-    userAgent.includes("Macintosh") ||
-    userAgent.includes("Mac OS X")
-  ) {
-    deviceInfo = "Mac";
-  } else if (userAgent.includes("iPhone")) {
-    deviceInfo = "iPhone";
-  } else if (userAgent.includes("iPad")) {
-    deviceInfo = "iPad";
-  } else if (userAgent.includes("Android")) {
-    deviceInfo = "Android";
-    if (userAgent.includes("Mobile")) {
-      deviceInfo = "Android Phone";
-    } else {
-      deviceInfo = "Android Tablet";
-    }
-  } else if (userAgent.includes("Linux")) {
-    deviceInfo = "Linux";
-  }
+export default function UserAgentDisplay({ userAgent }: { userAgent: string }) {
+  const { browser, device, os } = UAParser(userAgent);
 
-  if (userAgent.includes("Firefox/")) {
-    browserInfo = "Firefox";
-  } else if (userAgent.includes("Edge/") || userAgent.includes("Edg/")) {
-    browserInfo = "Edge";
-  } else if (userAgent.includes("OPR/") || userAgent.includes("Opera/")) {
-    browserInfo = "Opera";
-  } else if (
-    userAgent.includes("Chrome/") &&
-    !userAgent.includes("Chromium/")
-  ) {
-    browserInfo = "Chrome";
-  } else if (userAgent.includes("Safari/") && !userAgent.includes("Chrome/")) {
-    browserInfo = "Safari";
-  } else if (userAgent.includes("MSIE") || userAgent.includes("Trident/")) {
-    browserInfo = "Internet Explorer";
-  }
+  const browserName = browser?.name || "Unknown Browser";
 
-  return { deviceInfo, browserInfo };
-};
+  const platformInfo = device.is("mobile")
+    ? device?.vendor || "Mobile Device"
+    : `${os?.name || "Unknown OS"}${os?.version ? ` ${os.version}` : ""}`;
 
-export default function FormatUserAgent({ userAgent }: { userAgent: string }) {
-  const { deviceInfo, browserInfo } = parseUserAgent(userAgent);
-
-  return deviceInfo || browserInfo ? (
+  return (
     <span className="text-foreground">
-      {browserInfo} on {deviceInfo}
+      {browserName} on {platformInfo}
     </span>
-  ) : (
-    <span className="text-foreground">Unknown</span>
   );
 }
