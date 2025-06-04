@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { auth } from "@/auth/client";
 import type { Session } from "better-auth/types";
 import { format } from "date-fns";
-import FormatUserAgent from "@/lib/formatUserAgent";
+import UserAgentDisplay from "@/lib/formatUserAgent";
 import { Separator } from "../ui/separator";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -153,7 +153,7 @@ export default function SecurityTab({
                         />
                         <div className="flex flex-col gap-1">
                           <div className="text-foreground/65 font-semibold text-sm flex gap-3 items-center">
-                            <FormatUserAgent
+                            <UserAgentDisplay
                               userAgent={session.userAgent ?? ""}
                             />
                             {currentSession?.id === session.id ? (

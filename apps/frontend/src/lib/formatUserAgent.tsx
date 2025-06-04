@@ -48,14 +48,14 @@ const parseUserAgent = (userAgent: string) => {
   return { deviceInfo, browserInfo };
 };
 
-export default function FormatUserAgent({ userAgent }: { userAgent: string }) {
+export default function UserAgentDisplay({ userAgent }: { userAgent: string }) {
   const { deviceInfo, browserInfo } = parseUserAgent(userAgent);
 
-  return deviceInfo || browserInfo ? (
+  return (
     <span className="text-foreground">
-      {browserInfo} on {deviceInfo}
+      {deviceInfo || browserInfo
+        ? `${browserInfo} on ${deviceInfo}`
+        : "Unknown"}
     </span>
-  ) : (
-    <span className="text-foreground">Unknown</span>
   );
 }
