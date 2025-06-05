@@ -6,11 +6,10 @@ import { Button } from "../ui/button";
 import { auth } from "@/auth/client";
 import type { Session } from "better-auth/types";
 import { format } from "date-fns";
-import UserAgentDisplay from "@/lib/formatUserAgent";
+import UserAgentDisplay, { getDeviceIcon } from "@/lib/formatUserAgent";
 import { Separator } from "../ui/separator";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
-  ComputerPhoneSyncIcon,
   Loading02Icon,
   SquareArrowRight02Icon,
 } from "@hugeicons/core-free-icons";
@@ -145,7 +144,7 @@ export default function SecurityTab({
                     >
                       <div className="flex items-center gap-3">
                         <HugeiconsIcon
-                          icon={ComputerPhoneSyncIcon}
+                          icon={getDeviceIcon(session.userAgent ?? "")}
                           className="text-accent-foreground"
                           color="currentColor"
                           strokeWidth={2}
@@ -161,7 +160,7 @@ export default function SecurityTab({
                                 <div className="text-xs md:hidden flex absolute -top-3 -left-3 w-fit bg-primary-foreground text-primary font-bold p-1 rounded-md">
                                   Current device
                                 </div>
-                                <div className="text-xs hidden md:flex top- w-fit bg-primary-foreground text-primary font-bold p-1 rounded-md">
+                                <div className="text-xs hidden md:flex w-fit bg-primary-foreground text-primary font-bold p-1 rounded-md">
                                   Current device
                                 </div>
                               </>
