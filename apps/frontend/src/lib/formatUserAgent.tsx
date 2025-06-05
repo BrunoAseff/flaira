@@ -6,7 +6,7 @@ export default function UserAgentDisplay({ userAgent }: { userAgent: string }) {
   const browserName = browser?.name || "Unknown Browser";
 
   const platformInfo = device.is("mobile")
-    ? device?.vendor || "Mobile Device"
+    ? device?.vendor || os?.name
     : `${os?.name || "Unknown OS"}${os?.version ? ` ${os.version}` : ""}`;
 
   return (
