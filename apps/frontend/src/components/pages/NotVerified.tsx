@@ -34,7 +34,7 @@ export default function NotVerified() {
           Email Verification Required
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col items-center gap-4">
+      <CardContent className="flex flex-col items-center gap-1">
         <MailWarning className="w-16 h-16 text-error" />
         <p className="text-base text-foreground">
           Your email hasn't been verified yet. Please verify your email address

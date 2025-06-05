@@ -60,7 +60,7 @@ export default function ForgotPassword() {
             Check your email
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-col items-center gap-4">
+        <CardContent className="flex flex-col items-center gap-1">
           <Mail className="w-16 h-16 text-success" />
           <p className="text-base text-foreground">
             We've sent a password reset link to your email address. Please check
@@ -77,7 +77,7 @@ export default function ForgotPassword() {
   return (
     <Card className="w-[90%] md:w-[32rem] bg-background p-6 rounded-2xl border-none shadow-none">
       <CardHeader>
-        <CardTitle className="text-left mr-auto font-semibold text-foreground text-2xl mb-1 md:mb-6">
+        <CardTitle className="text-left mr-auto font-semibold text-foreground text-xl mt-1 md:mt-3">
           Reset password
         </CardTitle>
       </CardHeader>
@@ -148,7 +148,7 @@ export default function ForgotPassword() {
 
               return (
                 <Button
-                  className="mt-3 mb-2"
+                  className="mt-3 mb-1"
                   type="submit"
                   onClick={form.handleSubmit}
                   disabled={!allFieldsFilled || !isValid}

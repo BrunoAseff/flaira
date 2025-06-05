@@ -35,7 +35,7 @@ export default function VerifyEmail() {
           Check your email
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col items-center gap-4">
+      <CardContent className="flex flex-col items-center gap-1">
         <MailSearch className="w-16 h-16 text-success" />
         <p className="text-base text-foreground">
           Thanks for creating an account! We've sent you a verification link.
