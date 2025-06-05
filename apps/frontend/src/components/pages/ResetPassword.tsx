@@ -71,7 +71,7 @@ export default function ResetPassword({ token }: { token: string }) {
             Password Reset Successful
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-col items-center gap-4">
+        <CardContent className="flex flex-col items-center gap-1">
           <CheckCircle className="w-16 h-16 text-success" />
           <p className="text-base text-foreground">
             Your password has been successfully updated. You can now sign in to

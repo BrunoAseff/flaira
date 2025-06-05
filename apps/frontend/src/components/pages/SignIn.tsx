@@ -83,7 +83,7 @@ export default function SignIn() {
       </CardHeader>
       <CardContent>
         <form
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-1"
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();

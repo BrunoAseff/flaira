@@ -76,7 +76,7 @@ export function DeleteAccountDialog({
         </DialogHeader>
 
         <form
-          className="flex flex-col gap-4 px-2 pt-2 pb-1"
+          className="flex flex-col gap-1 px-2 pt-2 pb-1"
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();

@@ -50,7 +50,7 @@ export default function EmailConfirmed({
           Verification failed
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col items-center gap-4">
+      <CardContent className="flex flex-col items-center gap-1">
         <XCircle className="w-16 h-16 text-destructive" />
         <p className="text-base text-foreground">
           We couldn't verify your email. The verification link may have expired

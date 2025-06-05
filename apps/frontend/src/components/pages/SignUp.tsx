@@ -75,7 +75,7 @@ export default function SignUp() {
       </CardHeader>
       <CardContent>
         <form
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-1"
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -310,7 +310,7 @@ export default function SignUp() {
 
               return (
                 <Button
-                  className="mt-3 mb-2"
+                  className="mt-3 mb-1"
                   type="submit"
                   onClick={form.handleSubmit}
                   disabled={!allFieldsFilled || !isValid}
