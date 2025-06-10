@@ -164,7 +164,7 @@ export default function ImageCropDialog({
         if (!open) onCropCancel();
       }}
     >
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md h-[100dvh] w-full md:w-fit md:h-fit">
         <DialogHeader>
           <DialogTitle>Crop your new avatar</DialogTitle>
         </DialogHeader>
