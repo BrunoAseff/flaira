@@ -89,7 +89,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               "absolute flex items-center justify-center w-6 h-6 text-muted-foreground hover:text-foreground transition-colors cursor-pointer rounded-sm hover:bg-muted-foreground/10",
               iconRight ? "right-12" : "right-3"
             )}
-            tabIndex={-1}
+            tabIndex={0}
+            aria-label="Clear input"
           >
             <X size={26} />
           </button>
