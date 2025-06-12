@@ -76,7 +76,7 @@ export function SettingsDialog({
             >
               <TabsTrigger
                 value="profile"
-                className="flex-col sm:flex-row items-center px-4 py-3 text-base"
+                className="flex-col sm:flex-row items-center px-4 py-3 text-lg md:text-base gap-3 md:gap-6"
               >
                 <HugeiconsIcon
                   icon={UserSquareIcon}
@@ -89,7 +89,7 @@ export function SettingsDialog({
               </TabsTrigger>
               <TabsTrigger
                 value="security"
-                className="flex-col sm:flex-row items-center px-4 py-3 text-base"
+                className="flex-col sm:flex-row items-center px-4 py-3 text-lg md:text-base gap-3 md:gap-6"
               >
                 <HugeiconsIcon
                   icon={LockKeyIcon}
