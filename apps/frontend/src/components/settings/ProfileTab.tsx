@@ -89,6 +89,7 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
                   name="name"
                   type="text"
                   autoComplete="name"
+                  showClear={false}
                   defaultValue={user?.name || "N/A"}
                   success={success}
                   onChange={(e) =>
@@ -115,6 +116,7 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
                 name="email"
                 type="email"
                 autoComplete="email"
+                showClear={false}
                 defaultValue={user?.email || "N/A"}
                 className=" text-foreground/80 p-2 max-w-64 ml-auto text-base"
                 disabled
