@@ -188,7 +188,7 @@ export default function ImageCropDialog({
             />
           </ReactCrop>
         </div>
-        <DialogFooter className="gap-2 sm:justify-end">
+        <DialogFooter className="gap-2 sm:justify-end ml-auto w-full">
           <Button
             size="sm"
             variant="outline"
