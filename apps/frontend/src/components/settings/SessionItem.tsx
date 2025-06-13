@@ -31,75 +31,42 @@ export function SessionItem({
   handleRevokeSession,
 }: SessionItemProps) {
   const isMobile = useIsMobile();
+  const isCurrentSession = currentSession?.id === session.id;
+  const isLoading = loadingSessionIds.has(session.id);
+  const isDisabled =
+    isLoading || (revokeSessionMutation.isPending && isLoading);
 
-  if (!isMobile) {
+  const renderButton = () => {
+    if (isCurrentSession) {
+      return <div className="size-10" />;
+    }
+
     return (
-      <Tooltip>
-        <TooltipTrigger>
-          {currentSession?.id !== session.id ? (
-            <Button
-              onClick={() => handleRevokeSession(session.token, session.id)}
-              className="text-muted-foreground transition-all duration-300 hover:text-error hover:bg-error/10"
-              variant="ghost"
-              disabled={
-                loadingSessionIds.has(session.id) ||
-                (revokeSessionMutation.isPending &&
-                  loadingSessionIds.has(session.id))
-              }
-              size="icon"
-            >
-              <HugeiconsIcon
-                className={cn(
-                  loadingSessionIds.has(session.id) && "animate-spin",
-                )}
-                icon={
-                  loadingSessionIds.has(session.id)
-                    ? Loading02Icon
-                    : SquareArrowRight02Icon
-                }
-                color="currentColor"
-                strokeWidth={2}
-              />
-            </Button>
-          ) : (
-            <div className="size-10" />
-          )}
-        </TooltipTrigger>
-        {currentSession?.id !== session.id && (
-          <TooltipContent>Remove session</TooltipContent>
-        )}
-      </Tooltip>
+      <Button
+        onClick={() => handleRevokeSession(session.token, session.id)}
+        className="text-muted-foreground transition-all duration-300 hover:text-error hover:bg-error/10"
+        variant="ghost"
+        disabled={isDisabled}
+        size="icon"
+      >
+        <HugeiconsIcon
+          className={cn(isLoading && "animate-spin")}
+          icon={isLoading ? Loading02Icon : SquareArrowRight02Icon}
+          color="currentColor"
+          strokeWidth={2}
+        />
+      </Button>
     );
+  };
+
+  if (isMobile) {
+    return <div>{renderButton()}</div>;
   }
 
   return (
-    <div>
-      {currentSession?.id !== session.id ? (
-        <Button
-          onClick={() => handleRevokeSession(session.token, session.id)}
-          className="text-muted-foreground transition-all duration-300 hover:text-error hover:bg-error/10"
-          variant="ghost"
-          disabled={
-            loadingSessionIds.has(session.id) ||
-            (revokeSessionMutation.isPending &&
-              loadingSessionIds.has(session.id))
-          }
-          size="icon"
-        >
-          <HugeiconsIcon
-            className={cn(loadingSessionIds.has(session.id) && "animate-spin")}
-            icon={
-              loadingSessionIds.has(session.id)
-                ? Loading02Icon
-                : SquareArrowRight02Icon
-            }
-            color="currentColor"
-            strokeWidth={2}
-          />
-        </Button>
-      ) : (
-        <div className="size-10" />
-      )}
-    </div>
+    <Tooltip>
+      <TooltipTrigger>{renderButton()}</TooltipTrigger>
+      {!isCurrentSession && <TooltipContent>Remove session</TooltipContent>}
+    </Tooltip>
   );
 }
