@@ -172,7 +172,7 @@ export default function SecurityTab({
                         loadingSessionIds={loadingSessionIds}
                         revokeSessionMutation={revokeSessionMutation}
                         handleRevokeSession={handleRevokeSession}
-                      />{" "}
+                      />
                     </div>
                   ))}
                 {!isLoading && sessionList && sessionList.length === 0 && (

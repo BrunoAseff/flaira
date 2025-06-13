@@ -9,6 +9,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Button } from "@/components/ui/button";
+import type { Session } from "better-auth/types";
 
 interface SessionItemProps {
   session: Session;
@@ -20,7 +23,7 @@ interface SessionItemProps {
   handleRevokeSession: (token: string, sessionId: string) => void;
 }
 
-export default function SessionItem({
+export function SessionItem({
   session,
   currentSession,
   loadingSessionIds,
