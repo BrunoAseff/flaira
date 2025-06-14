@@ -9,21 +9,12 @@ import { format } from "date-fns";
 import UserAgentDisplay, { getDeviceIcon } from "@/lib/formatUserAgent";
 import { Separator } from "../ui/separator";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Loading02Icon,
-  SquareArrowRight02Icon,
-} from "@hugeicons/core-free-icons";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { ScrollArea } from "../ui/scroll-area";
-import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
 import { Banner } from "../ui/banner";
+import { SessionItem } from "./SessionItem";
 
 interface SecurityTabProps {
   sessionList: Session[] | null;
@@ -175,44 +166,13 @@ export default function SecurityTab({
                           </div>
                         </div>
                       </div>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          {currentSession?.id !== session.id ? (
-                            <Button
-                              onClick={() =>
-                                handleRevokeSession(session.token, session.id)
-                              }
-                              className="text-muted-foreground transition-all duration-300 hover:text-error hover:bg-error/10"
-                              variant="ghost"
-                              disabled={
-                                loadingSessionIds.has(session.id) ||
-                                (revokeSessionMutation.isPending &&
-                                  loadingSessionIds.has(session.id))
-                              }
-                              size="icon"
-                            >
-                              <HugeiconsIcon
-                                className={cn(
-                                  loadingSessionIds.has(session.id) &&
-                                    "animate-spin",
-                                )}
-                                icon={
-                                  loadingSessionIds.has(session.id)
-                                    ? Loading02Icon
-                                    : SquareArrowRight02Icon
-                                }
-                                color="currentColor"
-                                strokeWidth={2}
-                              />
-                            </Button>
-                          ) : (
-                            <div className="size-10" />
-                          )}
-                        </TooltipTrigger>
-                        {currentSession?.id !== session.id && (
-                          <TooltipContent>Remove session</TooltipContent>
-                        )}
-                      </Tooltip>
+                      <SessionItem
+                        session={session}
+                        currentSession={currentSession}
+                        loadingSessionIds={loadingSessionIds}
+                        revokeSessionMutation={revokeSessionMutation}
+                        handleRevokeSession={handleRevokeSession}
+                      />
                     </div>
                   ))}
                 {!isLoading && sessionList && sessionList.length === 0 && (
