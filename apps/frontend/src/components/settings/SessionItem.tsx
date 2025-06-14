@@ -46,6 +46,7 @@ export function SessionItem({
         onClick={() => handleRevokeSession(session.token, session.id)}
         className="text-muted-foreground transition-all duration-300 hover:text-error hover:bg-error/10"
         variant="ghost"
+        aria-label="Revoke session"
         disabled={isDisabled}
         size="icon"
       >
@@ -60,7 +61,7 @@ export function SessionItem({
   };
 
   if (isMobile) {
-    return <div>{renderButton()}</div>;
+    return renderButton();
   }
 
   return (
