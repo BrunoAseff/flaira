@@ -69,7 +69,7 @@ export default function FormHeader({ currentStep }: { currentStep: number }) {
   ];
 
   const progressValue = ((currentStep - 1) / (steps.length - 1)) * 100;
-  const activeStep = steps[currentStep - 1] || 0;
+  const activeStep = steps[currentStep - 1] || steps[0];
 
   return (
     <div className="flex mx-1 sm:mx-2 lg:mx-12 mb-12 flex-col">
