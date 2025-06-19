@@ -41,28 +41,31 @@ export default function FormHeader() {
   const steps = [
     {
       title: "Prologue",
-      description: "",
+      description:
+        "Name your adventure and set the scene with photos and words.",
       step: 1,
       icon: Backpack03Icon,
       isDone: true,
     },
     {
       title: "Journey",
-      description: "",
+      description:
+        "Plot your route, choose transport, and mark the key moments.",
       step: 2,
       icon: Route03Icon,
       isDone: false,
     },
     {
       title: "Companions",
-      description: "",
+      description: "Decide who joins the story — privately or out in the open.",
       step: 3,
       icon: UserGroupIcon,
       isDone: false,
     },
     {
       title: "Review",
-      description: "",
+      description:
+        "Take one last look. Map it out, feel the vibe, and save it all.",
       step: 4,
       icon: SearchList01Icon,
       isDone: false,
