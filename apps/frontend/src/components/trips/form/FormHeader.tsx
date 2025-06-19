@@ -11,20 +11,20 @@ import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 function Step({
   icon,
   isDone,
-  currentStep,
+  isCurrent,
 }: {
   icon: IconSvgElement;
   isDone: boolean;
-  currentStep: boolean;
+  isCurrent: boolean;
 }) {
   return (
     <div
       className={cn(
-        "flex items-center justify-center size-12 rounded-full border-1 shrink-0 z-10",
+        "flex items-center justify-center size-12 rounded-full border shrink-0 z-10",
         isDone
           ? "bg-foreground text-background border-foreground"
-          : "bg-background text-foreground  border-muted",
-        currentStep ? "bg-muted" : "",
+          : "bg-background text-foreground border-muted",
+        isCurrent ? "border-foreground/60" : "",
       )}
     >
       <HugeiconsIcon
@@ -37,7 +37,7 @@ function Step({
   );
 }
 
-export default function FormHeader() {
+export default function FormHeader({ currentStep }: { currentStep: number }) {
   const steps = [
     {
       title: "Prologue",
@@ -45,7 +45,6 @@ export default function FormHeader() {
         "Name your adventure and set the scene with photos and words.",
       step: 1,
       icon: Backpack03Icon,
-      isDone: true,
     },
     {
       title: "Journey",
@@ -53,14 +52,12 @@ export default function FormHeader() {
         "Plot your route, choose transport, and mark the key moments.",
       step: 2,
       icon: Route03Icon,
-      isDone: false,
     },
     {
       title: "Companions",
       description: "Decide who joins the story — privately or out in the open.",
       step: 3,
       icon: UserGroupIcon,
-      isDone: false,
     },
     {
       title: "Review",
@@ -68,34 +65,30 @@ export default function FormHeader() {
         "Take one last look. Map it out, feel the vibe, and save it all.",
       step: 4,
       icon: SearchList01Icon,
-      isDone: false,
     },
   ];
 
-  const completedStepsCount = steps.filter((step) => step.isDone).length;
-  const totalSegments = steps.length > 1 ? steps.length - 1 : 0;
-  const completedSegments = Math.max(0, completedStepsCount);
-  const progressValue =
-    totalSegments > 0 ? (completedSegments / totalSegments) * 100 : 0;
+  const progressValue = ((currentStep - 1) / (steps.length - 1)) * 100;
+  const activeStep = steps[currentStep - 1] || 0;
 
   return (
     <div className="flex mx-1 sm:mx-2 lg:mx-12 mb-12 flex-col">
       <h1 className="text-2xl sm:text-2xl lg:text-2xl font-semibold">
-        {steps[completedStepsCount].title}
+        {activeStep.title}
       </h1>
-      <div> {steps[completedStepsCount].description}</div>
+      <div> {activeStep.description}</div>
       <div className="relative w-full py-4">
         <Progress
           value={progressValue}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-2 w-[calc(100%-5rem)]"
         />
         <div className="flex justify-between items-center w-full">
-          {steps.map((step, index) => (
+          {steps.map((stepInfo) => (
             <Step
-              key={step.step}
-              icon={step.icon}
-              isDone={step.isDone}
-              currentStep={index + 1 === 2}
+              key={stepInfo.step}
+              icon={stepInfo.icon}
+              isDone={currentStep > stepInfo.step}
+              isCurrent={currentStep === stepInfo.step}
             />
           ))}
         </div>
