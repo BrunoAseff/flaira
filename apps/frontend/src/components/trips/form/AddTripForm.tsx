@@ -42,12 +42,14 @@ export default function AddTripForm() {
   const isLastStep = currentStep === totalSteps;
 
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div className="flex flex-col max-h-full h-full overflow-auto">
       <FormHeader currentStep={currentStep} />
 
-      <div className="flex-1">{renderStep()}</div>
+      <div className="flex items-center justify-center w-full">
+        {renderStep()}
+      </div>
 
-      <div className="flex justify-end mr-10 mb-4 gap-4">
+      <div className="flex justify-end mr-10 mb-2 gap-4 mt-auto">
         <Button
           onClick={handlePrevious}
           variant="outline"
