@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
+import AddTripForm from "./form/AddTripForm";
 
 export function AddTripDialog({
   isOpen,
@@ -17,13 +18,13 @@ export function AddTripDialog({
 }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="min-w-full sm:min-w-96 md:min-w-96 w-full md:w-[75%] lg:w-[50%] h-full md:h-[90%] bg-background p-0 flex flex-col overflow-hidden">
+      <DialogContent className="min-w-full sm:min-w-96 md:min-w-96 w-full md:w-[55%] lg:w-[45%] h-full md:h-[80%] bg-background p-0 flex flex-col overflow-hidden">
         <DialogHeader className="px-6 py-4 border-b border-muted">
           <DialogTitle className="text-foreground text-xl font-semibold">
-            Add trip
+            New trip
           </DialogTitle>
         </DialogHeader>
-        <div className="flex flex-1 w-full overflow-hidden px-6 pt-4" />
+        <AddTripForm />
         <DialogClose />
       </DialogContent>
     </Dialog>
