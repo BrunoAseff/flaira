@@ -29,7 +29,7 @@ export default function FileInput() {
   });
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 h-full">
       <div
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
@@ -37,7 +37,7 @@ export default function FileInput() {
         onDrop={handleDrop}
         data-dragging={isDragging || undefined}
         data-files={files.length > 0 || undefined}
-        className="border-input data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex min-h-22 flex-col items-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:ring-[3px]"
+        className="border-input data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex flex-col items-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:ring-[3px] flex-1 min-h-0"
       >
         <input
           {...getInputProps()}
@@ -45,8 +45,8 @@ export default function FileInput() {
           aria-label="Upload image file"
         />
         {files.length > 0 ? (
-          <div className="flex w-full flex-col gap-3">
-            <div className="flex items-center justify-between gap-2">
+          <div className="flex w-full flex-col gap-3 h-full">
+            <div className="flex items-center justify-between gap-2 flex-shrink-0">
               <h3 className="truncate text-sm font-medium">
                 Uploaded Files ({files.length})
               </h3>
@@ -64,7 +64,7 @@ export default function FileInput() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 flex-1 min-h-0 overflow-y-auto">
               {files.map((file) => (
                 <div
                   key={file.id}
@@ -114,7 +114,7 @@ export default function FileInput() {
 
       {errors.length > 0 && (
         <div
-          className="text-destructive flex items-center gap-1 text-xs"
+          className="text-destructive flex items-center gap-1 text-xs flex-shrink-0"
           role="alert"
         >
           <AlertCircleIcon className="size-3 shrink-0" />
