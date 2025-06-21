@@ -20,14 +20,14 @@ function Step({
   return (
     <div
       className={cn(
-        "flex items-center justify-center size-14 rounded-full border shrink-0 z-10",
+        "flex items-center justify-center size-13 rounded-full border shrink-0 z-10",
         isDone || isCurrent
           ? "bg-foreground text-background border-foreground"
-          : "bg-background text-foreground border-foreground/30",
+          : "bg-muted text-foreground/60  border-[1px] border-input/30",
       )}
     >
       <HugeiconsIcon
-        className="size-8"
+        className="size-7"
         icon={icon}
         color="currentColor"
         strokeWidth={1.5}
