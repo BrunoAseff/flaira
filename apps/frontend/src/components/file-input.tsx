@@ -64,7 +64,7 @@ export default function FileInput() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 flex-1 min-h-0 overflow-y-auto">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 flex-1 min-h-0 ">
               {files.map((file) => (
                 <div
                   key={file.id}
@@ -78,7 +78,7 @@ export default function FileInput() {
                   <Button
                     onClick={() => removeFile(file.id)}
                     size="icon"
-                    className="border-background focus-visible:border-background absolute -top-2 -right-2 size-6 rounded-full border-2 shadow-none"
+                    className="border-background bg-foreground focus-visible:border-background absolute -top-2 -right-2 size-6 rounded-full border-2 shadow-none"
                     aria-label="Remove image"
                   >
                     <XIcon className="size-3.5" />
