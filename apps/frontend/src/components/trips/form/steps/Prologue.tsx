@@ -2,6 +2,8 @@ import FileInput from "@/components/file-input";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Tag01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
 export default function Prologue() {
   return (
@@ -9,7 +11,10 @@ export default function Prologue() {
       <div className="flex flex-col w-full md:w-1/2 gap-4 h-full">
         <div className="flex flex-col gap-1 flex-shrink-0">
           <Label className="text-base">What's the name of this journey?</Label>
-          <Input type="text" />
+          <Input
+            iconLeft={<HugeiconsIcon icon={Tag01Icon} color="currentColor" />}
+            type="text"
+          />
         </div>
         <div className="flex flex-col gap-1 flex-1 min-h-0">
           <Label className="text-base flex-shrink-0">
