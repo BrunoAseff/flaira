@@ -63,7 +63,11 @@ export default function FileInput() {
                 Add more
               </Button>
             </div>
-
+            {files.length >= maxFiles && (
+              <span className="mx-auto py-1 px-2  text-sm bg-muted rounded-2xl">
+                You can add more memories later!
+              </span>
+            )}
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 flex-1 min-h-0 ">
               {files.map((file) => (
                 <div
