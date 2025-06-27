@@ -9,7 +9,7 @@ export default function Prologue() {
   return (
     <div className="flex flex-col md:flex-row mx-6 md:mx-10 gap-8 h-full py-2">
       <div className="flex flex-col w-full md:w-1/2 gap-4 h-full">
-        <div className="flex flex-col gap-1 flex-shrink-0">
+        <div className="flex flex-col gap-1 px-1 flex-shrink-0">
           <Label className="text-base">What's the name of this journey?</Label>
           <Input
             iconLeft={<HugeiconsIcon icon={Tag01Icon} color="currentColor" />}
