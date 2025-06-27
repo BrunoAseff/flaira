@@ -59,8 +59,7 @@ export default function Journey() {
   };
 
   const handleAddStop = () => {
-    return;
-    // setStops((prev) => [...prev, { id: Date.now() }]);
+    setStops((prev) => [...prev, { id: Date.now() }]);
   };
 
   const handleRemoveStop = (id: number) => {
@@ -79,64 +78,66 @@ export default function Journey() {
   ];
 
   return (
-    <div className="flex flex-col md:flex-row gap-8 h-full py-2 px-6 md:px-10">
-      <div className="flex flex-col gap-2 md:w-1/2 w-full h-full overflow-y-auto pr-4">
-        <div className="flex flex-col gap-1 w-full">
-          <Label className="text-base">Start</Label>
-          <Input
-            iconLeft={
-              <HugeiconsIcon icon={RouteBlockIcon} color="currentColor" />
-            }
-            type="text"
-          />
-        </div>
+    <div className="flex flex-col md:flex-row mx-6 md:mx-10 gap-8 h-full py-2 scrollbar-gutter-stable overflow-y-auto">
+      <div className="flex flex-col w-full md:w-1/2 gap-4 h-full">
+        <div className="flex flex-col w-full gap-1  px-1">
+          <div className="flex flex-col gap-1 w-full">
+            <Label className="text-base">Start</Label>
+            <Input
+              iconLeft={
+                <HugeiconsIcon icon={RouteBlockIcon} color="currentColor" />
+              }
+              type="text"
+            />
+          </div>
 
-        <AnimatedStops>
-          {stops.map((stop, index) => (
-            <div key={stop.id} className="flex flex-col gap-1 w-full z-50">
-              <div className="flex justify-between items-center">
-                <Label className="text-sm opacity-80">Stop {index + 1}</Label>
-                <button
-                  type="button"
-                  onClick={() => handleRemoveStop(stop.id)}
-                  className="text-muted-foreground hover:text-destructive transition-colors"
-                  aria-label="Remove stop"
-                >
-                  <HugeiconsIcon icon={Cancel01Icon} size={16} />
-                </button>
+          <AnimatedStops>
+            {stops.map((stop, index) => (
+              <div key={stop.id} className="flex flex-col gap-1 w-full z-50">
+                <div className="flex justify-between items-center">
+                  <Label className="text-sm opacity-80">Stop {index + 1}</Label>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveStop(stop.id)}
+                    className="text-muted-foreground hover:text-destructive transition-colors"
+                    aria-label="Remove stop"
+                  >
+                    <HugeiconsIcon icon={Cancel01Icon} size={16} />
+                  </button>
+                </div>
+                <Input
+                  iconLeft={
+                    <HugeiconsIcon icon={Location09Icon} color="currentColor" />
+                  }
+                  type="text"
+                />
               </div>
-              <Input
-                iconLeft={
-                  <HugeiconsIcon icon={Location09Icon} color="currentColor" />
-                }
-                type="text"
-              />
-            </div>
-          ))}
-        </AnimatedStops>
+            ))}
+          </AnimatedStops>
 
-        <div className="flex items-center gap-2 w-full">
-          <div className="flex-grow border-t-2 border-dashed border-muted" />
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleAddStop}
-            aria-label="Add a new stop"
-            className="flex items-center justify-center size-5 hover:bg-transparent p-3 rounded-full border-1 border-dashed border-muted hover:border-primary hover:text-primary transition-all duration-300"
-          >
-            <HugeiconsIcon icon={PlusSignIcon} size={16} />
-          </Button>
-          <div className="flex-grow border-t-2 border-dashed border-muted" />
-        </div>
+          <div className="flex items-center gap-2 w-full px-1">
+            <div className="flex-grow border-t-2 border-dashed border-muted" />
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleAddStop}
+              aria-label="Add a new stop"
+              className="flex items-center text-muted-foreground justify-center size-3 hover:bg-transparent p-3 rounded-full border-1 border-dashed border-muted hover:border-primary hover:text-primary transition-all duration-300 mt-2"
+            >
+              <HugeiconsIcon icon={PlusSignIcon} size={16} />
+            </Button>
+            <div className="flex-grow border-t-2 border-dashed border-muted" />
+          </div>
 
-        <div className="flex flex-col gap-1 w-full">
-          <Label className="text-base">End</Label>
-          <Input
-            iconLeft={
-              <HugeiconsIcon icon={Location09Icon} color="currentColor" />
-            }
-            type="text"
-          />
+          <div className="flex flex-col gap-1 w-full">
+            <Label className="text-base">End</Label>
+            <Input
+              iconLeft={
+                <HugeiconsIcon icon={Location09Icon} color="currentColor" />
+              }
+              type="text"
+            />
+          </div>
         </div>
         <div className="flex flex-col gap-1 w-full">
           <div className="flex items-center space-x-2 mt-2">
@@ -148,7 +149,6 @@ export default function Journey() {
             <Label htmlFor="current-trip">I am still on this trip.</Label>
           </div>
         </div>
-
         <div className="flex flex-col gap-3 pt-4">
           <Label className="text-base">Transportation</Label>
           <ToggleGroup
@@ -174,7 +174,6 @@ export default function Journey() {
       <div className="w-1/2 m-6 rounded-xl hidden md:flex justify-start">
         <MapView
           containerStyle={{
-            margin: "10px",
             borderRadius: "16px",
             width: "100%",
             height: "100%",
