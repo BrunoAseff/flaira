@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { cn } from "@/lib/utils";
 import {
   AirplaneModeIcon,
   BicycleIcon,
@@ -93,16 +94,22 @@ export default function Journey() {
 
           <AnimatedStops>
             {stops.map((stop, index) => (
-              <div key={stop.id} className="flex flex-col gap-1 w-full z-50">
+              <div
+                key={stop.id}
+                className={cn(
+                  "flex flex-col p-1 w-full z-50",
+                  index === 0 ? "mt-3" : "",
+                )}
+              >
                 <div className="flex justify-between items-center">
                   <Label className="text-sm opacity-80">Stop {index + 1}</Label>
                   <button
                     type="button"
                     onClick={() => handleRemoveStop(stop.id)}
-                    className="text-muted-foreground hover:text-destructive transition-colors"
+                    className="text-accent-foreground hover:text-error hover:bg-error/10 transition-all mb-1 rounded-lg p-1"
                     aria-label="Remove stop"
                   >
-                    <HugeiconsIcon icon={Cancel01Icon} size={16} />
+                    <HugeiconsIcon icon={Cancel01Icon} size={17} />
                   </button>
                 </div>
                 <Input
@@ -115,16 +122,16 @@ export default function Journey() {
             ))}
           </AnimatedStops>
 
-          <div className="flex items-center gap-2 w-full px-1">
+          <div className="flex items-center gap-2 w-full mt-2 px-1">
             <div className="flex-grow border-t-2 border-dashed border-muted" />
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
               onClick={handleAddStop}
               aria-label="Add a new stop"
-              className="flex items-center text-muted-foreground justify-center size-3 hover:bg-transparent p-3 rounded-full border-1 border-dashed border-muted hover:border-primary hover:text-primary transition-all duration-300 mt-2"
+              className="flex items-center text-accent-foreground justify-center size-3 p-4 rounded-full bg-transparent hover:bg-muted hover:text-foreground transition-all duration-300"
             >
-              <HugeiconsIcon icon={PlusSignIcon} size={16} />
+              <HugeiconsIcon icon={PlusSignIcon} size={10} />
             </Button>
             <div className="flex-grow border-t-2 border-dashed border-muted" />
           </div>
@@ -139,7 +146,7 @@ export default function Journey() {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-1 w-full">
+        <div className="flex flex-col gap-1 w-full px-1">
           <div className="flex items-center space-x-2 mt-2">
             <Checkbox
               id="current-trip"
