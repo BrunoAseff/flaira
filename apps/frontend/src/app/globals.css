@@ -80,7 +80,7 @@
   --tertiary-light: oklch(0.9645 0.0554 96.15);
   --tertiary-foreground: oklch(0.938 0.0618 84.49);
   --tertiary-hard: oklch(0.9078 0.0709 72.94);
-  --muted: oklch(0.91 0.015 95.41);
+  --muted: oklch(0.89 0.015 95.41);
   --muted-foreground: oklch(0.7 0 143.35);
   --accent: oklch(0.88 0.02 95.41);
   --accent-foreground: oklch(0.4 0.025 143.35);
