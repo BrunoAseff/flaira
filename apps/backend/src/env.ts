@@ -8,6 +8,7 @@ const envSchema = z.object({
   BETTER_AUTH_SECRET: z.string(),
   BETTER_AUTH_URL: z.string(),
   FRONTEND_URL: z.string(),
+  PREVIEW_URL: z.string(),
   RESEND_API: z.string(),
   S3_BUCKET: z.string(),
   AWS_REGION: z.string(),

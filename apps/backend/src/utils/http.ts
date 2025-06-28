@@ -37,7 +37,7 @@ export function getResponse(
 }
 
 export const corsConfig = {
-  origin: env.FRONTEND_URL,
+  origin: [env.FRONTEND_URL, env.PREVIEW_URL],
   allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowHeaders: ["Content-Type", "Authorization"],
   exposeHeaders: ["Content-Length"],
