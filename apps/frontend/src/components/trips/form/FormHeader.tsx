@@ -20,14 +20,14 @@ function Step({
   return (
     <div
       className={cn(
-        "flex items-center justify-center size-13 rounded-full border shrink-0 z-10",
+        "flex items-center justify-center size-12 rounded-full border shrink-0 z-10",
         isDone || isCurrent
           ? "bg-foreground text-background border-foreground"
           : "bg-muted text-foreground/60  border-[1px] border-input/30",
       )}
     >
       <HugeiconsIcon
-        className="size-7"
+        className="size-6"
         icon={icon}
         color="currentColor"
         strokeWidth={1.5}
@@ -71,7 +71,7 @@ export default function FormHeader({ currentStep }: { currentStep: number }) {
   const activeStep = steps[currentStep - 1] || steps[0];
 
   return (
-    <div className="flex mx-6 md:mx-10 mb-4 flex-col">
+    <div className="flex mx-6 md:mx-10 flex-col">
       <h1 className="text-2xl sm:text-2xl lg:text-2xl font-semibold">
         {activeStep.title}
       </h1>

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 export default function FileInput() {
   const maxSizeMB = 5;
   const maxSize = maxSizeMB * 1024 * 1024;
-  const maxFiles = 6;
+  const maxFiles = 18;
 
   const [
     { files, isDragging, errors },
@@ -68,7 +68,7 @@ export default function FileInput() {
                 You can add more memories later!
               </span>
             )}
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 flex-1 min-h-0 ">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-6 flex-1 min-h-0 ">
               {files.map((file) => (
                 <div
                   key={file.id}

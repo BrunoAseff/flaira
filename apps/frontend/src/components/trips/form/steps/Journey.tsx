@@ -44,7 +44,7 @@ function AnimatedStops({ children }: AnimatedStopsProps) {
       style={{ maxHeight: currentMaxHeight }}
       className="w-full overflow-hidden transition-[max-height] duration-500 ease-in-out"
     >
-      <div ref={contentWrapperRef} className="flex flex-col gap-4">
+      <div ref={contentWrapperRef} className="flex flex-col gap-3">
         {children}
       </div>
     </div>
@@ -79,12 +79,13 @@ export default function Journey() {
   ];
 
   return (
-    <div className="flex flex-col md:flex-row mx-6 md:mx-10 gap-8 h-full py-2 scrollbar-gutter-stable overflow-y-auto">
-      <div className="flex flex-col w-full md:w-1/2 gap-4 h-full">
+    <div className="flex flex-col md:flex-row mx-6 md:ml-10 gap-6 h-full scrollbar-gutter-stable overflow-y-auto">
+      <div className="flex flex-col w-full md:w-[40%] gap-2 h-full">
         <div className="flex flex-col w-full gap-1  px-1">
           <div className="flex flex-col gap-1 w-full">
             <Label className="text-base">Start</Label>
             <Input
+              className="w-full max-w-none"
               iconLeft={
                 <HugeiconsIcon icon={RouteBlockIcon} color="currentColor" />
               }
@@ -113,6 +114,7 @@ export default function Journey() {
                   </button>
                 </div>
                 <Input
+                  className="w-full max-w-none"
                   iconLeft={
                     <HugeiconsIcon icon={Location09Icon} color="currentColor" />
                   }
@@ -139,6 +141,7 @@ export default function Journey() {
           <div className="flex flex-col gap-1 w-full">
             <Label className="text-base">End</Label>
             <Input
+              className="w-full max-w-none"
               iconLeft={
                 <HugeiconsIcon icon={Location09Icon} color="currentColor" />
               }
@@ -161,7 +164,7 @@ export default function Journey() {
           <ToggleGroup
             type="multiple"
             variant="outline"
-            className="grid grid-cols-3 gap-2"
+            className="grid grid-cols-4 gap-3"
           >
             {transportOptions.map(({ value, label, icon }) => (
               <ToggleGroupItem
@@ -178,7 +181,7 @@ export default function Journey() {
         </div>
       </div>
 
-      <div className="w-1/2 m-6 rounded-xl hidden md:flex justify-start">
+      <div className="w-[60%] mx-2 mt-2 rounded-xl hidden md:flex justify-start">
         <MapView
           containerStyle={{
             borderRadius: "16px",

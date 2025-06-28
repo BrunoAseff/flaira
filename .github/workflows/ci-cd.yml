@@ -51,6 +51,7 @@ jobs:
         BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
         BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
         FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+        PREVIEW_URL: ${{ secrets.PREVIEW_URL }}
         RESEND_API: ${{ secrets.RESEND_API }}
         S3_BUCKET: ${{ secrets.S3_BUCKET }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -115,6 +116,7 @@ jobs:
           BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
           BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+          PREVIEW_URL: ${{ secrets.PREVIEW_URL }}
           RESEND_API: ${{ secrets.RESEND_API }}
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
           AWS_REGION: ${{ secrets.AWS_REGION }}

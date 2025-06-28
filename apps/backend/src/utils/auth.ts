@@ -12,7 +12,7 @@ export const auth = betterAuth({
     provider: "pg",
     schema: schema,
   }),
-  trustedOrigins: [env.FRONTEND_URL],
+  trustedOrigins: [env.FRONTEND_URL, env.PREVIEW_URL],
   basePath: "/auth",
   user: {
     deleteUser: {
