@@ -54,7 +54,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const showClearIcon = showClear && hasValue;
 
     return (
-      <div className="relative flex items-center w-full max-w-[32rem]">
+      <div className="relative flex items-center w-full">
         {iconLeft && (
           <div className={cn(
             "absolute left-3 flex items-center pointer-events-none text-muted-foreground",
