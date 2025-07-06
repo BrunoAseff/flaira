@@ -9,7 +9,6 @@ import { format } from "date-fns";
 import UserAgentDisplay, { getDeviceIcon } from "@/lib/formatUserAgent";
 import { Separator } from "../ui/separator";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { ScrollArea } from "../ui/scroll-area";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
@@ -99,7 +98,7 @@ export default function SecurityTab({
 
   return (
     <div className="w-full flex flex-col h-full">
-      <ScrollArea className="flex-1 pb-16 max-h-[85vh] scrollbar-gutter-stable overflow-y-auto">
+      <div className="flex-1 max-h-full scrollbar-gutter-stable overflow-y-auto">
         <div className="w-full py-0 px-4 pb-10">
           <div className="w-full flex flex-col gap-6">
             <div className="flex w-full justify-between">
@@ -197,7 +196,7 @@ export default function SecurityTab({
             </div>
           </div>
         </div>
-      </ScrollArea>
+      </div>
       <DeleteAccountDialog
         isOpen={isDeleteAccountOpen}
         setIsOpen={setIsDeleteAccountOpen}

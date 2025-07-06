@@ -6,7 +6,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { cn } from "@/lib/utils";
 import {
   AirplaneModeIcon,
   BicycleIcon,
@@ -14,14 +13,15 @@ import {
   Car05Icon,
   CargoShipIcon,
   FerryBoatIcon,
-  Location09Icon,
+  MapsCircle02Icon,
   Motorbike02Icon,
   PlusSignIcon,
-  RouteBlockIcon,
+  CircleArrowRightDoubleIcon,
   WorkoutRunIcon,
   Cancel01Icon,
+  StopCircleIcon,
 } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import { useEffect, useRef, useState } from "react";
 
 interface AnimatedStopsProps {
@@ -35,7 +35,11 @@ function AnimatedStops({ children }: AnimatedStopsProps) {
   // biome-ignore lint:
   useEffect(() => {
     if (contentWrapperRef.current) {
-      setCurrentMaxHeight(`${contentWrapperRef.current.scrollHeight}px`);
+      const hasStops = contentWrapperRef.current.scrollHeight > 0;
+      const marginOffset = hasStops ? 16 : 0;
+
+      const height = contentWrapperRef.current.scrollHeight + marginOffset;
+      setCurrentMaxHeight(`${height}px`);
     }
   }, [children]);
 
@@ -44,13 +48,12 @@ function AnimatedStops({ children }: AnimatedStopsProps) {
       style={{ maxHeight: currentMaxHeight }}
       className="w-full overflow-hidden transition-[max-height] duration-500 ease-in-out"
     >
-      <div ref={contentWrapperRef} className="flex flex-col gap-3">
+      <div ref={contentWrapperRef} className="flex flex-col gap-3 m-2">
         {children}
       </div>
     </div>
   );
 }
-
 export default function Journey() {
   const [hasTripFinished, setHasTripFinished] = useState(false);
   const [stops, setStops] = useState<{ id: number }[]>([]);
@@ -78,76 +81,73 @@ export default function Journey() {
     { value: "boat", label: "Boat", icon: FerryBoatIcon },
   ];
 
+  const renderInputRow = (
+    icon: IconSvgElement,
+    placeholder: string,
+    key: string,
+    onRemove?: () => void,
+  ) => (
+    <div
+      key={key}
+      className="flex items-center gap-3 w-full text-foreground/80"
+    >
+      <HugeiconsIcon
+        icon={icon}
+        size={28}
+        className="min-w-[18px] rounded-full"
+      />
+      <Input
+        className="w-full max-w-none flex-1"
+        placeholder={placeholder}
+        type="text"
+      />
+      {onRemove && (
+        <button
+          type="button"
+          onClick={onRemove}
+          className="text-accent-foreground hover:text-error hover:bg-error/10 transition-all rounded-lg p-1"
+          aria-label="Remove stop"
+        >
+          <HugeiconsIcon icon={Cancel01Icon} size={17} />
+        </button>
+      )}
+    </div>
+  );
+
   return (
-    <div className="flex flex-col md:flex-row mx-6 md:ml-10 gap-6 h-full scrollbar-gutter-stable overflow-y-auto">
-      <div className="flex flex-col w-full md:w-[40%] gap-2 h-full">
-        <div className="flex flex-col w-full gap-1  px-1">
-          <div className="flex flex-col gap-1 w-full">
-            <Label className="text-base">Start</Label>
-            <Input
-              className="w-full max-w-none"
-              iconLeft={
-                <HugeiconsIcon icon={RouteBlockIcon} color="currentColor" />
-              }
-              type="text"
-            />
-          </div>
+    <div className="flex flex-col md:flex-row mx-6 md:ml-10 gap-6 h-full">
+      <div className="flex flex-col justify-start w-full md:w-[40%] gap-2 max-h-full scrollbar-gutter-stable overflow-y-auto p-1">
+        <div className="flex flex-col flex-1 gap-1 pt-5">
+          {renderInputRow(
+            CircleArrowRightDoubleIcon,
+            "Start location",
+            "start-location",
+          )}
 
           <AnimatedStops>
-            {stops.map((stop, index) => (
-              <div
-                key={stop.id}
-                className={cn(
-                  "flex flex-col p-1 w-full z-50",
-                  index === 0 ? "mt-3" : "",
-                )}
-              >
-                <div className="flex justify-between items-center">
-                  <Label className="text-sm opacity-80">Stop {index + 1}</Label>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveStop(stop.id)}
-                    className="text-accent-foreground hover:text-error hover:bg-error/10 transition-all mb-1 rounded-lg p-1"
-                    aria-label="Remove stop"
-                  >
-                    <HugeiconsIcon icon={Cancel01Icon} size={17} />
-                  </button>
-                </div>
-                <Input
-                  className="w-full max-w-none"
-                  iconLeft={
-                    <HugeiconsIcon icon={Location09Icon} color="currentColor" />
-                  }
-                  type="text"
-                />
-              </div>
-            ))}
+            {stops.map((stop, index) =>
+              renderInputRow(
+                StopCircleIcon,
+                `Stop ${index + 1}`,
+                `stop-${stop.id}`,
+                () => handleRemoveStop(stop.id),
+              ),
+            )}
           </AnimatedStops>
 
-          <div className="flex items-center gap-2 w-full mt-2 px-1">
-            <div className="flex-grow border-t-2 border-dashed border-muted" />
+          <div className="flex items-start w-full">
             <Button
               variant="ghost"
               size="icon"
               onClick={handleAddStop}
               aria-label="Add a new stop"
-              className="flex items-center text-accent-foreground justify-center size-3 p-4 rounded-full bg-transparent hover:bg-muted hover:text-foreground transition-all duration-300"
+              className="flex items-start text-foreground/60 justify-start size-6 rounded-full bg-transparent hover:bg-muted hover:text-foreground transition-all duration-300"
             >
-              <HugeiconsIcon icon={PlusSignIcon} size={10} />
+              <HugeiconsIcon icon={PlusSignIcon} size={12} />
             </Button>
-            <div className="flex-grow border-t-2 border-dashed border-muted" />
           </div>
 
-          <div className="flex flex-col gap-1 w-full">
-            <Label className="text-base">End</Label>
-            <Input
-              className="w-full max-w-none"
-              iconLeft={
-                <HugeiconsIcon icon={Location09Icon} color="currentColor" />
-              }
-              type="text"
-            />
-          </div>
+          {renderInputRow(MapsCircle02Icon, "End location", "end-location")}
         </div>
         <div className="flex flex-col gap-1 w-full px-1">
           <div className="flex items-center space-x-2 mt-2">
