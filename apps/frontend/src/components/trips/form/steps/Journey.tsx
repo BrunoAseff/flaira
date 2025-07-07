@@ -89,7 +89,7 @@ export default function Journey() {
   ) => (
     <div
       key={key}
-      className="flex items-center gap-3 w-full text-foreground/80"
+      className="flex items-center gap-3 w-full text-foreground/60"
     >
       <HugeiconsIcon
         icon={icon}
