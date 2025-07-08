@@ -55,7 +55,7 @@ export default function UserButton() {
       return presignedUrlData.data || null;
     },
     enabled: !!session && !!session.user.image,
-    staleTime: 5 * 60 * 1000,
+    staleTime: Number.POSITIVE_INFINITY,
     retry: 2,
   });
 

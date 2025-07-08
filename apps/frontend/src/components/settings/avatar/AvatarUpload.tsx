@@ -16,7 +16,7 @@ const ALLOWED_FILE_TYPES = [
   "image/webp",
   "image/jpg",
 ];
-const AVATAR_URL_CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+const AVATAR_URL_CACHE_TIME = Number.POSITIVE_INFINITY;
 const OPTIMISTIC_CLEAR_DELAY = 100;
 
 interface AvatarUploadProps {
