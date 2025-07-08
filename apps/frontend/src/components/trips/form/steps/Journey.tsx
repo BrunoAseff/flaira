@@ -115,7 +115,7 @@ export default function Journey() {
   );
 
   return (
-    <div className="flex flex-col md:flex-row mx-6 md:ml-10 gap-6 h-full">
+    <div className="flex flex-col md:flex-row mx-6 h-full">
       <div className="flex flex-col justify-start w-full md:w-[40%] gap-2 max-h-full scrollbar-gutter-stable overflow-y-auto p-1">
         <div className="flex flex-col flex-1 gap-1 pt-5">
           {renderInputRow(
@@ -181,7 +181,7 @@ export default function Journey() {
         </div>
       </div>
 
-      <div className="w-[60%] mx-2 mt-2 rounded-xl hidden md:flex justify-start">
+      <div className="w-[60%] mx-2 mt-2 rounded-xl p-2 hidden md:flex justify-start">
         <MapView
           containerStyle={{
             borderRadius: "16px",
