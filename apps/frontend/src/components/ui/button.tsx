@@ -1,19 +1,19 @@
-import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
+import * as React from 'react';
+import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from "@/lib/utils";
-import { LoaderCircle } from "lucide-react";
+import { cn } from '@/lib/utils';
+import { LoaderCircle } from 'lucide-react';
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-lg font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-6 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
-        default: "bg-primary text-background shadow-xs hover:bg-primary/90",
+        default: 'bg-primary text-background shadow-xs hover:bg-primary/90',
         destructive:
-          "bg-error text-white shadow-xs hover:bg-error/90 focus-visible:ring-error/20 dark:focus-visible:ring-error/40 dark:bg-error/60",
-        outline: "bg-popover hover:bg-muted hover:text-accent-foreground",
+          'bg-error text-white shadow-xs hover:bg-error/90 focus-visible:ring-error/20 dark:focus-visible:ring-error/40 dark:bg-error/60',
+        outline: 'bg-popover hover:bg-muted hover:text-accent-foreground',
         secondary:
           'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost:
@@ -33,7 +33,6 @@ const buttonVariants = cva(
     },
   }
 );
-);
 
 function Button({
   className,
@@ -46,10 +45,9 @@ function Button({
 }: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
-    asChild?: boolean;
     loading?: boolean;
   }) {
-  const Comp = asChild ? Slot : "button";
+  const Comp = asChild ? Slot : 'button';
 
   return (
     <Comp
@@ -58,12 +56,9 @@ function Button({
       disabled={loading || props.disabled}
       {...props}
     >
-    >
       {loading ? <LoaderCircle className="animate-spin" /> : children}
     </Comp>
   );
-  );
 }
 
-export { Button, buttonVariants };
 export { Button, buttonVariants };

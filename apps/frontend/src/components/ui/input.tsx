@@ -1,15 +1,8 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { X } from "lucide-react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  iconLeft?: React.ReactNode;
-  iconRight?: React.ReactNode;
-  success?: boolean;
-  showClear?: boolean;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
   success?: boolean;
@@ -30,10 +23,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const [internalValue, setInternalValue] = React.useState(
-      props.value || props.defaultValue || ""
+      props.value || props.defaultValue || ''
     );
     const inputRef = React.useRef<HTMLInputElement>(null);
-
 
     const finalRef = ref || inputRef;
 
@@ -54,24 +46,21 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const handleClear = () => {
       const input = (finalRef as React.RefObject<HTMLInputElement>)?.current;
       if (input) {
-        const event = new Event("input", { bubbles: true });
-        Object.defineProperty(event, "target", {
+        const event = new Event('input', { bubbles: true });
+        Object.defineProperty(event, 'target', {
           writable: false,
-          value: input,
           value: input,
         });
 
         input.value = '';
         setInternalValue('');
 
-
-        input.value = "";
-        setInternalValue("");
+        input.value = '';
+        setInternalValue('');
 
         if (props.onChange) {
           props.onChange(event as any);
         }
-
 
         input.focus();
       }
@@ -89,13 +78,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               success && 'text-success transition-colors'
             )}
           >
-          <div
-            className={cn(
-              "absolute left-3 flex items-center pointer-events-none text-muted-foreground",
-              success && "text-success transition-colors"
-            )}
-          >
-            {iconLeft}
+            <div
+              className={cn(
+                'absolute left-3 flex items-center pointer-events-none text-muted-foreground',
+                success && 'text-success transition-colors'
+              )}
+            >
+              {iconLeft}
+            </div>
           </div>
         )}
         <input
@@ -111,20 +101,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             iconLeft && 'pl-12',
             (iconRight || showClearIcon) && 'pr-12',
             iconRight && showClearIcon && 'pr-20',
-            "file:text-foreground max-w-[32rem] placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-15 w-full min-w-0 rounded-xl  border-1 border-accent bg-muted px-3 py-1 text-sm md:text-lg shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-            "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-            "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+            'file:text-foreground max-w-[32rem] placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-15 w-full min-w-0 rounded-xl  border-1 border-accent bg-muted px-3 py-1 text-sm md:text-lg shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
+            'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+            'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
             success &&
-              "bg-success-foreground border-success ring-success-foreground transition-all focus-visible:border-success",
-            iconLeft && "pl-12",
-            (iconRight || showClearIcon) && "pr-12",
-            iconRight && showClearIcon && "pr-20",
+              'bg-success-foreground border-success ring-success-foreground transition-all focus-visible:border-success',
+            iconLeft && 'pl-12',
+            (iconRight || showClearIcon) && 'pr-12',
+            iconRight && showClearIcon && 'pr-20',
             className
           )}
           {...props}
           onChange={handleInputChange}
         />
-
 
         {showClearIcon && (
           <button
@@ -141,7 +130,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           </button>
         )}
 
-
         {iconRight && (
           <div className="absolute right-3 flex items-center text-muted-foreground">
             {iconRight}
@@ -149,16 +137,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
-    );
   }
 );
 
 Input.displayName = 'Input';
-);
 
-Input.displayName = "Input";
-
-export { Input };
-export type { InputProps };
 export { Input };
 export type { InputProps };
