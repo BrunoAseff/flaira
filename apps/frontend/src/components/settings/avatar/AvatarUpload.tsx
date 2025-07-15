@@ -172,7 +172,6 @@ export default function AvatarUpload({ user }: AvatarUploadProps) {
 
   useEffect(() => {
     return () => {
-      // biome-ignore lint:
       if (optimisticAvatarUrl && optimisticAvatarUrl.startsWith('blob:')) {
         URL.revokeObjectURL(optimisticAvatarUrl);
       }

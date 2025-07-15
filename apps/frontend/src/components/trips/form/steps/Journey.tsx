@@ -32,7 +32,6 @@ function AnimatedStops({ children }: AnimatedStopsProps) {
   const contentWrapperRef = useRef<HTMLDivElement>(null);
   const [currentMaxHeight, setCurrentMaxHeight] = useState('0px');
 
-  // biome-ignore lint:
   useEffect(() => {
     if (contentWrapperRef.current) {
       const hasStops = contentWrapperRef.current.scrollHeight > 0;
