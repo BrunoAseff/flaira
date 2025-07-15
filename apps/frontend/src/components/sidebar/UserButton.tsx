@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { auth } from "@/auth/client";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { auth } from '@/auth/client';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { SidebarMenuButton } from "../ui/sidebar";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { HugeiconsIcon } from "@hugeicons/react";
+} from '../ui/dropdown-menu';
+import { SidebarMenuButton } from '../ui/sidebar';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { HugeiconsIcon } from '@hugeicons/react';
 import {
   Login01Icon,
   User03Icon,
   Settings01Icon,
-} from "@hugeicons/core-free-icons";
-import { useState } from "react";
-import { SettingsDialog } from "../settings/SettingsDialog";
-import { useQuery } from "@tanstack/react-query";
+} from '@hugeicons/core-free-icons';
+import { useState } from 'react';
+import { SettingsDialog } from '../settings/SettingsDialog';
+import { useQuery } from '@tanstack/react-query';
 
 export default function UserButton() {
   const { data: session } = auth.useSession();
@@ -30,24 +30,24 @@ export default function UserButton() {
   }
 
   const { data: imageUrl } = useQuery({
-    queryKey: ["avatar-url", session?.user.image],
+    queryKey: ['avatar-url', session?.user.image],
     queryFn: async () => {
       if (!session?.user.image) {
         return null;
       }
 
       const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/user/get-avatar`);
-      url.searchParams.append("key", session.user.image);
+      url.searchParams.append('key', session.user.image);
 
       const presignedUrlResponse = await fetch(url.toString(), {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
       });
 
       if (!presignedUrlResponse.ok) {
         throw new Error(
-          `Failed to fetch avatar URL: ${presignedUrlResponse.status}`,
+          `Failed to fetch avatar URL: ${presignedUrlResponse.status}`
         );
       }
 
@@ -66,7 +66,7 @@ export default function UserButton() {
           <SidebarMenuButton size="lg" className="py-6 hover:bg-background">
             <Avatar className="size-8 rounded-lg">
               <AvatarImage
-                src={imageUrl ?? ""}
+                src={imageUrl ?? ''}
                 alt={`${session?.user.name} profile picture`}
                 className="object-cover w-full h-full"
               />
@@ -89,7 +89,7 @@ export default function UserButton() {
           </SidebarMenuButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          side={isMobile ? "top" : "right"}
+          side={isMobile ? 'top' : 'right'}
           className="w-[--radix-popper-anchor-width] mb-4"
         >
           <DropdownMenuItem

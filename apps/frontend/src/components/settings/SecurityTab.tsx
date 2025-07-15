@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Button } from "../ui/button";
-import { auth } from "@/auth/client";
-import type { Session } from "better-auth/types";
-import { format } from "date-fns";
-import UserAgentDisplay, { getDeviceIcon } from "@/lib/formatUserAgent";
-import { Separator } from "../ui/separator";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { useRouter } from "next/navigation";
-import { Skeleton } from "../ui/skeleton";
-import { DeleteAccountDialog } from "./DeleteAccountDialog";
-import { Banner } from "../ui/banner";
-import { SessionItem } from "./SessionItem";
+import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Button } from '../ui/button';
+import { auth } from '@/auth/client';
+import type { Session } from 'better-auth/types';
+import { format } from 'date-fns';
+import UserAgentDisplay, { getDeviceIcon } from '@/lib/formatUserAgent';
+import { Separator } from '../ui/separator';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { useRouter } from 'next/navigation';
+import { Skeleton } from '../ui/skeleton';
+import { DeleteAccountDialog } from './DeleteAccountDialog';
+import { Banner } from '../ui/banner';
+import { SessionItem } from './SessionItem';
 
 interface SecurityTabProps {
   sessionList: Session[] | null;
@@ -29,7 +29,7 @@ export default function SecurityTab({
   error,
 }: SecurityTabProps) {
   const [loadingSessionIds, setLoadingSessionIds] = useState<Set<string>>(
-    new Set(),
+    new Set()
   );
   const [isDeleteAccountOpen, setIsDeleteAccountOpen] = useState(false);
   const router = useRouter();
@@ -43,16 +43,16 @@ export default function SecurityTab({
     onMutate: async (variables: { token: string; sessionId: string }) => {
       setLoadingSessionIds((prev) => new Set(prev).add(variables.sessionId));
 
-      await query.cancelQueries({ queryKey: ["sessions"] });
+      await query.cancelQueries({ queryKey: ['sessions'] });
 
-      const previousSessions = query.getQueryData<Session[]>(["sessions"]);
+      const previousSessions = query.getQueryData<Session[]>(['sessions']);
 
       if (previousSessions) {
         query.setQueryData<Session[]>(
-          ["sessions"],
+          ['sessions'],
           previousSessions.filter(
-            (session: Session) => session.id !== variables.sessionId,
-          ),
+            (session: Session) => session.id !== variables.sessionId
+          )
         );
       }
 
@@ -61,15 +61,15 @@ export default function SecurityTab({
     onError: (
       err: Error & { sessionId?: string },
       _variables,
-      context?: { previousSessions?: Session[]; sessionId: string },
+      context?: { previousSessions?: Session[]; sessionId: string }
     ) => {
-      console.error("Failed to revoke session:", err);
+      console.error('Failed to revoke session:', err);
       if (context?.previousSessions) {
-        query.setQueryData<Session[]>(["sessions"], context.previousSessions);
+        query.setQueryData<Session[]>(['sessions'], context.previousSessions);
       }
     },
     onSuccess: () => {
-      query.invalidateQueries({ queryKey: ["sessions"] });
+      query.invalidateQueries({ queryKey: ['sessions'] });
     },
     onSettled: (_data, error, variables, context) => {
       const sessionIdToClear =
@@ -106,7 +106,7 @@ export default function SecurityTab({
                 Password
               </h1>
               <Button
-                onClick={() => router.push("/forgot-password")}
+                onClick={() => router.push('/forgot-password')}
                 size="sm"
                 variant="outline"
               >
@@ -134,7 +134,7 @@ export default function SecurityTab({
                     >
                       <div className="flex items-center gap-3">
                         <HugeiconsIcon
-                          icon={getDeviceIcon(session.userAgent ?? "")}
+                          icon={getDeviceIcon(session.userAgent ?? '')}
                           className="text-accent-foreground"
                           color="currentColor"
                           strokeWidth={2}
@@ -143,7 +143,7 @@ export default function SecurityTab({
                         <div className="flex flex-col gap-1">
                           <div className="text-foreground/65 font-semibold text-sm flex gap-3 items-center">
                             <UserAgentDisplay
-                              userAgent={session.userAgent ?? ""}
+                              userAgent={session.userAgent ?? ''}
                             />
                             {currentSession?.id === session.id ? (
                               <>
@@ -160,7 +160,7 @@ export default function SecurityTab({
                           <div className="text-foreground/65 font-semibold text-sm">
                             {format(
                               new Date(session.createdAt),
-                              "dd/MM/yyyy 'at' HH:mm",
+                              "dd/MM/yyyy 'at' HH:mm"
                             )}
                           </div>
                         </div>

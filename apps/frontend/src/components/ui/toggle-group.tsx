@@ -34,7 +34,7 @@ const toggleVariants = cva(
       variant: 'default',
       size: 'default',
     },
-  },
+  }
 );
 
 type ToggleGroupContextProps = VariantProps<typeof toggleVariants> & {
@@ -88,7 +88,7 @@ function ToggleGroup({
         data-slot="toggle-group"
         className={cn(
           'flex items-center justify-center gap-1 relative',
-          className,
+          className
         )}
         {...props}
       >
@@ -163,7 +163,7 @@ function ToggleGroupItem({
               type,
             }),
             className,
-            spanProps?.className,
+            spanProps?.className
           )}
         >
           {children}
@@ -180,7 +180,7 @@ function ToggleGroupItem({
               transition={transition}
               className={cn(
                 'absolute inset-0 z-0 rounded-md bg-muted',
-                activeClassName,
+                activeClassName
               )}
             />
           )}

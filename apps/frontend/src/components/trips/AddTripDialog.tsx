@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Dialog,
@@ -6,8 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
-} from "@/components/ui/dialog";
-import AddTripForm from "./form/AddTripForm";
+} from '@/components/ui/dialog';
+import AddTripForm from './form/AddTripForm';
 
 export function AddTripDialog({
   isOpen,

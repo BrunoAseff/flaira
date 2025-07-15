@@ -1,17 +1,17 @@
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from '@/hooks/use-mobile';
 import {
   Loading02Icon,
   SquareArrowRight02Icon,
-} from "@hugeicons/core-free-icons";
+} from '@hugeicons/core-free-icons';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Button } from "@/components/ui/button";
-import type { Session } from "better-auth/types";
+} from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Button } from '@/components/ui/button';
+import type { Session } from 'better-auth/types';
 
 interface SessionItemProps {
   session: Session;
@@ -51,7 +51,7 @@ export function SessionItem({
         size="icon"
       >
         <HugeiconsIcon
-          className={cn(isLoading && "animate-spin")}
+          className={cn(isLoading && 'animate-spin')}
           icon={isLoading ? Loading02Icon : SquareArrowRight02Icon}
           color="currentColor"
           strokeWidth={2}

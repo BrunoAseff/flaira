@@ -1,31 +1,31 @@
-"use client";
+'use client';
 
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import Link from "next/link";
-import { Eye, EyeOff, KeyRound, Mail } from "lucide-react";
-import { useForm } from "@tanstack/react-form";
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import Link from 'next/link';
+import { Eye, EyeOff, KeyRound, Mail } from 'lucide-react';
+import { useForm } from '@tanstack/react-form';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import type { z } from "zod";
-import { useEffect, useState } from "react";
-import { signInSchema } from "@/schemas/auth";
-import { auth } from "@/auth/client";
-import { useRouter } from "next/navigation";
-import { Banner } from "../ui/banner";
-import Logo from "../brand/Logo";
+} from '../ui/card';
+import type { z } from 'zod';
+import { useEffect, useState } from 'react';
+import { signInSchema } from '@/schemas/auth';
+import { auth } from '@/auth/client';
+import { useRouter } from 'next/navigation';
+import { Banner } from '../ui/banner';
+import Logo from '../brand/Logo';
 
 type User = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const { data: session } = auth.useSession();
 
@@ -33,17 +33,17 @@ export default function SignIn() {
 
   useEffect(() => {
     if (session) {
-      router.push("/");
+      router.push('/');
     }
   }, [session, router]);
 
   const form = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     } as User,
     onSubmit: ({ value }) => {
-      setErrorMessage("");
+      setErrorMessage('');
       setIsAuthenticating(true);
 
       auth.signIn.email(
@@ -55,20 +55,20 @@ export default function SignIn() {
           onError: (ctx) => {
             setIsAuthenticating(false);
 
-            if (ctx.error.code === "EMAIL_NOT_VERIFIED") {
-              localStorage.setItem("current-email", value.email);
+            if (ctx.error.code === 'EMAIL_NOT_VERIFIED') {
+              localStorage.setItem('current-email', value.email);
 
-              router.push("/verify-email/not-verified");
-            } else if (ctx.error.code === "INVALID_EMAIL_OR_PASSWORD") {
-              setErrorMessage("Incorrect username or password.");
+              router.push('/verify-email/not-verified');
+            } else if (ctx.error.code === 'INVALID_EMAIL_OR_PASSWORD') {
+              setErrorMessage('Incorrect username or password.');
             } else {
-              setErrorMessage("Sorry, something went wrong.");
+              setErrorMessage('Sorry, something went wrong.');
             }
           },
           onSuccess: () => {
-            router.push("/");
+            router.push('/');
           },
-        },
+        }
       );
     },
   });
@@ -145,11 +145,11 @@ export default function SignIn() {
                   <Label htmlFor="password">Password</Label>
                   <Link
                     className="text-base mt-1 w-fit text-link hover:underline transition-all duration-300 font-medium"
-                    href={"/forgot-password"}
+                    href={'/forgot-password'}
                   >
                     Forgot my password
                   </Link>
-                </div>{" "}
+                </div>{' '}
                 <Input
                   iconLeft={<KeyRound />}
                   iconRight={
@@ -171,7 +171,7 @@ export default function SignIn() {
                   }
                   id="password"
                   name="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   success={
                     field.state.meta.isDirty &&
@@ -208,7 +208,7 @@ export default function SignIn() {
             children={({ isSubmitting, isValid, fieldMeta }) => {
               const allFieldsFilled = Object.entries(fieldMeta).every(
                 ([_, meta]) =>
-                  meta.isDirty && !meta.errors.length && !meta.isValidating,
+                  meta.isDirty && !meta.errors.length && !meta.isValidating
               );
 
               return (
@@ -235,7 +235,7 @@ export default function SignIn() {
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">
         <Link
           className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
-          href={"/sign-up"}
+          href={'/sign-up'}
         >
           Don't have an account? Sign Up
         </Link>

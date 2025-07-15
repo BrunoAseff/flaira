@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { createPortal } from "react-dom";
+import * as React from 'react';
+import { createPortal } from 'react-dom';
 import {
   motion,
   AnimatePresence,
   LayoutGroup,
   type Transition,
-} from "motion/react";
+} from 'motion/react';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
-type Side = "top" | "bottom" | "left" | "right";
+type Side = 'top' | 'bottom' | 'left' | 'right';
 
-type Align = "start" | "center" | "end";
+type Align = 'start' | 'center' | 'end';
 
 type TooltipData = {
   content: React.ReactNode;
@@ -41,7 +41,7 @@ const GlobalTooltipContext = React.createContext<
 const useGlobalTooltip = () => {
   const context = React.useContext(GlobalTooltipContext);
   if (!context) {
-    throw new Error("useGlobalTooltip must be used within a TooltipProvider");
+    throw new Error('useGlobalTooltip must be used within a TooltipProvider');
   }
   return context;
 };
@@ -67,19 +67,19 @@ function getTooltipPosition({
   alignOffset: number;
 }): TooltipPosition {
   switch (side) {
-    case "top":
-      if (align === "start") {
+    case 'top':
+      if (align === 'start') {
         return {
           x: rect.left + alignOffset,
           y: rect.top - sideOffset,
-          transform: "translate(0, -100%)",
+          transform: 'translate(0, -100%)',
           initial: { y: 15 },
         };
-      } else if (align === "end") {
+      } else if (align === 'end') {
         return {
           x: rect.right + alignOffset,
           y: rect.top - sideOffset,
-          transform: "translate(-100%, -100%)",
+          transform: 'translate(-100%, -100%)',
           initial: { y: 15 },
         };
       } else {
@@ -87,23 +87,23 @@ function getTooltipPosition({
         return {
           x: rect.left + rect.width / 2,
           y: rect.top - sideOffset,
-          transform: "translate(-50%, -100%)",
+          transform: 'translate(-50%, -100%)',
           initial: { y: 15 },
         };
       }
-    case "bottom":
-      if (align === "start") {
+    case 'bottom':
+      if (align === 'start') {
         return {
           x: rect.left + alignOffset,
           y: rect.bottom + sideOffset,
-          transform: "translate(0, 0)",
+          transform: 'translate(0, 0)',
           initial: { y: -15 },
         };
-      } else if (align === "end") {
+      } else if (align === 'end') {
         return {
           x: rect.right + alignOffset,
           y: rect.bottom + sideOffset,
-          transform: "translate(-100%, 0)",
+          transform: 'translate(-100%, 0)',
           initial: { y: -15 },
         };
       } else {
@@ -111,23 +111,23 @@ function getTooltipPosition({
         return {
           x: rect.left + rect.width / 2,
           y: rect.bottom + sideOffset,
-          transform: "translate(-50%, 0)",
+          transform: 'translate(-50%, 0)',
           initial: { y: -15 },
         };
       }
-    case "left":
-      if (align === "start") {
+    case 'left':
+      if (align === 'start') {
         return {
           x: rect.left - sideOffset,
           y: rect.top + alignOffset,
-          transform: "translate(-100%, 0)",
+          transform: 'translate(-100%, 0)',
           initial: { x: 15 },
         };
-      } else if (align === "end") {
+      } else if (align === 'end') {
         return {
           x: rect.left - sideOffset,
           y: rect.bottom + alignOffset,
-          transform: "translate(-100%, -100%)",
+          transform: 'translate(-100%, -100%)',
           initial: { x: 15 },
         };
       } else {
@@ -135,23 +135,23 @@ function getTooltipPosition({
         return {
           x: rect.left - sideOffset,
           y: rect.top + rect.height / 2,
-          transform: "translate(-100%, -50%)",
+          transform: 'translate(-100%, -50%)',
           initial: { x: 15 },
         };
       }
-    case "right":
-      if (align === "start") {
+    case 'right':
+      if (align === 'start') {
         return {
           x: rect.right + sideOffset,
           y: rect.top + alignOffset,
-          transform: "translate(0, 0)",
+          transform: 'translate(0, 0)',
           initial: { x: -15 },
         };
-      } else if (align === "end") {
+      } else if (align === 'end') {
         return {
           x: rect.right + sideOffset,
           y: rect.bottom + alignOffset,
-          transform: "translate(0, -100%)",
+          transform: 'translate(0, -100%)',
           initial: { x: -15 },
         };
       } else {
@@ -159,7 +159,7 @@ function getTooltipPosition({
         return {
           x: rect.right + sideOffset,
           y: rect.top + rect.height / 2,
-          transform: "translate(0, -50%)",
+          transform: 'translate(0, -50%)',
           initial: { x: -15 },
         };
       }
@@ -171,20 +171,20 @@ type TooltipProviderProps = {
   openDelay?: number;
   closeDelay?: number;
   transition?: Transition;
-  portalContainer?: HTMLElement | null; 
+  portalContainer?: HTMLElement | null;
 };
 
 function TooltipProvider({
   children,
   openDelay = 700,
   closeDelay = 300,
-  transition = { type: "spring", stiffness: 300, damping: 25 },
+  transition = { type: 'spring', stiffness: 300, damping: 25 },
   portalContainer,
 }: TooltipProviderProps) {
   const globalId = React.useId();
   const [currentTooltip, setCurrentTooltip] =
     React.useState<TooltipData | null>(null);
-  const timeoutRef = React.useRef<number | null>(null); 
+  const timeoutRef = React.useRef<number | null>(null);
   const lastCloseTimeRef = React.useRef<number>(0);
 
   const showTooltip = React.useCallback(
@@ -198,10 +198,10 @@ function TooltipProvider({
       const delay = now - lastCloseTimeRef.current < closeDelay ? 0 : openDelay;
       timeoutRef.current = window.setTimeout(
         () => setCurrentTooltip(data),
-        delay,
+        delay
       );
     },
-    [openDelay, closeDelay, currentTooltip],
+    [openDelay, closeDelay, currentTooltip]
   );
 
   const hideTooltip = React.useCallback(() => {
@@ -219,8 +219,8 @@ function TooltipProvider({
   }, []);
 
   React.useEffect(() => {
-    window.addEventListener("scroll", hideImmediate, true);
-    return () => window.removeEventListener("scroll", hideImmediate, true);
+    window.addEventListener('scroll', hideImmediate, true);
+    return () => window.removeEventListener('scroll', hideImmediate, true);
   }, [hideImmediate]);
 
   return (
@@ -247,13 +247,13 @@ function TooltipArrow({ side }: TooltipArrowProps) {
   return (
     <div
       className={cn(
-        "absolute bg-foreground text-background z-50 size-2.5 rotate-45 rounded-[2px]",
-        (side === "top" || side === "bottom") && "left-1/2 -translate-x-1/2",
-        (side === "left" || side === "right") && "top-1/2 -translate-y-1/2",
-        side === "top" && "-bottom-[3px]",
-        side === "bottom" && "-top-[3px]",
-        side === "left" && "-right-[3px]",
-        side === "right" && "-left-[3px]",
+        'absolute bg-foreground text-background z-50 size-2.5 rotate-45 rounded-[2px]',
+        (side === 'top' || side === 'bottom') && 'left-1/2 -translate-x-1/2',
+        (side === 'left' || side === 'right') && 'top-1/2 -translate-y-1/2',
+        side === 'top' && '-bottom-[3px]',
+        side === 'bottom' && '-top-[3px]',
+        side === 'left' && '-right-[3px]',
+        side === 'right' && '-left-[3px]'
       )}
     />
   );
@@ -261,12 +261,13 @@ function TooltipArrow({ side }: TooltipArrowProps) {
 
 type TooltipPortalProps = {
   children: React.ReactNode;
-  container?: HTMLElement | null; 
+  container?: HTMLElement | null;
 };
 
 function TooltipPortal({ children, container }: TooltipPortalProps) {
   const [isMounted, setIsMounted] = React.useState(false);
-  const portalTarget = container || (typeof window !== 'undefined' ? document.body : null);
+  const portalTarget =
+    container || (typeof window !== 'undefined' ? document.body : null);
 
   React.useEffect(() => {
     setIsMounted(true);
@@ -281,7 +282,7 @@ function TooltipPortal({ children, container }: TooltipPortalProps) {
 }
 
 type TooltipOverlayProps = {
-  container?: HTMLElement | null; 
+  container?: HTMLElement | null;
 };
 
 function TooltipOverlay({ container }: TooltipOverlayProps) {
@@ -312,8 +313,8 @@ function TooltipOverlay({ container }: TooltipOverlayProps) {
 
     return {
       ...viewportPosition, // Keep original transform and initial animation values
-      x: adjustedX,         // Use adjusted x for positioning relative to the container
-      y: adjustedY,         // Use adjusted y for positioning relative to the container
+      x: adjustedX, // Use adjusted x for positioning relative to the container
+      y: adjustedY, // Use adjusted y for positioning relative to the container
     };
   }, [currentTooltip, container]); // Add container to dependency array
 
@@ -326,15 +327,15 @@ function TooltipOverlay({ container }: TooltipOverlayProps) {
             className="fixed z-50"
             style={{
               top: position.y,
-              left: position.x,  
-              transform: position.transform, 
+              left: position.x,
+              transform: position.transform,
             }}
           >
             <motion.div
               data-slot="tooltip-overlay"
               layoutId={`tooltip-overlay-${globalId}`}
               initial={{ opacity: 0, scale: 0, ...position.initial }}
-              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }} 
+              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               exit={{ opacity: 0, scale: 0, ...position.initial }}
               transition={transition}
               className="relative rounded-md fill-foreground text-nowrap font-medium px-4 py-2 text-base bg-foreground text-background shadow-md w-fit"
@@ -364,13 +365,13 @@ type TooltipContextType = {
 };
 
 const TooltipContext = React.createContext<TooltipContextType | undefined>(
-  undefined,
+  undefined
 );
 
 const useTooltip = () => {
   const context = React.useContext(TooltipContext);
   if (!context) {
-    throw new Error("useTooltip must be used within a TooltipProvider");
+    throw new Error('useTooltip must be used within a TooltipProvider');
   }
   return context;
 };
@@ -385,9 +386,9 @@ type TooltipProps = {
 
 function Tooltip({
   children,
-  side = "top",
+  side = 'top',
   sideOffset = 14,
-  align = "center",
+  align = 'center',
   alignOffset = 0,
 }: TooltipProps) {
   const id = React.useId();
@@ -457,7 +458,7 @@ function TooltipTrigger({ children }: TooltipTriggerProps) {
       (children.props as React.HTMLAttributes<HTMLElement>)?.onMouseEnter?.(e);
       handleOpen();
     },
-    [handleOpen, children.props],
+    [handleOpen, children.props]
   );
 
   const handleMouseLeave = React.useCallback(
@@ -465,7 +466,7 @@ function TooltipTrigger({ children }: TooltipTriggerProps) {
       (children.props as React.HTMLAttributes<HTMLElement>)?.onMouseLeave?.(e);
       hideTooltip();
     },
-    [hideTooltip, children.props],
+    [hideTooltip, children.props]
   );
 
   const handleFocus = React.useCallback(
@@ -473,7 +474,7 @@ function TooltipTrigger({ children }: TooltipTriggerProps) {
       (children.props as React.HTMLAttributes<HTMLElement>)?.onFocus?.(e);
       handleOpen();
     },
-    [handleOpen, children.props],
+    [handleOpen, children.props]
   );
 
   const handleBlur = React.useCallback(
@@ -481,7 +482,7 @@ function TooltipTrigger({ children }: TooltipTriggerProps) {
       (children.props as React.HTMLAttributes<HTMLElement>)?.onBlur?.(e);
       hideTooltip();
     },
-    [hideTooltip, children.props],
+    [hideTooltip, children.props]
   );
 
   return React.cloneElement(children, {
@@ -490,10 +491,10 @@ function TooltipTrigger({ children }: TooltipTriggerProps) {
     onMouseLeave: handleMouseLeave,
     onFocus: handleFocus,
     onBlur: handleBlur,
-    "data-state": currentTooltip?.id === id ? "open" : "closed",
-    "data-side": side,
-    "data-align": align,
-    "data-slot": "tooltip-trigger",
+    'data-state': currentTooltip?.id === id ? 'open' : 'closed',
+    'data-side': side,
+    'data-align': align,
+    'data-slot': 'tooltip-trigger',
   } as React.HTMLAttributes<HTMLElement>);
 }
 

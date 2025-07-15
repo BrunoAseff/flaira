@@ -1,11 +1,11 @@
-import { useState } from "react";
-import FormHeader from "./FormHeader";
-import Companions from "./steps/Companions";
-import Journey from "./steps/Journey";
-import Prologue from "./steps/Prologue";
-import Review from "./steps/Review";
+import { useState } from 'react';
+import FormHeader from './FormHeader';
+import Companions from './steps/Companions';
+import Journey from './steps/Journey';
+import Prologue from './steps/Prologue';
+import Review from './steps/Review';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
 export default function AddTripForm() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -59,7 +59,7 @@ export default function AddTripForm() {
           Previous
         </Button>
         <Button onClick={handleNext} size="sm" disabled={isLastStep}>
-          {isLastStep ? "Complete" : "Next"}
+          {isLastStep ? 'Complete' : 'Next'}
         </Button>
       </div>
     </div>

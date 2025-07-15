@@ -16,7 +16,10 @@
     "services:down": "docker compose down",
     "build": "pnpm -r run build",
     "start": "concurrently \"pnpm --filter backend run start\" \"pnpm --filter frontend run start\"",
-    "lint": "pnpm -r run lint",
+    "lint": "eslint apps/*/src --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint apps/*/src --ext .ts,.tsx,.js,.jsx --fix",
+    "format": "prettier --write \"apps/*/src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"apps/*/src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "typecheck": "pnpm -r run typecheck",
     "test": "pnpm -r run test",
     "clean": "pnpm -r run clean",
@@ -24,16 +27,28 @@
     "find:deadcode": "pnpm -r run find:deadcode"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.31.0",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
     "concurrently": "9.1.2",
     "dotenv-cli": "8.0.0",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
     "pino-pretty": "13.0.0",
+    "prettier": "^3.6.2",
     "turbo": "2.4.4",
     "typescript": "5",
+    "typescript-eslint": "^8.37.0",
     "vitest": "3.1.1"
   },
   "pnpm": {
-    "ignoredBuiltDependencies": ["@biomejs/biome", "esbuild"],
-    "onlyBuiltDependencies": ["@biomejs/biome", "sharp"]
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ],
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
   }
 }

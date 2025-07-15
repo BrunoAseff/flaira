@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { auth } from "@/auth/client";
-import { Button } from "@/components/ui/button";
+import { useEffect } from 'react';
+import { auth } from '@/auth/client';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { XCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useCooldown } from "@/hooks/use-cooldown";
+} from '@/components/ui/card';
+import { XCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useCooldown } from '@/hooks/use-cooldown';
 
 export default function EmailConfirmed({
   isVerified,
@@ -25,7 +25,7 @@ export default function EmailConfirmed({
 
   useEffect(() => {
     if (isVerified) {
-      router.push("/");
+      router.push('/');
     }
   }, [isVerified, router]);
 
@@ -66,7 +66,7 @@ export default function EmailConfirmed({
           disabled={isCooldown}
           aria-disabled={isCooldown}
         >
-          {isCooldown ? `Wait ${timer}s` : "Resend verification email"}
+          {isCooldown ? `Wait ${timer}s` : 'Resend verification email'}
         </Button>
       </CardFooter>
     </Card>

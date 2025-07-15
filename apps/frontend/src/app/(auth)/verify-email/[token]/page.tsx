@@ -1,5 +1,5 @@
-import { auth } from "@/auth/client";
-import EmailConfirmed from "@/components/pages/EmailConfirmed";
+import { auth } from '@/auth/client';
+import EmailConfirmed from '@/components/pages/EmailConfirmed';
 
 export default async function EmailConfirmedPage({
   params,

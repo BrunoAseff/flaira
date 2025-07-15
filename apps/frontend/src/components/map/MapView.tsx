@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Map as MapLibreMap, type ViewState } from "react-map-gl/maplibre";
-import "maplibre-gl/dist/maplibre-gl.css";
-import type { CSSProperties } from "react";
+import { Map as MapLibreMap, type ViewState } from 'react-map-gl/maplibre';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import type { CSSProperties } from 'react';
 
 interface MapViewProps {
   mapStyle?: string;
@@ -12,7 +12,7 @@ interface MapViewProps {
 
 export default function MapView({
   mapStyle,
-  containerStyle = { width: "100vw", height: "100vh", position: "absolute" },
+  containerStyle = { width: '100vw', height: '100vh', position: 'absolute' },
   initialViewState = {
     zoom: 1.5,
     longitude: 0,

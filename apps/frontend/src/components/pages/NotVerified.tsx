@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { MailWarning } from "lucide-react";
-import { Button } from "../ui/button";
+import { MailWarning } from 'lucide-react';
+import { Button } from '../ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { auth } from "@/auth/client";
-import { useCooldown } from "@/hooks/use-cooldown";
+} from '../ui/card';
+import { auth } from '@/auth/client';
+import { useCooldown } from '@/hooks/use-cooldown';
 
 export default function NotVerified() {
   const { timer, isCooldown, startCooldown } = useCooldown();
 
   function handleResend() {
-    const email = localStorage.getItem("current-email");
+    const email = localStorage.getItem('current-email');
 
     startCooldown();
 
@@ -50,7 +50,7 @@ export default function NotVerified() {
           disabled={isCooldown}
           aria-disabled={isCooldown}
         >
-          {isCooldown ? `Wait ${timer}s` : "Resend verification email"}
+          {isCooldown ? `Wait ${timer}s` : 'Resend verification email'}
         </Button>
       </CardFooter>
     </Card>

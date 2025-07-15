@@ -1,11 +1,11 @@
-import { env } from "@/env";
+import { env } from '@/env';
 import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
   DeleteObjectCommand,
-} from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+} from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 const s3 = new S3Client({
   region: env.AWS_REGION,
@@ -18,7 +18,10 @@ const s3 = new S3Client({
 export const uploadUrl = async ({
   key,
   type,
-}: { key: string; type: string }) => {
+}: {
+  key: string;
+  type: string;
+}) => {
   const command = new PutObjectCommand({
     Bucket: env.S3_BUCKET,
     Key: key,

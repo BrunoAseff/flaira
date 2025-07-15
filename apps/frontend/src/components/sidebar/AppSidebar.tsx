@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Sidebar,
@@ -11,18 +11,18 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar";
-import Logo from "../brand/Logo";
-import UserButton from "../sidebar/UserButton";
-import { Button } from "../ui/button";
+} from '@/components/ui/sidebar';
+import Logo from '../brand/Logo';
+import UserButton from '../sidebar/UserButton';
+import { Button } from '../ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { auth } from "@/auth/client";
-import { HugeiconsIcon } from "@hugeicons/react";
+} from '@/components/ui/tooltip';
+import { auth } from '@/auth/client';
+import { HugeiconsIcon } from '@hugeicons/react';
 import {
   DiscoverCircleIcon,
   AirplaneTakeOff01Icon,
@@ -31,42 +31,42 @@ import {
   News01Icon,
   Settings05Icon,
   PlusSignIcon,
-} from "@hugeicons/core-free-icons";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { useState } from "react";
-import { AddTripDialog } from "../trips/AddTripDialog";
+} from '@hugeicons/core-free-icons';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { AddTripDialog } from '../trips/AddTripDialog';
 
 const items = [
   {
-    title: "Overview",
-    url: "/",
+    title: 'Overview',
+    url: '/',
     icon: DiscoverCircleIcon,
   },
   {
-    title: "Trips",
-    url: "/trips",
+    title: 'Trips',
+    url: '/trips',
     icon: AirplaneTakeOff01Icon,
   },
   {
-    title: "Memories",
-    url: "/memories",
+    title: 'Memories',
+    url: '/memories',
     icon: Image02Icon,
   },
   {
-    title: "Map",
-    url: "/map",
+    title: 'Map',
+    url: '/map',
     icon: MapsGlobal01Icon,
   },
   {
-    title: "Logbook",
-    url: "/logbook",
+    title: 'Logbook',
+    url: '/logbook',
     icon: News01Icon,
   },
   {
-    title: "Preferences",
-    url: "/preferences",
+    title: 'Preferences',
+    url: '/preferences',
     icon: Settings05Icon,
   },
 ];
@@ -80,8 +80,8 @@ export function AppSidebar() {
   if (isPending || !session) return null;
 
   const isActive = (url: string) => {
-    if (url === "/") {
-      return pathname === "/";
+    if (url === '/') {
+      return pathname === '/';
     }
     return pathname.startsWith(url);
   };
@@ -116,7 +116,7 @@ export function AppSidebar() {
                     </Button>
                   </SidebarMenuButton>
                 </TooltipTrigger>
-                <TooltipContent>{!open ? "Add trip" : null}</TooltipContent>
+                <TooltipContent>{!open ? 'Add trip' : null}</TooltipContent>
               </Tooltip>
               <SidebarGroupContent>
                 <SidebarMenu>
@@ -131,7 +131,7 @@ export function AppSidebar() {
                               isActive={active}
                               className={cn(
                                 active &&
-                                  "bg-primary text-primary-foreground hover:bg-primary/90",
+                                  'bg-primary text-primary-foreground hover:bg-primary/90'
                               )}
                             >
                               <Link

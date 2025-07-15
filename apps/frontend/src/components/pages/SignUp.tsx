@@ -1,45 +1,45 @@
-"use client";
+'use client';
 
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import Link from "next/link";
-import { Eye, EyeOff, KeyRound, Mail, User as UserIcon } from "lucide-react";
-import { useForm } from "@tanstack/react-form";
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import Link from 'next/link';
+import { Eye, EyeOff, KeyRound, Mail, User as UserIcon } from 'lucide-react';
+import { useForm } from '@tanstack/react-form';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import type { z } from "zod";
-import { useState } from "react";
-import { signUpSchema } from "@/schemas/auth";
-import { auth } from "@/auth/client";
-import { useRouter } from "next/navigation";
-import { Banner } from "../ui/banner";
-import Logo from "../brand/Logo";
+} from '../ui/card';
+import type { z } from 'zod';
+import { useState } from 'react';
+import { signUpSchema } from '@/schemas/auth';
+import { auth } from '@/auth/client';
+import { useRouter } from 'next/navigation';
+import { Banner } from '../ui/banner';
+import Logo from '../brand/Logo';
 
 type User = z.infer<typeof signUpSchema>;
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   const router = useRouter();
 
   const form = useForm({
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     } as User,
     onSubmit: async ({ value }) => {
-      setErrorMessage("");
+      setErrorMessage('');
       setIsAuthenticating(true);
       await auth.signUp.email(
         {
@@ -49,18 +49,18 @@ export default function SignUp() {
         },
         {
           onSuccess: () => {
-            router.push("/verify-email");
+            router.push('/verify-email');
           },
           onError: (ctx) => {
             setIsAuthenticating(false);
 
-            if (ctx.error.code === "USER_ALREADY_EXISTS") {
-              setErrorMessage("A user with this email already exists");
+            if (ctx.error.code === 'USER_ALREADY_EXISTS') {
+              setErrorMessage('A user with this email already exists');
             } else {
-              setErrorMessage("Sorry, something went wrong.");
+              setErrorMessage('Sorry, something went wrong.');
             }
           },
-        },
+        }
       );
     },
   });
@@ -178,7 +178,7 @@ export default function SignUp() {
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="password">Password</Label>
-                </div>{" "}
+                </div>{' '}
                 <Input
                   iconLeft={<KeyRound />}
                   iconRight={
@@ -200,7 +200,7 @@ export default function SignUp() {
                   }
                   id="password"
                   name="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   autoComplete="new-password"
                   success={
                     field.state.meta.isDirty &&
@@ -212,7 +212,7 @@ export default function SignUp() {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    form.validateField("confirmPassword", "change");
+                    form.validateField('confirmPassword', 'change');
                   }}
                   onBlur={() => {
                     field.handleBlur();
@@ -235,8 +235,8 @@ export default function SignUp() {
             validators={{
               onChangeAsyncDebounceMs: 500,
               onChangeAsync: ({ value, fieldApi }) => {
-                if (value !== fieldApi.form.getFieldValue("password")) {
-                  return "Passwords do not match";
+                if (value !== fieldApi.form.getFieldValue('password')) {
+                  return 'Passwords do not match';
                 }
                 return undefined;
               },
@@ -245,7 +245,7 @@ export default function SignUp() {
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="confirmPassword">Confirm your password</Label>
-                </div>{" "}
+                </div>{' '}
                 <Input
                   iconLeft={<KeyRound />}
                   iconRight={
@@ -267,7 +267,7 @@ export default function SignUp() {
                   }
                   id="confirmPassword"
                   name="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
+                  type={showConfirmPassword ? 'text' : 'password'}
                   autoComplete="new-password"
                   success={
                     field.state.meta.isDirty &&
@@ -305,7 +305,7 @@ export default function SignUp() {
             children={({ isSubmitting, isValid, fieldMeta }) => {
               const allFieldsFilled = Object.entries(fieldMeta).every(
                 ([_, meta]) =>
-                  meta.isDirty && !meta.errors.length && !meta.isValidating,
+                  meta.isDirty && !meta.errors.length && !meta.isValidating
               );
 
               return (
@@ -332,7 +332,7 @@ export default function SignUp() {
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">
         <Link
           className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
-          href={"/sign-in"}
+          href={'/sign-in'}
         >
           Already have an account? Sign In
         </Link>

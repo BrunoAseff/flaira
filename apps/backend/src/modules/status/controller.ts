@@ -1,6 +1,6 @@
-import type { Context } from "hono";
-import { getDatabaseStatus } from "./service";
-import { getBody, getHeaders, getResponse } from "@/utils/http";
+import type { Context } from 'hono';
+import { getDatabaseStatus } from './service';
+import { getBody, getHeaders, getResponse } from '@/utils/http';
 
 export const getStatus = async (context: Context) => {
   try {
@@ -11,7 +11,7 @@ export const getStatus = async (context: Context) => {
 
     return getResponse(context, 200, headers, body);
   } catch (error) {
-    console.error("Failed to get status", error);
+    console.error('Failed to get status', error);
 
     const headers = getHeaders();
     const body = getBody(500, null, error);

@@ -15,23 +15,24 @@ const buttonVariants = cva(
           "bg-error text-white shadow-xs hover:bg-error/90 focus-visible:ring-error/20 dark:focus-visible:ring-error/40 dark:bg-error/60",
         outline: "bg-popover hover:bg-muted hover:text-accent-foreground",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+          'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
-        link: "text-primary underline-offset-4 hover:underline",
+          'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+        link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
-        default: "h-15 w-full has-[>svg]:px-3",
-        sm: "h-10 p-5 rounded-lg font-semibold text-sm has-[>svg]:px-3",
-        lg: "h-10 rounded-xl px-6 has-[>svg]:px-4",
-        icon: "size-9",
+        default: 'h-15 w-full has-[>svg]:px-3',
+        sm: 'h-10 p-5 rounded-lg font-semibold text-sm has-[>svg]:px-3',
+        lg: 'h-10 rounded-xl px-6 has-[>svg]:px-4',
+        icon: 'size-9',
       },
     },
     defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: 'default',
+      size: 'default',
     },
   }
+);
 );
 
 function Button({
@@ -42,8 +43,9 @@ function Button({
   loading = false,
   children,
   ...props
-}: React.ComponentProps<"button"> &
+}: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
+    asChild?: boolean;
     asChild?: boolean;
     loading?: boolean;
   }) {
@@ -56,9 +58,12 @@ function Button({
       disabled={loading || props.disabled}
       {...props}
     >
+    >
       {loading ? <LoaderCircle className="animate-spin" /> : children}
     </Comp>
   );
+  );
 }
 
+export { Button, buttonVariants };
 export { Button, buttonVariants };

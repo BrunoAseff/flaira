@@ -1,33 +1,33 @@
-import { Hono } from "hono";
-import { deleteAvatar, getAvatar, uploadAvatar } from "./controller";
-import { zValidator } from "@hono/zod-validator";
-import { getAvatarSchema, uploadAvatarSchema } from "./validator";
-import { middleware } from "@/utils/middleware";
+import { Hono } from 'hono';
+import { deleteAvatar, getAvatar, uploadAvatar } from './controller';
+import { zValidator } from '@hono/zod-validator';
+import { getAvatarSchema, uploadAvatarSchema } from './validator';
+import { middleware } from '@/utils/middleware';
 
 const user = new Hono();
 
 user.use(middleware);
 
 user.post(
-  "/upload-avatar",
-  zValidator("json", uploadAvatarSchema, (result, c) => {
-    if (!result.success) return c.text("Invalid format", 422);
+  '/upload-avatar',
+  zValidator('json', uploadAvatarSchema, (result, c) => {
+    if (!result.success) return c.text('Invalid format', 422);
   }),
-  uploadAvatar,
+  uploadAvatar
 );
 user.get(
-  "/get-avatar",
-  zValidator("query", getAvatarSchema, (result, c) => {
-    if (!result.success) return c.text("Invalid key", 422);
+  '/get-avatar',
+  zValidator('query', getAvatarSchema, (result, c) => {
+    if (!result.success) return c.text('Invalid key', 422);
   }),
-  getAvatar,
+  getAvatar
 );
 user.delete(
-  "/delete-avatar",
-  zValidator("query", getAvatarSchema, (result, c) => {
-    if (!result.success) return c.text("Invalid key", 422);
+  '/delete-avatar',
+  zValidator('query', getAvatarSchema, (result, c) => {
+    if (!result.success) return c.text('Invalid key', 422);
   }),
-  deleteAvatar,
+  deleteAvatar
 );
 
 export { user };

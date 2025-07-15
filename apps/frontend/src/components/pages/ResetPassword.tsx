@@ -1,42 +1,42 @@
-"use client";
+'use client';
 
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import Link from "next/link";
-import { Eye, EyeOff, KeyRound, CheckCircle } from "lucide-react";
-import { useForm } from "@tanstack/react-form";
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import Link from 'next/link';
+import { Eye, EyeOff, KeyRound, CheckCircle } from 'lucide-react';
+import { useForm } from '@tanstack/react-form';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import type { z } from "zod";
-import { useState } from "react";
-import { resetPasswordSchema } from "@/schemas/auth";
-import { auth } from "@/auth/client";
-import { Banner } from "../ui/banner";
-import { useRouter } from "next/navigation";
+} from '../ui/card';
+import type { z } from 'zod';
+import { useState } from 'react';
+import { resetPasswordSchema } from '@/schemas/auth';
+import { auth } from '@/auth/client';
+import { Banner } from '../ui/banner';
+import { useRouter } from 'next/navigation';
 
 type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
 export default function ResetPassword({ token }: { token: string }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [isResetting, setIsResetting] = useState(false);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
 
   const form = useForm({
     defaultValues: {
-      password: "",
-      confirmPassword: "",
+      password: '',
+      confirmPassword: '',
     } as ResetPasswordFormData,
     onSubmit: async ({ value }) => {
-      setErrorMessage("");
+      setErrorMessage('');
       setIsResetting(true);
       await auth.resetPassword(
         {
@@ -50,15 +50,15 @@ export default function ResetPassword({ token }: { token: string }) {
           onError: (ctx) => {
             setIsResetting(false);
 
-            if (ctx.error.code === "INVALID_TOKEN") {
+            if (ctx.error.code === 'INVALID_TOKEN') {
               setErrorMessage(
-                "Invalid or expired reset token. Please request a new password reset link.",
+                'Invalid or expired reset token. Please request a new password reset link.'
               );
             } else {
-              setErrorMessage("Sorry, something went wrong.");
+              setErrorMessage('Sorry, something went wrong.');
             }
           },
-        },
+        }
       );
     },
   });
@@ -79,7 +79,7 @@ export default function ResetPassword({ token }: { token: string }) {
           </p>
         </CardContent>
         <CardFooter className="flex flex-col items-center gap-2">
-          <Button onClick={() => router.push("/sign-in")}>Sign In</Button>
+          <Button onClick={() => router.push('/sign-in')}>Sign In</Button>
         </CardFooter>
       </Card>
     );
@@ -111,7 +111,7 @@ export default function ResetPassword({ token }: { token: string }) {
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="password">New Password</Label>
-                </div>{" "}
+                </div>{' '}
                 <Input
                   iconLeft={<KeyRound />}
                   iconRight={
@@ -133,7 +133,7 @@ export default function ResetPassword({ token }: { token: string }) {
                   }
                   id="password"
                   name="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   autoComplete="new-password"
                   success={
                     field.state.meta.isDirty &&
@@ -145,7 +145,7 @@ export default function ResetPassword({ token }: { token: string }) {
                   value={field.state.value}
                   onChange={(e) => {
                     field.handleChange(e.target.value);
-                    form.validateField("confirmPassword", "change");
+                    form.validateField('confirmPassword', 'change');
                   }}
                   onBlur={() => {
                     field.handleBlur();
@@ -168,8 +168,8 @@ export default function ResetPassword({ token }: { token: string }) {
             validators={{
               onChangeAsyncDebounceMs: 500,
               onChangeAsync: ({ value, fieldApi }) => {
-                if (value !== fieldApi.form.getFieldValue("password")) {
-                  return "Passwords do not match";
+                if (value !== fieldApi.form.getFieldValue('password')) {
+                  return 'Passwords do not match';
                 }
                 return undefined;
               },
@@ -178,7 +178,7 @@ export default function ResetPassword({ token }: { token: string }) {
               <div className="flex flex-col mb-3 gap-1">
                 <div className="flex w-full justify-between items-center">
                   <Label htmlFor="confirmPassword">Confirm new password</Label>
-                </div>{" "}
+                </div>{' '}
                 <Input
                   iconLeft={<KeyRound />}
                   iconRight={
@@ -200,7 +200,7 @@ export default function ResetPassword({ token }: { token: string }) {
                   }
                   id="confirmPassword"
                   name="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
+                  type={showConfirmPassword ? 'text' : 'password'}
                   autoComplete="new-password"
                   success={
                     field.state.meta.isDirty &&
@@ -238,7 +238,7 @@ export default function ResetPassword({ token }: { token: string }) {
             children={({ isSubmitting, isValid, fieldMeta }) => {
               const allFieldsFilled = Object.entries(fieldMeta).every(
                 ([_, meta]) =>
-                  meta.isDirty && !meta.errors.length && !meta.isValidating,
+                  meta.isDirty && !meta.errors.length && !meta.isValidating
               );
 
               return (
@@ -265,7 +265,7 @@ export default function ResetPassword({ token }: { token: string }) {
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">
         <Link
           className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
-          href={"/sign-in"}
+          href={'/sign-in'}
         >
           Return to Sign In
         </Link>

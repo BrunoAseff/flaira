@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { Separator } from "../ui/separator";
-import { ScrollArea } from "../ui/scroll-area";
-import type { User } from "better-auth/types";
-import { name as nameSchema } from "../../schemas/auth";
-import { Banner } from "../ui/banner";
-import AvatarUpload from "./avatar/AvatarUpload";
-import { Input } from "../ui/input";
-import { auth } from "@/auth/client";
-import { useState, useEffect, useRef } from "react";
+import { Separator } from '../ui/separator';
+import { ScrollArea } from '../ui/scroll-area';
+import type { User } from 'better-auth/types';
+import { name as nameSchema } from '../../schemas/auth';
+import { Banner } from '../ui/banner';
+import AvatarUpload from './avatar/AvatarUpload';
+import { Input } from '../ui/input';
+import { auth } from '@/auth/client';
+import { useState, useEffect, useRef } from 'react';
 
 interface ProfileTabProps {
   user: User | null;
@@ -47,7 +47,7 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
       },
       {
         onSuccess: () => setSuccess(true),
-      },
+      }
     );
   }
 
@@ -90,7 +90,7 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
                   type="text"
                   autoComplete="name"
                   showClear={false}
-                  defaultValue={user?.name || "N/A"}
+                  defaultValue={user?.name || 'N/A'}
                   success={success}
                   onChange={(e) =>
                     handleNameInputChange({ name: e.target.value })
@@ -117,7 +117,7 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
                 type="email"
                 autoComplete="email"
                 showClear={false}
-                defaultValue={user?.email || "N/A"}
+                defaultValue={user?.email || 'N/A'}
                 className=" text-foreground/80 p-2 max-w-64 ml-auto text-base"
                 disabled
               />

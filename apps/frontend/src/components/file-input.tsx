@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { AlertCircleIcon, ImageIcon, UploadIcon, XIcon } from "lucide-react";
+import { AlertCircleIcon, ImageIcon, UploadIcon, XIcon } from 'lucide-react';
 
-import { useFileUpload } from "@/hooks/use-file-upload";
-import { Button } from "@/components/ui/button";
+import { useFileUpload } from '@/hooks/use-file-upload';
+import { Button } from '@/components/ui/button';
 
 export default function FileInput() {
   const maxSizeMB = 5;
@@ -22,7 +22,7 @@ export default function FileInput() {
       getInputProps,
     },
   ] = useFileUpload({
-    accept: "image/svg+xml,image/png,image/jpeg,image/jpg,image/gif",
+    accept: 'image/svg+xml,image/png,image/jpeg,image/jpg,image/gif',
     maxSize,
     multiple: true,
     maxFiles,
