@@ -1,7 +1,6 @@
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import path from 'node:path';
 
 export default tseslint.config(
   {
@@ -14,22 +13,10 @@ export default tseslint.config(
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
-    overrides: [
-      {
-        files: ['apps/frontend/**/*.ts', 'apps/frontend/**/*.tsx'],
-        parserOptions: {
-          project: './apps/frontend/tsconfig.json',
-          tsconfigRootDir: path.resolve(),
-        },
-      },
-      {
-        files: ['apps/backend/**/*.ts'],
-        parserOptions: {
-          project: './apps/backend/tsconfig.json',
-          tsconfigRootDir: path.resolve(),
-        },
-      },
-    ],
   }
 );
