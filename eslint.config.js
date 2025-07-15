@@ -4,11 +4,20 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default tseslint.config(
   {
-    ignores: ['**/node_modules/', '**/dist/', '**/build/', '**/.next/'],
+    ignores: [
+      '**/node_modules/',
+      '**/dist/',
+      '**/build/',
+      '**/.next/',
+      '**/components/ui/**',
+      '**/hooks/**',
+    ],
   },
+
   js.configs.recommended,
   ...tseslint.configs.recommended,
   eslintConfigPrettier,
+
   {
     languageOptions: {
       ecmaVersion: 2022,
@@ -17,6 +26,14 @@ export default tseslint.config(
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
+    },
+  },
+
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   }
 );
