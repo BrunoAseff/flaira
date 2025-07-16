@@ -83,7 +83,7 @@ export function DeleteAccountDialog({
             form.handleSubmit();
           }}
         >
-          <div className="flex flex-col mb-2 gap-1">
+          <div className="flex flex-col mb-4 gap-1">
             <Label htmlFor="delete-confirm">Type “Delete my account”</Label>
             <Input
               id="delete-confirm"
@@ -149,7 +149,7 @@ export function DeleteAccountDialog({
               </div>
             )}
           />
-          <div className="w-full ml-auto mt-2 flex items-end justify-end gap-4">
+          <div className="w-full ml-auto mt-12 flex items-end justify-end gap-4">
             <Button
               onClick={() => setIsOpen(false)}
               variant="outline"

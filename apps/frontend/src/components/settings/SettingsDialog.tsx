@@ -56,8 +56,8 @@ export function SettingsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="min-w-full sm:min-w-96 md:min-w-96 w-full md:w-[75%] lg:w-[55%] h-full md:h-[90%] bg-background p-0 flex flex-col overflow-hidden">
-        <DialogHeader className="px-6 py-4 border-b border-muted">
+      <DialogContent className="min-w-full max-w-[62rem] sm:min-w-96 md:min-w-96 w-full md:w-[75%] lg:w-[55%] h-full md:h-[90%] bg-background p-0 flex flex-col overflow-hidden">
+        <DialogHeader className="px-6 py-4 border-b border-accent">
           <DialogTitle className="text-foreground text-xl font-semibold">
             Settings
           </DialogTitle>

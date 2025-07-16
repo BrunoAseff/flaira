@@ -98,17 +98,18 @@ export function AppSidebar() {
               <Tooltip side="right">
                 <TooltipTrigger>
                   <SidebarMenuButton
-                    className="hover:text-background active:text-primary [&>svg]:text-background hover:[&>svg]:text-background gap-2 text-background h-13 rounded-xl text-lg font-medium data-[state=open]:hover:text-background  data-[state=open]:hover:bg-primary/90"
+                    className="hover:bg-muted/90 active:text-primary [&>svg]:text-background hover:[&>svg]:text-background gap-2 text-background data-[state=open]:hover:text-background data-[state=open]:hover:bg-primary/90"
                     asChild
                   >
                     <Button
                       onClick={() => setIsTripDialogOpen(true)}
                       className="mt-3 mb-6"
+                      size="sm"
                     >
                       <HugeiconsIcon
                         icon={PlusSignIcon}
                         color="currentColor"
-                        strokeWidth={2}
+                        strokeWidth={1.8}
                       />
                       <p className="group-data-[collapsible=icon]:hidden">
                         Add trip
@@ -130,8 +131,9 @@ export function AppSidebar() {
                               asChild
                               isActive={active}
                               className={cn(
+                                'border border-transparent',
                                 active &&
-                                  'bg-primary text-primary-foreground hover:bg-primary/90'
+                                  'bg-primary text-primary-foreground border border-primary/10'
                               )}
                             >
                               <Link
@@ -145,7 +147,7 @@ export function AppSidebar() {
                                 <HugeiconsIcon
                                   icon={item.icon}
                                   color="currentColor"
-                                  strokeWidth={2}
+                                  strokeWidth={1.8}
                                   className="ml-0.5"
                                 />
                                 <span>{item.title}</span>

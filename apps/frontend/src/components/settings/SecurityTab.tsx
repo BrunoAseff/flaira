@@ -130,7 +130,7 @@ export default function SecurityTab({
                   sessionList?.map((session) => (
                     <div
                       key={session.id}
-                      className="flex w-full items-center justify-between relative border border-muted rounded-lg bg-popover p-3"
+                      className="flex w-full items-center justify-between relative border border-accent/60 shadow-xs rounded-lg bg-popover/60 p-3"
                     >
                       <div className="flex items-center gap-3">
                         <HugeiconsIcon

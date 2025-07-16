@@ -13,16 +13,17 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const toggleVariants = cva(
-  "cursor-pointer inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium hover:text-muted-foreground text-accent-foreground transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none focus:outline-none aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive whitespace-nowrap",
+  "cursor-pointer inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium hover:text-foreground text-accent-foreground transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none focus:outline-none aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive whitespace-nowrap",
   {
     variants: {
       type: {
         single: '',
-        multiple: 'data-[state=on]:bg-accent',
+        multiple:
+          'data-[state=on]:bg-primary-foreground data-[state=on]:text-primary data-[state=on]:border-primary shadow-xs',
       },
       variant: {
         default: 'bg-transparent',
-        outline: 'border border-input bg-transparent shadow-xs',
+        outline: 'border border-accent bg-transparent shadow-xs',
       },
       size: {
         default: 'h-9 px-2 min-w-9',
