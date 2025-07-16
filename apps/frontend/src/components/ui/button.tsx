@@ -13,11 +13,12 @@ const buttonVariants = cva(
         default: 'bg-primary text-background shadow-xs hover:bg-primary/90',
         destructive:
           'bg-error text-white shadow-xs hover:bg-error/90 focus-visible:ring-error/20 dark:focus-visible:ring-error/40 dark:bg-error/60',
-        outline: 'bg-popover hover:bg-muted hover:text-accent-foreground',
+        outline:
+          'bg-popover hover:bg-popover hover:text-accent-foreground border border-accent [&.h-10]:py-4',
         secondary:
           'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost:
-          'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+          'hover:bg-popover hover:text-accent-foreground dark:hover:bg-popover/50',
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
