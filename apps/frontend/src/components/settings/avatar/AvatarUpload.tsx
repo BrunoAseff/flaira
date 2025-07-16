@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import type { User } from "better-auth/types";
-import { type ChangeEvent, useEffect, useRef, useState } from "react";
-import AvatarDisplay from "./AvatarDisplay";
-import { Input } from "@/components/ui/input";
-import ImageCropDialog from "./ImageCropDialog";
-import { useAvatarMutations } from "@/hooks/use-avatar";
-import { Banner } from "@/components/ui/banner";
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import type { User } from 'better-auth/types';
+import { type ChangeEvent, useEffect, useRef, useState } from 'react';
+import AvatarDisplay from './AvatarDisplay';
+import { Input } from '@/components/ui/input';
+import ImageCropDialog from './ImageCropDialog';
+import { useAvatarMutations } from '@/hooks/use-avatar';
+import { Banner } from '@/components/ui/banner';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_FILE_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/jpg",
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/jpg',
 ];
 const AVATAR_URL_CACHE_TIME = Number.POSITIVE_INFINITY;
 const OPTIMISTIC_CLEAR_DELAY = 100;
@@ -29,7 +29,7 @@ export default function AvatarUpload({ user }: AvatarUploadProps) {
 
   const [clientSideError, setClientSideError] = useState<string | null>(null);
   const [optimisticAvatarUrl, setOptimisticAvatarUrl] = useState<string | null>(
-    null,
+    null
   );
 
   const [imageToCropSrc, setImageToCropSrc] = useState<string | null>(null);
@@ -37,7 +37,7 @@ export default function AvatarUpload({ user }: AvatarUploadProps) {
   const [originalFile, setOriginalFile] = useState<File | null>(null);
 
   const { data: avatarUrl, isLoading: isAvatarUrlLoading } = useQuery({
-    queryKey: ["avatar-url", user?.id, user?.image],
+    queryKey: ['avatar-url', user?.id, user?.image],
     queryFn: fetchAvatarUrl,
     enabled: shouldFetchAvatarUrl(),
     staleTime: AVATAR_URL_CACHE_TIME,
@@ -61,16 +61,16 @@ export default function AvatarUpload({ user }: AvatarUploadProps) {
     if (!user?.image) return null;
 
     const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/user/get-avatar`);
-    url.searchParams.append("key", user.image);
+    url.searchParams.append('key', user.image);
 
     const response = await fetch(url.toString(), {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
     });
 
     if (!response.ok) {
-      console.error("Failed to fetch avatar URL:", response.status);
+      console.error('Failed to fetch avatar URL:', response.status);
       return null;
     }
 
@@ -85,7 +85,7 @@ export default function AvatarUpload({ user }: AvatarUploadProps) {
   function handleOptimisticAvatarUpdate(url: string | null) {
     setOptimisticAvatarUrl(url);
     if (url) {
-      queryClient.cancelQueries({ queryKey: ["avatar-url", user?.id] });
+      queryClient.cancelQueries({ queryKey: ['avatar-url', user?.id] });
     }
   }
 
@@ -129,11 +129,11 @@ export default function AvatarUpload({ user }: AvatarUploadProps) {
 
   function validateFile(file: File): string | null {
     if (file.size > MAX_FILE_SIZE) {
-      return "File is too large (max 5MB).";
+      return 'File is too large (max 5MB).';
     }
 
     if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-      return "Invalid file type. Please use JPG, PNG, or WEBP.";
+      return 'Invalid file type. Please use JPG, PNG, or WEBP.';
     }
 
     return null;
@@ -148,7 +148,7 @@ export default function AvatarUpload({ user }: AvatarUploadProps) {
 
   function resetFileInput() {
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
   }
 
@@ -168,12 +168,11 @@ export default function AvatarUpload({ user }: AvatarUploadProps) {
     clientSideError ||
     uploadAvatarMutation.error?.message ||
     removeAvatarMutation.error?.message ||
-    "An error occurred.";
+    'An error occurred.';
 
   useEffect(() => {
     return () => {
-      // biome-ignore lint:
-      if (optimisticAvatarUrl && optimisticAvatarUrl.startsWith("blob:")) {
+      if (optimisticAvatarUrl && optimisticAvatarUrl.startsWith('blob:')) {
         URL.revokeObjectURL(optimisticAvatarUrl);
       }
       if (imageToCropSrc) {

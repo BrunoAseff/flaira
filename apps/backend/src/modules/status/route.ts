@@ -1,8 +1,8 @@
-import { Hono } from "hono";
-import { getStatus } from "./controller";
+import { Hono } from 'hono';
+import { getStatus } from './controller';
 
 const status = new Hono();
 
-status.get("/", getStatus);
+status.get('/', getStatus);
 
 export { status };

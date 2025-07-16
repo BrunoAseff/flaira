@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useSidebar } from "@/components/ui/sidebar";
-import { Button } from "../ui/button";
-import { auth } from "@/auth/client";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { useSidebar } from '@/components/ui/sidebar';
+import { Button } from '../ui/button';
+import { auth } from '@/auth/client';
+import { HugeiconsIcon } from '@hugeicons/react';
 import {
   SidebarRight01Icon,
   SidebarLeft01Icon,
-} from "@hugeicons/core-free-icons";
+} from '@hugeicons/core-free-icons';
 
 export function SidebarTrigger() {
   const { toggleSidebar, open } = useSidebar();

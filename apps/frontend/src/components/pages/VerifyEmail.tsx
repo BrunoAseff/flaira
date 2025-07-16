@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { MailSearch } from "lucide-react";
-import { Button } from "../ui/button";
+import { MailSearch } from 'lucide-react';
+import { Button } from '../ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { auth } from "@/auth/client";
-import { useCooldown } from "@/hooks/use-cooldown";
+} from '../ui/card';
+import { auth } from '@/auth/client';
+import { useCooldown } from '@/hooks/use-cooldown';
 
 export default function VerifyEmail() {
   const { timer, isCooldown, startCooldown } = useCooldown();
@@ -51,7 +51,7 @@ export default function VerifyEmail() {
           disabled={isCooldown}
           aria-disabled={isCooldown}
         >
-          {isCooldown ? `Wait ${timer}s` : "Resend verification email"}
+          {isCooldown ? `Wait ${timer}s` : 'Resend verification email'}
         </Button>
       </CardFooter>
     </Card>

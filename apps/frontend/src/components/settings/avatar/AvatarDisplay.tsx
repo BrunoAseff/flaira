@@ -1,21 +1,21 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 import {
   Cancel01Icon,
   Loading01Icon,
   PaintBrush01Icon,
   User03Icon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import type { UseMutationResult } from "@tanstack/react-query";
-import type { User } from "better-auth/types";
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
+import type { UseMutationResult } from '@tanstack/react-query';
+import type { User } from 'better-auth/types';
 
 interface AvatarDisplayProps {
   displayImageSrc: string | null;
@@ -44,14 +44,14 @@ export default function AvatarDisplay({
     <DropdownMenu>
       <DropdownMenuTrigger asChild disabled={isActionPending}>
         <div className="relative group cursor-pointer">
-          <Avatar className="size-24 border-2 border-muted">
+          <Avatar className="size-24 border-1 border-accent shadow-xl">
             <AvatarImage
-              src={displayImageSrc || ""}
-              alt={`${user?.name || "User"}'s profile picture`}
+              src={displayImageSrc || ''}
+              alt={`${user?.name || 'User'}'s profile picture`}
               key={displayImageSrc}
               className="object-cover w-full h-full"
             />
-            <AvatarFallback className="bg-background text-foreground size-full">
+            <AvatarFallback className="text-foreground size-full">
               {isImageUrlLoading && !optimisticAvatarUrl ? (
                 <HugeiconsIcon
                   icon={Loading01Icon}
@@ -71,8 +71,8 @@ export default function AvatarDisplay({
           {!isActionPending && !optimisticAvatarUrl && (
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center bg-primary-foreground text-primary rounded-full",
-                "opacity-0 group-hover:opacity-100 transition-opacity duration-200",
+                'absolute inset-0 flex items-center justify-center bg-primary-foreground text-primary rounded-full',
+                'opacity-0 group-hover:opacity-100 transition-opacity duration-200'
               )}
             >
               <HugeiconsIcon icon={PaintBrush01Icon} size={32} />

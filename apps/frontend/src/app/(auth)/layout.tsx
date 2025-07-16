@@ -1,5 +1,5 @@
-import Image from "next/image";
-import { ProgressiveBlur } from "@/components/ui/progressive-blur";
+import Image from 'next/image';
+import { ProgressiveBlur } from '@/components/ui/progressive-blur';
 
 export default function AuthLayout({
   children,

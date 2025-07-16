@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import ErrorPage from "@/components/pages/ErrorPage";
-import LoadingPage from "@/components/pages/LoadingPage";
-import useAuth from "@/hooks/use-auth";
+import ErrorPage from '@/components/pages/ErrorPage';
+import LoadingPage from '@/components/pages/LoadingPage';
+import useAuth from '@/hooks/use-auth';
 
 export default function Memories() {
   const { session, isPending, error } = useAuth();

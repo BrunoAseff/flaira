@@ -1,38 +1,38 @@
-import { useState, useRef } from "react";
+import { useState, useRef } from 'react';
 
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Loading01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Loading01Icon } from '@hugeicons/core-free-icons';
 import ReactCrop, {
   type Crop,
   type PixelCrop,
   centerCrop,
   makeAspectCrop,
-} from "react-image-crop";
-import "react-image-crop/dist/ReactCrop.css";
+} from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import type { UseMutationResult } from "@tanstack/react-query";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import type { UseMutationResult } from '@tanstack/react-query';
 
 const OUTPUT_AVATAR_SIZE = 256;
 
 async function getCroppedBlob(
   imageElement: HTMLImageElement,
   crop: PixelCrop,
-  fileName: string,
+  fileName: string
 ): Promise<File | null> {
-  const canvas = document.createElement("canvas");
+  const canvas = document.createElement('canvas');
   canvas.width = OUTPUT_AVATAR_SIZE;
   canvas.height = OUTPUT_AVATAR_SIZE;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
 
   if (!ctx) {
-    console.error("Failed to get 2D context");
+    console.error('Failed to get 2D context');
     return null;
   }
 
@@ -51,7 +51,7 @@ async function getCroppedBlob(
     OUTPUT_AVATAR_SIZE / 2,
     0,
     Math.PI * 2,
-    true,
+    true
   );
   ctx.closePath();
   ctx.clip();
@@ -65,24 +65,24 @@ async function getCroppedBlob(
     0,
     0,
     OUTPUT_AVATAR_SIZE,
-    OUTPUT_AVATAR_SIZE,
+    OUTPUT_AVATAR_SIZE
   );
 
   return new Promise((resolve, reject) => {
     canvas.toBlob(
       (blob) => {
         if (!blob) {
-          console.error("Canvas to Blob conversion failed.");
-          reject(new Error("Canvas to Blob conversion failed."));
+          console.error('Canvas to Blob conversion failed.');
+          reject(new Error('Canvas to Blob conversion failed.'));
           return;
         }
 
-        const outputType = "image/png";
-        const outputFileName = `${fileName.replace(/\.[^/.]+$/, "")}.png`;
+        const outputType = 'image/png';
+        const outputFileName = `${fileName.replace(/\.[^/.]+$/, '')}.png`;
         resolve(new File([blob], outputFileName, { type: outputType }));
       },
-      "image/png",
-      0.95,
+      'image/png',
+      0.95
     );
   });
 }
@@ -115,18 +115,18 @@ export default function ImageCropDialog({
 
     const crop = makeAspectCrop(
       {
-        unit: "%",
+        unit: '%',
         width: 80,
       },
       1,
       width,
-      height,
+      height
     );
     const centeredCrop = centerCrop(crop, width, height);
     setCrop(centeredCrop);
     setCompletedCrop({
       ...centeredCrop,
-      unit: "px",
+      unit: 'px',
       x: (centeredCrop.x / 100) * width,
       y: (centeredCrop.y / 100) * height,
       width: (centeredCrop.width / 100) * width,
@@ -136,22 +136,22 @@ export default function ImageCropDialog({
 
   const handleCropConfirm = async () => {
     if (!completedCrop || !imgRef.current || !originalFile) {
-      setClientSideUploadError("Cropping failed. Please try again.");
+      setClientSideUploadError('Cropping failed. Please try again.');
       return;
     }
     try {
       const croppedImageFile = await getCroppedBlob(
         imgRef.current,
         completedCrop,
-        originalFile.name,
+        originalFile.name
       );
       if (croppedImageFile) {
         onCropConfirm(croppedImageFile);
       } else {
-        setClientSideUploadError("Failed to process cropped image.");
+        setClientSideUploadError('Failed to process cropped image.');
       }
     } catch (_error) {
-      setClientSideUploadError("Error during cropping.");
+      setClientSideUploadError('Error during cropping.');
     }
   };
 
@@ -184,7 +184,7 @@ export default function ImageCropDialog({
               src={imageToCropSrc}
               alt="Crop preview"
               onLoad={onImageLoad}
-              style={{ maxHeight: "50vh", objectFit: "contain" }}
+              style={{ maxHeight: '50vh', objectFit: 'contain' }}
             />
           </ReactCrop>
         </div>

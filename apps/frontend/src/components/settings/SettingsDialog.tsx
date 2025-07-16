@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { auth } from "@/auth/client";
+import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { auth } from '@/auth/client';
 
 import {
   Dialog,
@@ -10,14 +10,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
-} from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { LockKeyIcon, UserSquareIcon } from "@hugeicons/core-free-icons";
-import SecurityTab from "./SecurityTab";
-import { Separator } from "@/components/ui/separator";
-import ProfileTab from "./ProfileTab";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { LockKeyIcon, UserSquareIcon } from '@hugeicons/core-free-icons';
+import SecurityTab from './SecurityTab';
+import { Separator } from '@/components/ui/separator';
+import ProfileTab from './ProfileTab';
+import { cn } from '@/lib/utils';
 
 export function SettingsDialog({
   isOpen,
@@ -33,7 +33,7 @@ export function SettingsDialog({
     isLoading: isLoadingSessions,
     error: sessionsError,
   } = useQuery({
-    queryKey: ["sessions"],
+    queryKey: ['sessions'],
     queryFn: async () => {
       const response = await auth.listSessions();
       if (response.error) throw response.error;
@@ -56,8 +56,8 @@ export function SettingsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="min-w-full sm:min-w-96 md:min-w-96 w-full md:w-[75%] lg:w-[55%] h-full md:h-[90%] bg-background p-0 flex flex-col overflow-hidden">
-        <DialogHeader className="px-6 py-4 border-b border-muted">
+      <DialogContent className="min-w-full max-w-[62rem] sm:min-w-96 md:min-w-96 w-full md:w-[75%] lg:w-[55%] h-full md:h-[90%] bg-background p-0 flex flex-col overflow-hidden">
+        <DialogHeader className="px-6 py-4 border-b border-accent">
           <DialogTitle className="text-foreground text-xl font-semibold">
             Settings
           </DialogTitle>
@@ -70,8 +70,8 @@ export function SettingsDialog({
           >
             <TabsList
               className={cn(
-                "flex-shrink-0 bg-transparent gap-3 my-3 w-full md:w-44 justify-center md:justify-start",
-                "flex-row md:flex-col mt-6 md:mt-0 md:pr-4 mb-4 md:mb-0",
+                'flex-shrink-0 bg-transparent gap-3 my-3 w-full md:w-44 justify-center md:justify-start',
+                'flex-row md:flex-col mt-6 md:mt-0 md:pr-4 mb-4 md:mb-0'
               )}
             >
               <TabsTrigger

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import MapView from "@/components/map/MapView";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import MapView from '@/components/map/MapView';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import {
   AirplaneModeIcon,
   BicycleIcon,
@@ -20,9 +20,9 @@ import {
   WorkoutRunIcon,
   Cancel01Icon,
   StopCircleIcon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
-import { useEffect, useRef, useState } from "react";
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react';
+import { useEffect, useRef, useState } from 'react';
 
 interface AnimatedStopsProps {
   children: React.ReactNode;
@@ -30,9 +30,8 @@ interface AnimatedStopsProps {
 
 function AnimatedStops({ children }: AnimatedStopsProps) {
   const contentWrapperRef = useRef<HTMLDivElement>(null);
-  const [currentMaxHeight, setCurrentMaxHeight] = useState("0px");
+  const [currentMaxHeight, setCurrentMaxHeight] = useState('0px');
 
-  // biome-ignore lint:
   useEffect(() => {
     if (contentWrapperRef.current) {
       const hasStops = contentWrapperRef.current.scrollHeight > 0;
@@ -71,21 +70,21 @@ export default function Journey() {
   };
 
   const transportOptions = [
-    { value: "feet", label: "On feet", icon: WorkoutRunIcon },
-    { value: "bicycle", label: "Bicycle", icon: BicycleIcon },
-    { value: "car", label: "Car", icon: Car05Icon },
-    { value: "motorbike", label: "Motorbike", icon: Motorbike02Icon },
-    { value: "bus", label: "Bus", icon: Bus01Icon },
-    { value: "plane", label: "Plane", icon: AirplaneModeIcon },
-    { value: "ship", label: "Ship", icon: CargoShipIcon },
-    { value: "boat", label: "Boat", icon: FerryBoatIcon },
+    { value: 'feet', label: 'On feet', icon: WorkoutRunIcon },
+    { value: 'bicycle', label: 'Bicycle', icon: BicycleIcon },
+    { value: 'car', label: 'Car', icon: Car05Icon },
+    { value: 'motorbike', label: 'Motorbike', icon: Motorbike02Icon },
+    { value: 'bus', label: 'Bus', icon: Bus01Icon },
+    { value: 'plane', label: 'Plane', icon: AirplaneModeIcon },
+    { value: 'ship', label: 'Ship', icon: CargoShipIcon },
+    { value: 'boat', label: 'Boat', icon: FerryBoatIcon },
   ];
 
   const renderInputRow = (
     icon: IconSvgElement,
     placeholder: string,
     key: string,
-    onRemove?: () => void,
+    onRemove?: () => void
   ) => (
     <div
       key={key}
@@ -117,11 +116,11 @@ export default function Journey() {
   return (
     <div className="flex flex-col md:flex-row mx-6 h-full">
       <div className="flex flex-col justify-start w-full md:w-[40%] gap-2 max-h-full scrollbar-gutter-stable overflow-y-auto p-1">
-        <div className="flex flex-col flex-1 gap-1 pt-5">
+        <div className="flex flex-col gap-1 pt-5">
           {renderInputRow(
             CircleArrowRightDoubleIcon,
-            "Start location",
-            "start-location",
+            'Start location',
+            'start-location'
           )}
 
           <AnimatedStops>
@@ -130,8 +129,8 @@ export default function Journey() {
                 StopCircleIcon,
                 `Stop ${index + 1}`,
                 `stop-${stop.id}`,
-                () => handleRemoveStop(stop.id),
-              ),
+                () => handleRemoveStop(stop.id)
+              )
             )}
           </AnimatedStops>
 
@@ -141,14 +140,15 @@ export default function Journey() {
               size="icon"
               onClick={handleAddStop}
               aria-label="Add a new stop"
-              className="flex items-start text-foreground/60 justify-start size-6 rounded-full bg-transparent hover:bg-muted hover:text-foreground transition-all duration-300"
+              className="flex items-start text-foreground/60 justify-start size-6 rounded-full bg-transparent hover:bg-popover hover:text-foreground transition-all duration-300"
             >
               <HugeiconsIcon icon={PlusSignIcon} size={12} />
             </Button>
           </div>
 
-          {renderInputRow(MapsCircle02Icon, "End location", "end-location")}
+          {renderInputRow(MapsCircle02Icon, 'End location', 'end-location')}
         </div>
+
         <div className="flex flex-col gap-1 w-full px-1">
           <div className="flex items-center space-x-2 mt-2">
             <Checkbox
@@ -159,12 +159,13 @@ export default function Journey() {
             <Label htmlFor="current-trip">I am still on this trip.</Label>
           </div>
         </div>
+
         <div className="flex flex-col gap-3 pt-4">
           <Label className="text-base">Transportation</Label>
           <ToggleGroup
             type="multiple"
             variant="outline"
-            className="grid grid-cols-4 gap-3"
+            className="grid grid-cols-2 gap-3"
           >
             {transportOptions.map(({ value, label, icon }) => (
               <ToggleGroupItem
@@ -179,14 +180,17 @@ export default function Journey() {
             ))}
           </ToggleGroup>
         </div>
+
+        {/* This div will take up the remaining space */}
+        <div className="flex-1"></div>
       </div>
 
       <div className="w-[60%] mx-2 mt-2 rounded-xl p-2 hidden md:flex justify-start">
         <MapView
           containerStyle={{
-            borderRadius: "16px",
-            width: "100%",
-            height: "100%",
+            borderRadius: '16px',
+            width: '100%',
+            height: '100%',
           }}
         />
       </div>

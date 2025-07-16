@@ -1,19 +1,19 @@
-import { db } from "@/db";
-import { env } from "@/env";
-import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { Resend } from "resend";
-import * as schema from "../db/schema/auth";
+import { db } from '@/db';
+import { env } from '@/env';
+import { betterAuth } from 'better-auth';
+import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { Resend } from 'resend';
+import * as schema from '../db/schema/auth';
 
 const resend = new Resend(env.RESEND_API);
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
-    provider: "pg",
+    provider: 'pg',
     schema: schema,
   }),
   trustedOrigins: [env.FRONTEND_URL, env.PREVIEW_URL],
-  basePath: "/auth",
+  basePath: '/auth',
   user: {
     deleteUser: {
       enabled: true,
@@ -24,9 +24,9 @@ export const auth = betterAuth({
     requireEmailVerification: true,
     sendResetPassword: async ({ user, token }) => {
       await resend.emails.send({
-        from: "Flaira <welcome@flaira.net>",
+        from: 'Flaira <welcome@flaira.net>',
         to: [user.email],
-        subject: "Reset your password",
+        subject: 'Reset your password',
         text: `Click the link to reset your password: ${env.FRONTEND_URL}/forgot-password/${token}\n\nThis link will expire in 24 hours.`,
       });
     },
@@ -36,9 +36,9 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true,
     sendVerificationEmail: async ({ user, token }) => {
       await resend.emails.send({
-        from: "Flaira <welcome@flaira.net>",
+        from: 'Flaira <welcome@flaira.net>',
         to: [user.email],
-        subject: "Verify your email address",
+        subject: 'Verify your email address',
         text: `Click the link to verify your email: ${env.FRONTEND_URL}/verify-email/${token}`,
       });
     },

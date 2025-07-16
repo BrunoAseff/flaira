@@ -1,12 +1,12 @@
-import { Progress } from "@/components/ui/progress";
-import { cn } from "@/lib/utils";
+import { Progress } from '@/components/ui/progress';
+import { cn } from '@/lib/utils';
 import {
   Backpack03Icon,
   Route03Icon,
   SearchList01Icon,
   UserGroupIcon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react';
 
 function Step({
   icon,
@@ -20,10 +20,10 @@ function Step({
   return (
     <div
       className={cn(
-        "flex items-center justify-center size-12 rounded-full border shrink-0 z-10",
+        'flex items-center justify-center size-12 rounded-full border shrink-0 z-10 shadow-lg',
         isDone || isCurrent
-          ? "bg-foreground text-background border-foreground"
-          : "bg-muted text-foreground/60  border-[1px] border-input/30",
+          ? 'bg-foreground text-background border-foreground'
+          : 'bg-background text-foreground/60 border-[1px] border-accent'
       )}
     >
       <HugeiconsIcon
@@ -39,29 +39,29 @@ function Step({
 export default function FormHeader({ currentStep }: { currentStep: number }) {
   const steps = [
     {
-      title: "Prologue",
+      title: 'Prologue',
       description:
-        "Name your adventure and set the scene with photos and words.",
+        'Name your adventure and set the scene with photos and words.',
       step: 1,
       icon: Backpack03Icon,
     },
     {
-      title: "Journey",
+      title: 'Journey',
       description:
-        "Plot your route, choose transport, and mark the key moments.",
+        'Plot your route, choose transport, and mark the key moments.',
       step: 2,
       icon: Route03Icon,
     },
     {
-      title: "Companions",
-      description: "Decide who joins the story — privately or out in the open.",
+      title: 'Companions',
+      description: 'Decide who joins the story — privately or out in the open.',
       step: 3,
       icon: UserGroupIcon,
     },
     {
-      title: "Review",
+      title: 'Review',
       description:
-        "Take one last look. Map it out, feel the vibe, and save it all.",
+        'Take one last look. Map it out, feel the vibe, and save it all.',
       step: 4,
       icon: SearchList01Icon,
     },

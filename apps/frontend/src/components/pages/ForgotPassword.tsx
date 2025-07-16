@@ -1,37 +1,37 @@
-"use client";
+'use client';
 
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import Link from "next/link";
-import { Mail } from "lucide-react";
-import { useForm } from "@tanstack/react-form";
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import Link from 'next/link';
+import { Mail } from 'lucide-react';
+import { useForm } from '@tanstack/react-form';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import type { z } from "zod";
-import { useState } from "react";
-import { forgotPasswordSchema } from "@/schemas/auth";
-import { auth } from "@/auth/client";
-import { Banner } from "../ui/banner";
+} from '../ui/card';
+import type { z } from 'zod';
+import { useState } from 'react';
+import { forgotPasswordSchema } from '@/schemas/auth';
+import { auth } from '@/auth/client';
+import { Banner } from '../ui/banner';
 
 type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
 
 export default function ForgotPassword() {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [isFetching, setIsFetching] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm({
     defaultValues: {
-      email: "",
+      email: '',
     } as ForgotPasswordData,
     onSubmit: async ({ value }) => {
-      setErrorMessage("");
+      setErrorMessage('');
       setIsFetching(true);
 
       await auth.forgetPassword(
@@ -45,9 +45,9 @@ export default function ForgotPassword() {
           },
           onError: () => {
             setIsFetching(false);
-            setErrorMessage("Sorry, something went wrong.");
+            setErrorMessage('Sorry, something went wrong.');
           },
-        },
+        }
       );
     },
   });
@@ -143,7 +143,7 @@ export default function ForgotPassword() {
             children={({ isSubmitting, isValid, fieldMeta }) => {
               const allFieldsFilled = Object.entries(fieldMeta).every(
                 ([_, meta]) =>
-                  meta.isDirty && !meta.errors.length && !meta.isValidating,
+                  meta.isDirty && !meta.errors.length && !meta.isValidating
               );
 
               return (
@@ -170,7 +170,7 @@ export default function ForgotPassword() {
       <CardFooter className="flex flex-col w-full gap-4 place-items-center">
         <Link
           className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
-          href={"/sign-in"}
+          href={'/sign-in'}
         >
           Return to Sign In
         </Link>

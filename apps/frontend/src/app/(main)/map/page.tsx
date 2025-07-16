@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import LoadingPage from "@/components/pages/LoadingPage";
-import ErrorPage from "@/components/pages/ErrorPage";
-import useAuth from "@/hooks/use-auth";
-import dynamic from "next/dynamic";
-const MapView = dynamic(() => import("@/components/map/MapView"), {
+import LoadingPage from '@/components/pages/LoadingPage';
+import ErrorPage from '@/components/pages/ErrorPage';
+import useAuth from '@/hooks/use-auth';
+import dynamic from 'next/dynamic';
+const MapView = dynamic(() => import('@/components/map/MapView'), {
   ssr: false,
 });
 

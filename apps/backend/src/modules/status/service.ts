@@ -1,5 +1,5 @@
-import { db } from "@/db";
-import { sql } from "drizzle-orm";
+import { db } from '@/db';
+import { sql } from 'drizzle-orm';
 
 export const getDatabaseStatus = async () => {
   const [version, maxConnections, openConnections] = await Promise.all([
@@ -9,8 +9,8 @@ export const getDatabaseStatus = async () => {
   ]);
 
   return {
-    postgres_version: version.rows[0]?.version || "unknown",
-    max_connections: maxConnections.rows[0]?.max_connections || "unknown",
-    open_connections: openConnections.rows[0]?.count || "unknown",
+    postgres_version: version.rows[0]?.version || 'unknown',
+    max_connections: maxConnections.rows[0]?.max_connections || 'unknown',
+    open_connections: openConnections.rows[0]?.count || 'unknown',
   };
 };

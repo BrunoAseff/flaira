@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { auth } from "@/auth/client";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { auth } from '@/auth/client';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function useAuth() {
   const { data: session, isPending, error } = auth.useSession();
@@ -10,7 +10,7 @@ export default function useAuth() {
 
   useEffect(() => {
     if (!isPending && !session) {
-      router.push("/sign-in");
+      router.push('/sign-in');
     }
   }, [session, isPending, router]);
 

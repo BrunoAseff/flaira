@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Dialog,
@@ -7,17 +7,17 @@ import {
   DialogTitle,
   DialogClose,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Button } from "../ui/button";
-import { Eye, EyeOff, KeyRound } from "lucide-react";
-import { useForm } from "@tanstack/react-form";
-import { deleteAccountSchema } from "@/schemas/auth";
-import { useState } from "react";
-import { auth } from "@/auth/client";
-import { useRouter } from "next/navigation";
-import { Banner } from "../ui/banner";
+} from '@/components/ui/dialog';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Button } from '../ui/button';
+import { Eye, EyeOff, KeyRound } from 'lucide-react';
+import { useForm } from '@tanstack/react-form';
+import { deleteAccountSchema } from '@/schemas/auth';
+import { useState } from 'react';
+import { auth } from '@/auth/client';
+import { useRouter } from 'next/navigation';
+import { Banner } from '../ui/banner';
 
 export function DeleteAccountDialog({
   isOpen,
@@ -27,18 +27,18 @@ export function DeleteAccountDialog({
   setIsOpen: (open: boolean) => void;
 }) {
   const [showPassword, setShowPassword] = useState(false);
-  const [deleteText, setDeleteText] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [deleteText, setDeleteText] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   const router = useRouter();
 
   const form = useForm({
     defaultValues: {
-      password: "",
+      password: '',
     },
     onSubmit: ({ value }) => {
-      setErrorMessage("");
+      setErrorMessage('');
       setIsAuthenticating(true);
 
       auth.deleteUser(
@@ -47,17 +47,17 @@ export function DeleteAccountDialog({
         },
         {
           onSuccess: () => {
-            router.push("/sign-up");
+            router.push('/sign-up');
           },
           onError: (ctx) => {
             setIsAuthenticating(false);
-            if (ctx.error.code === "INVALID_PASSWORD") {
-              setErrorMessage("Invalid password.");
+            if (ctx.error.code === 'INVALID_PASSWORD') {
+              setErrorMessage('Invalid password.');
             } else {
-              setErrorMessage("Sorry, something went wrong.");
+              setErrorMessage('Sorry, something went wrong.');
             }
           },
-        },
+        }
       );
     },
   });
@@ -83,13 +83,13 @@ export function DeleteAccountDialog({
             form.handleSubmit();
           }}
         >
-          <div className="flex flex-col mb-2 gap-1">
+          <div className="flex flex-col mb-4 gap-1">
             <Label htmlFor="delete-confirm">Type “Delete my account”</Label>
             <Input
               id="delete-confirm"
               type="text"
               value={deleteText}
-              success={deleteText.trim().toLowerCase() === "delete my account"}
+              success={deleteText.trim().toLowerCase() === 'delete my account'}
               onChange={(e) => setDeleteText(e.target.value)}
               placeholder="Delete my account"
               autoComplete="off"
@@ -126,7 +126,7 @@ export function DeleteAccountDialog({
                   }
                   id="password"
                   name="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   success={
                     field.state.meta.isDirty &&
@@ -149,7 +149,7 @@ export function DeleteAccountDialog({
               </div>
             )}
           />
-          <div className="w-full ml-auto mt-2 flex items-end justify-end gap-4">
+          <div className="w-full ml-auto mt-12 flex items-end justify-end gap-4">
             <Button
               onClick={() => setIsOpen(false)}
               variant="outline"
@@ -166,10 +166,10 @@ export function DeleteAccountDialog({
               children={({ isSubmitting, isValid, fieldMeta }) => {
                 const allFieldsValid = Object.entries(fieldMeta).every(
                   ([_, meta]) =>
-                    meta.isDirty && !meta.errors.length && !meta.isValidating,
+                    meta.isDirty && !meta.errors.length && !meta.isValidating
                 );
                 const deleteConfirmed =
-                  deleteText.trim().toLowerCase() === "delete my account";
+                  deleteText.trim().toLowerCase() === 'delete my account';
 
                 return (
                   <Button
