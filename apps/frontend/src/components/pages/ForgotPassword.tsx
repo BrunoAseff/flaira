@@ -66,7 +66,7 @@ export default function ForgotPassword() {
             We've sent a password reset link to your email address. Please check
             your inbox and follow the instructions to reset your password.
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-foreground/60">
             If you don't see the email, please check your spam folder.
           </p>
         </CardContent>
