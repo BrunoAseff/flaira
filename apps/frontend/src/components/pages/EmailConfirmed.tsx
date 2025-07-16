@@ -58,7 +58,7 @@ export default function EmailConfirmed({
         </p>
       </CardContent>
       <CardFooter className="flex flex-col items-center gap-2">
-        <p className="text-base text-muted-foreground">
+        <p className="text-base text-foreground/60">
           Need a new verification link? Click the button below:
         </p>
         <Button

@@ -44,7 +44,7 @@ export function SessionItem({
     return (
       <Button
         onClick={() => handleRevokeSession(session.token, session.id)}
-        className="text-muted-foreground transition-all duration-300 hover:text-error hover:bg-error/10"
+        className="text-foreground/60 transition-all duration-300 hover:text-error hover:bg-error/10"
         variant="ghost"
         aria-label="Revoke session"
         disabled={isDisabled}

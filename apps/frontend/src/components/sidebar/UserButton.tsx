@@ -82,7 +82,7 @@ export default function UserButton() {
               <h2 className="text-ellipsis overflow-hidden whitespace-nowrap">
                 {session?.user.name}
               </h2>
-              <h2 className="text-sm text-muted-foreground overflow-hidden whitespace-nowrap text-ellipsis">
+              <h2 className="text-sm text-foreground/60 overflow-hidden whitespace-nowrap text-ellipsis">
                 {session?.user.email}
               </h2>
             </div>
