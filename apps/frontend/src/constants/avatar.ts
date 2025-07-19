@@ -6,4 +6,3 @@ export const ALLOWED_FILE_TYPES = [
   'image/jpg',
 ];
 export const AVATAR_URL_CACHE_TIME = Number.POSITIVE_INFINITY;
-export const OPTIMISTIC_CLEAR_DELAY = 100;

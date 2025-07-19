@@ -12,7 +12,6 @@ import {
   ALLOWED_FILE_TYPES,
   AVATAR_URL_CACHE_TIME,
   MAX_FILE_SIZE,
-  OPTIMISTIC_CLEAR_DELAY,
 } from '@/constants/avatar';
 
 interface AvatarUploadProps {
@@ -176,24 +175,6 @@ export default function AvatarUpload({ user }: AvatarUploadProps) {
       }
     };
   }, [optimisticAvatarUrl, imageToCropSrc]);
-
-  useEffect(() => {
-    if (
-      optimisticAvatarUrl &&
-      !uploadAvatarMutation.isPending &&
-      !uploadAvatarMutation.isError
-    ) {
-      const timer = setTimeout(() => {
-        setOptimisticAvatarUrl(null);
-      }, OPTIMISTIC_CLEAR_DELAY);
-
-      return () => clearTimeout(timer);
-    }
-  }, [
-    optimisticAvatarUrl,
-    uploadAvatarMutation.isPending,
-    uploadAvatarMutation.isError,
-  ]);
 
   return (
     <div className="flex flex-col items-center gap-3 pt-6">
