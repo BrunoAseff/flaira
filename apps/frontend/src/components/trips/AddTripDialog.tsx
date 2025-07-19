@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import AddTripForm from './form/AddTripForm';
 
@@ -23,6 +24,9 @@ export function AddTripDialog({
           <DialogTitle className="text-foreground text-xl font-semibold">
             New trip
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            Add a new trip to your library.
+          </DialogDescription>
         </DialogHeader>
         <AddTripForm />
         <DialogClose />

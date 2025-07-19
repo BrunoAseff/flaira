@@ -12,6 +12,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -167,7 +168,12 @@ export default function ImageCropDialog({
       <DialogContent className="max-w-md h-[100dvh] w-full md:w-fit md:h-fit">
         <DialogHeader>
           <DialogTitle>Crop your new avatar</DialogTitle>
+          <DialogDescription className="sr-only">
+            Select the area of the image to use as your avatar. Only square
+            areas are allowed.
+          </DialogDescription>
         </DialogHeader>
+
         <div className="my-4 flex justify-center items-center max-h-[60vh] overflow-hidden">
           <ReactCrop
             crop={crop}
