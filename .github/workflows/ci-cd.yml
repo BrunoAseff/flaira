@@ -17,7 +17,7 @@ jobs:
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm lint
 
-  typecheck:
+  type-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -106,7 +106,7 @@ jobs:
         run: pnpm --filter @flaira/backend run test
 
   push-db-migrations:
-    needs: [lint, typecheck, format-check, backend-tests]
+    needs: [lint, type-check, format-check, backend-tests]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
