@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -61,6 +62,9 @@ export function SettingsDialog({
           <DialogTitle className="text-foreground text-xl font-semibold">
             Settings
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            Update your settings, security or profile.
+          </DialogDescription>
         </DialogHeader>
         <div className="flex flex-1 w-full overflow-hidden px-6 pt-4">
           <Tabs
