@@ -65,11 +65,13 @@ export default function UserButton() {
         <DropdownMenuTrigger asChild>
           <SidebarMenuButton size="lg" className="py-6 hover:bg-background">
             <Avatar className="size-8 rounded-lg">
-              <AvatarImage
-                src={imageUrl ?? ''}
-                alt={`${session?.user.name} profile picture`}
-                className="object-cover w-full h-full"
-              />
+              {imageUrl && imageUrl !== '' && (
+                <AvatarImage
+                  src={imageUrl}
+                  alt={`${session?.user.name ?? 'User'} profile picture`}
+                  className="object-cover w-full h-full"
+                />
+              )}
               <AvatarFallback className="text-foreground/70">
                 <HugeiconsIcon
                   icon={User03Icon}

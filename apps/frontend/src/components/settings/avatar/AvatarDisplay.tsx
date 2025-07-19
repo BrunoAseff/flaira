@@ -45,12 +45,14 @@ export default function AvatarDisplay({
       <DropdownMenuTrigger asChild disabled={isActionPending}>
         <div className="relative group cursor-pointer">
           <Avatar className="size-24 border-1 border-accent shadow-xl">
-            <AvatarImage
-              src={displayImageSrc || ''}
-              alt={`${user?.name || 'User'}'s profile picture`}
-              key={displayImageSrc}
-              className="object-cover w-full h-full"
-            />
+            {displayImageSrc && (
+              <AvatarImage
+                src={displayImageSrc}
+                alt={`${user?.name || 'User'}'s profile picture`}
+                key={displayImageSrc}
+                className="object-cover w-full h-full"
+              />
+            )}
             <AvatarFallback className="text-foreground size-full">
               {isImageUrlLoading && !optimisticAvatarUrl ? (
                 <HugeiconsIcon
