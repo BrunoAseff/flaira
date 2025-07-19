@@ -8,16 +8,12 @@ import { Input } from '@/components/ui/input';
 import ImageCropDialog from './ImageCropDialog';
 import { useAvatarMutations } from '@/hooks/use-avatar';
 import { Banner } from '@/components/ui/banner';
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_FILE_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/jpg',
-];
-const AVATAR_URL_CACHE_TIME = Number.POSITIVE_INFINITY;
-const OPTIMISTIC_CLEAR_DELAY = 100;
+import {
+  ALLOWED_FILE_TYPES,
+  AVATAR_URL_CACHE_TIME,
+  MAX_FILE_SIZE,
+  OPTIMISTIC_CLEAR_DELAY,
+} from '@/constants/avatar';
 
 interface AvatarUploadProps {
   user: User | null;
