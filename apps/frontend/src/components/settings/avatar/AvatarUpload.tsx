@@ -220,6 +220,7 @@ export default function AvatarUpload({ user }: AvatarUploadProps) {
         className="hidden"
         accept="image/png, image/jpeg, image/webp, image/jpg"
         onChange={handleFileChange}
+        showClear={false}
         disabled={uploadAvatarMutation.isPending || isCropModalOpen}
       />
 
