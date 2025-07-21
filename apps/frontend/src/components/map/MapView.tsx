@@ -27,6 +27,7 @@ export default function MapView({
         mapStyle ||
         `https://api.maptiler.com/maps/streets/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`
       }
+      fadeDuration={300}
     />
   );
 }
