@@ -42,7 +42,7 @@ function DropdownMenuContent({
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
         className={cn(
-          'bg-muted text-popover-foreground font-semibold data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[12rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border-1 border-accent p-2',
+          'bg-background text-popover-foreground font-semibold data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[12rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border-1 border-accent p-2',
           className
         )}
         {...props}
@@ -74,7 +74,7 @@ function DropdownMenuItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "focus:bg-primary-foreground rounded-xl transition-all duration-300 font-bold hover:[&>svg]:text-primary data-[variant=destructive]:focus:bg-error/10 dark:data-[variant=destructive]:focus:bg-error/20 data-[variant=destructive]:hover:[&>svg]:text-error data-[variant=destructive]:[&_svg:not([class*='text-'])]:text-accent-foreground relative flex cursor-default gap-2 p-3 text-base outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+        "focus:bg-primary-foreground border border-transparent focus:border-primary/10 data-[variant=destructive]:focus:border-error/10 rounded-xl transition-all duration-300 font-bold hover:[&>svg]:text-primary data-[variant=destructive]:focus:bg-error/10 dark:data-[variant=destructive]:focus:bg-error/20 data-[variant=destructive]:hover:[&>svg]:text-error data-[variant=destructive]:[&_svg:not([class*='text-'])]:text-accent-foreground relative flex cursor-default gap-2 p-3 text-base outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
 
         className
       )}
