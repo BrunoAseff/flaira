@@ -37,39 +37,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { AddTripDialog } from '../trips/AddTripDialog';
-
-const items = [
-  {
-    title: 'Overview',
-    url: '/',
-    icon: DiscoverCircleIcon,
-  },
-  {
-    title: 'Trips',
-    url: '/trips',
-    icon: AirplaneTakeOff01Icon,
-  },
-  {
-    title: 'Memories',
-    url: '/memories',
-    icon: Image02Icon,
-  },
-  {
-    title: 'Map',
-    url: '/map',
-    icon: MapsGlobal01Icon,
-  },
-  {
-    title: 'Logbook',
-    url: '/logbook',
-    icon: News01Icon,
-  },
-  {
-    title: 'Preferences',
-    url: '/preferences',
-    icon: Settings05Icon,
-  },
-];
+import { routes, type AppRoute } from '@/constants/routes';
 
 export function AppSidebar() {
   const { open } = useSidebar();
@@ -79,7 +47,7 @@ export function AppSidebar() {
 
   if (isPending || !session) return null;
 
-  const isActive = (url: string) => {
+  const isActive = (url: AppRoute) => {
     if (url === '/') {
       return pathname === '/';
     }
@@ -121,10 +89,10 @@ export function AppSidebar() {
               </Tooltip>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {items.map((item) => {
-                    const active = isActive(item.url);
+                  {routes.map((route) => {
+                    const active = isActive(route.url);
                     return (
-                      <Tooltip side="right" key={item.title}>
+                      <Tooltip side="right" key={route.url}>
                         <TooltipTrigger>
                           <SidebarMenuItem>
                             <SidebarMenuButton
@@ -137,7 +105,7 @@ export function AppSidebar() {
                               )}
                             >
                               <Link
-                                href={item.url}
+                                href={route.url}
                                 onClick={(e) => {
                                   if (active) {
                                     e.preventDefault();
@@ -145,18 +113,18 @@ export function AppSidebar() {
                                 }}
                               >
                                 <HugeiconsIcon
-                                  icon={item.icon}
+                                  icon={route.icon}
                                   color="currentColor"
                                   strokeWidth={1.8}
                                   className="ml-0.5"
                                 />
-                                <span>{item.title}</span>
+                                <span>{route.title}</span>
                               </Link>
                             </SidebarMenuButton>
                           </SidebarMenuItem>
                         </TooltipTrigger>
                         <TooltipContent>
-                          {!open ? item.title : null}
+                          {!open ? route.title : null}
                         </TooltipContent>
                       </Tooltip>
                     );
