@@ -37,7 +37,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { AddTripDialog } from '../trips/AddTripDialog';
-import { routes } from '@/constants/routes';
+import { routes, type AppRoute } from '@/constants/routes';
 
 export function AppSidebar() {
   const { open } = useSidebar();
@@ -47,7 +47,7 @@ export function AppSidebar() {
 
   if (isPending || !session) return null;
 
-  const isActive = (url: string) => {
+  const isActive = (url: AppRoute) => {
     if (url === '/') {
       return pathname === '/';
     }
@@ -92,7 +92,7 @@ export function AppSidebar() {
                   {routes.map((route) => {
                     const active = isActive(route.url);
                     return (
-                      <Tooltip side="right" key={route.title}>
+                      <Tooltip side="right" key={route.url}>
                         <TooltipTrigger>
                           <SidebarMenuItem>
                             <SidebarMenuButton
