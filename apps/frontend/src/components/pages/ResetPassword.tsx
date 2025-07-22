@@ -19,6 +19,8 @@ import { resetPasswordSchema } from '@/schemas/auth';
 import { auth } from '@/auth/client';
 import { Banner } from '../ui/banner';
 import { useRouter } from 'next/navigation';
+import { FormFooter } from '../forms/FormFooter';
+import { FormHeader } from '../forms/FormHeader';
 
 type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
@@ -87,11 +89,7 @@ export default function ResetPassword({ token }: { token: string }) {
 
   return (
     <Card className="w-[90%] md:w-[32rem] bg-background p-6 rounded-2xl border-none shadow-none">
-      <CardHeader>
-        <CardTitle className="text-left mr-auto font-semibold text-foreground text-2xl mb-1 md:mb-6">
-          Reset your password
-        </CardTitle>
-      </CardHeader>
+      <FormHeader title="Reset your password" />
       <CardContent>
         <form
           className="flex flex-col gap-4"
@@ -262,14 +260,8 @@ export default function ResetPassword({ token }: { token: string }) {
           )}
         </form>
       </CardContent>
-      <CardFooter className="flex flex-col w-full gap-4 place-items-center">
-        <Link
-          className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
-          href={'/sign-in'}
-        >
-          Return to Sign In
-        </Link>
-      </CardFooter>
+
+      <FormFooter href="/sign-in" cta="Return to Sign In" />
     </Card>
   );
 }

@@ -3,7 +3,7 @@ import Logo from '../brand/Logo';
 
 interface FormHeaderProps {
   title: string;
-  hasLogo: boolean;
+  hasLogo?: boolean;
 }
 
 export function FormHeader({ title, hasLogo }: FormHeaderProps) {

@@ -18,6 +18,8 @@ import { useState } from 'react';
 import { forgotPasswordSchema } from '@/schemas/auth';
 import { auth } from '@/auth/client';
 import { Banner } from '../ui/banner';
+import { FormHeader } from '../forms/FormHeader';
+import { FormFooter } from '../forms/FormFooter';
 
 type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
 
@@ -76,11 +78,7 @@ export default function ForgotPassword() {
 
   return (
     <Card className="w-[90%] md:w-[32rem] bg-background p-6 rounded-2xl border-none shadow-none">
-      <CardHeader>
-        <CardTitle className="text-left mr-auto font-semibold text-foreground text-xl mt-1 md:mt-3">
-          Reset password
-        </CardTitle>
-      </CardHeader>
+      <FormHeader title="Reset password" />
       <CardContent>
         <form
           className="flex flex-col gap-4"
@@ -167,14 +165,7 @@ export default function ForgotPassword() {
           )}
         </form>
       </CardContent>
-      <CardFooter className="flex flex-col w-full gap-4 place-items-center">
-        <Link
-          className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
-          href={'/sign-in'}
-        >
-          Return to Sign In
-        </Link>
-      </CardFooter>
+      <FormFooter href="/sign-in" cta="Return to Sign In" />
     </Card>
   );
 }

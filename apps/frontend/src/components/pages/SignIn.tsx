@@ -13,6 +13,7 @@ import { auth } from '@/auth/client';
 import { useRouter } from 'next/navigation';
 import Logo from '../brand/Logo';
 import SignInForm from '../forms/SignInForm';
+import { FormHeader } from '../forms/FormHeader';
 
 export default function SignIn() {
   const { data: session } = auth.useSession();
@@ -26,12 +27,8 @@ export default function SignIn() {
 
   return (
     <Card className="w-[90%] md:w-[32rem] bg-background p-6 rounded-2xl border-none shadow-none">
-      <CardHeader>
-        <Logo size="md" />
-        <CardTitle className="text-left mr-auto font-semibold text-foreground text-xl mt-1 md:mt-3">
-          Sign in
-        </CardTitle>
-      </CardHeader>
+      <FormHeader title="Sign in" hasLogo />
+
       <CardContent>
         <SignInForm />
       </CardContent>
