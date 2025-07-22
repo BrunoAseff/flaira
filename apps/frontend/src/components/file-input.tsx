@@ -64,7 +64,7 @@ export default function FileInput() {
               </Button>
             </div>
             {files.length >= maxFiles && (
-              <span className="mx-auto py-1 px-2  text-sm bg-muted rounded-2xl">
+              <span className="mx-auto py-1 px-2  text-sm bg-muted shadow-lg border border-accent rounded-2xl">
                 You can add more memories later!
               </span>
             )}
