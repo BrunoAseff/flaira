@@ -2,15 +2,12 @@ import { CardFooter } from '../ui/card';
 import Link from 'next/link';
 import type { Route } from 'next';
 
-interface FormFooterProps<T extends string> {
+interface FormFooterProps {
   cta: string;
-  href: Route<T> | URL;
+  href: Route | URL;
 }
 
-export function FormFooter<T extends string>({
-  cta,
-  href,
-}: FormFooterProps<T>) {
+export function FormFooter({ cta, href }: FormFooterProps) {
   return (
     <CardFooter className="flex flex-col w-full gap-4 place-items-center">
       <Link
