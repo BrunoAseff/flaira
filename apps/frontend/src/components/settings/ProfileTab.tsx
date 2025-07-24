@@ -100,9 +100,7 @@ export default function ProfileTab({ user, error }: ProfileTabProps) {
               </div>
               <em className="ml-auto h-1">
                 {nameError && (
-                  <p className="text-error text-sm md:text-base font-medium">
-                    {nameError}
-                  </p>
+                  <p className="text-error text-sm font-medium">{nameError}</p>
                 )}
               </em>
             </div>
