@@ -56,7 +56,7 @@ export function AppSidebar() {
 
   return (
     <>
-      <TooltipProvider openDelay={0}>
+      <TooltipProvider>
         <Sidebar collapsible="icon">
           <SidebarHeader className="group-data-[collapsible=icon]:hidden mx-auto py-3">
             <Logo />
