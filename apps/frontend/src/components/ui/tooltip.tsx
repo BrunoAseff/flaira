@@ -176,7 +176,7 @@ type TooltipProviderProps = {
 
 function TooltipProvider({
   children,
-  openDelay = 700,
+  openDelay = 0,
   closeDelay = 300,
   transition = { type: 'spring', stiffness: 300, damping: 25 },
   portalContainer,

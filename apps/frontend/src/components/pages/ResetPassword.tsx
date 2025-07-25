@@ -152,7 +152,7 @@ export default function ResetPassword({ token }: { token: string }) {
                 <em className="ml-auto h-1">
                   {field.state.meta.errors[0] &&
                     (field.state.meta.isDirty || form.state.isSubmitting) && (
-                      <p className="text-error text-sm md:text-base font-medium">
+                      <p className="text-error text-sm font-medium">
                         {field.state.meta.errors[0].message}
                       </p>
                     )}
@@ -218,7 +218,7 @@ export default function ResetPassword({ token }: { token: string }) {
                 <em className="ml-auto h-1">
                   {field.state.meta.errors[0] &&
                     (field.state.meta.isDirty || form.state.isSubmitting) && (
-                      <p className="text-error text-sm md:text-base font-medium">
+                      <p className="text-error text-sm font-medium">
                         {field.state.meta.errors[0]}
                       </p>
                     )}
