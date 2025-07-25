@@ -4,6 +4,7 @@ import {
   Map as MapLibreMap,
   Source,
   Layer,
+  AttributionControl,
   type ViewState,
 } from 'react-map-gl/maplibre';
 import { useEffect, useState, useRef } from 'react';
@@ -166,8 +167,10 @@ export default function MapView({
         `https://api.maptiler.com/maps/streets/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`
       }
       fadeDuration={500}
+      reuseMaps
       attributionControl={false}
     >
+      <AttributionControl position="top-right" />
       {routeGeoJSON && (
         <Source id="route" type="geojson" data={routeGeoJSON}>
           <Layer

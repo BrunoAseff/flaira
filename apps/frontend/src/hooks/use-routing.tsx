@@ -24,7 +24,7 @@ export function useRouting() {
           feet: 'foot-walking',
           bicycle: 'cycling-regular',
           motorbike: 'driving-car',
-          bus: 'driving-car',
+          bus: 'driving-hgv',
           plane: 'driving-car',
           ship: 'driving-car',
           boat: 'driving-car',
@@ -69,11 +69,8 @@ export function useRouting() {
         const geometry = feature.geometry.coordinates;
         const properties = feature.properties;
 
-        const allCoords = geometry.flat();
-        const lngs: number[] = allCoords.filter(
-          (_: string, i: number) => i % 2 === 0
-        );
-        const lats = allCoords.filter((_: string, i: number) => i % 2 === 1);
+        const lngs = geometry.map((coord: [number, number]) => coord[0]);
+        const lats = geometry.map((coord: [number, number]) => coord[1]);
 
         const routeData: Route = {
           segments: [

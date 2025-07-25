@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/tooltip';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { useRouting } from '@/hooks/use-routing';
+import { useIsMobile } from '@/hooks/use-mobile';
 import {
   AirplaneModeIcon,
   BicycleIcon,
@@ -72,6 +73,7 @@ export default function Journey() {
     end: '',
   });
 
+  const isMobile = useIsMobile();
   const {
     route,
     loading: routeLoading,
@@ -130,6 +132,10 @@ export default function Journey() {
   };
 
   useEffect(() => {
+    if (isMobile) {
+      return;
+    }
+
     const validLocations = locations.filter(
       (loc) => loc.coordinates && loc.coordinates.length === 2
     );
@@ -144,7 +150,7 @@ export default function Journey() {
     } else {
       clearRoute();
     }
-  }, [locations, transportMode, stops]);
+  }, [locations, transportMode, stops, isMobile]);
 
   const renderInputRow = (
     icon: IconSvgElement,
