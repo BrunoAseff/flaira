@@ -20,13 +20,12 @@ import {
   Cancel01Icon,
   Car05Icon,
   CargoShipIcon,
-  CircleArrowRightDoubleIcon,
   Clock01Icon,
   FerryBoatIcon,
-  MapsCircle02Icon,
   Motorbike02Icon,
   PlusSignIcon,
   RouteIcon,
+  Location01Icon,
   StopCircleIcon,
   WorkoutRunIcon,
 } from '@hugeicons/core-free-icons';
@@ -78,6 +77,7 @@ export default function Journey() {
     loading: routeLoading,
     error: routeError,
     calculateRoute,
+    clearRoute,
   } = useRouting();
 
   const transportOptions = [
@@ -130,17 +130,22 @@ export default function Journey() {
   };
 
   useEffect(() => {
-    if (locations.length >= 2) {
-      const sortedLocations = [...locations].sort((a, b) => {
+    const validLocations = locations.filter(
+      (loc) => loc.coordinates && loc.coordinates.length === 2
+    );
+
+    if (validLocations.length >= 2) {
+      const sortedLocations = [...validLocations].sort((a, b) => {
         const order = ['start', ...stops.map((s) => `stop-${s.id}`), 'end'];
         return order.indexOf(a.id) - order.indexOf(b.id);
       });
 
       calculateRoute(sortedLocations, transportMode[0]);
+    } else {
+      clearRoute();
     }
-  }, [locations, transportMode, calculateRoute, stops]);
+  }, [locations, transportMode, stops]);
 
-  console.log(route);
   const renderInputRow = (
     icon: IconSvgElement,
     placeholder: string,
@@ -181,11 +186,7 @@ export default function Journey() {
       <div className="flex flex-col md:flex-row mx-6 h-full">
         <div className="flex flex-col justify-start w-full md:w-[40%] gap-2 max-h-full scrollbar-gutter-stable overflow-y-auto p-1">
           <div className="flex flex-col gap-1 pt-5">
-            {renderInputRow(
-              CircleArrowRightDoubleIcon,
-              'Start location',
-              'start'
-            )}
+            {renderInputRow(Location01Icon, 'Start location', 'start')}
 
             <AnimatedStops>
               {stops.map((stop, index) =>
@@ -210,7 +211,7 @@ export default function Journey() {
               </Button>
             </div>
 
-            {renderInputRow(MapsCircle02Icon, 'End location', 'end')}
+            {renderInputRow(Location01Icon, 'End location', 'end')}
           </div>
 
           <div className="flex flex-col gap-1 w-full px-1">

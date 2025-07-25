@@ -28,7 +28,7 @@ export const AutocompleteInput = forwardRef<
   });
   const { results, loading, search, clearResults } = useGeocoding();
   const containerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const isSelectingRef = useRef(false);
 
   const updateDropdownPosition = () => {
     if (containerRef.current) {
@@ -42,6 +42,11 @@ export const AutocompleteInput = forwardRef<
   };
 
   useEffect(() => {
+    if (isSelectingRef.current) {
+      isSelectingRef.current = false;
+      return;
+    }
+
     const timer = setTimeout(() => {
       if (value) {
         search(value);
@@ -127,6 +132,7 @@ export const AutocompleteInput = forwardRef<
       address: result.place_name,
     };
 
+    isSelectingRef.current = true;
     onChange(result.place_name);
     onLocationSelect(location);
     setIsOpen(false);
