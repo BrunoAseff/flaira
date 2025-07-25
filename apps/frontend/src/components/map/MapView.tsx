@@ -38,65 +38,73 @@ export default function MapView({
   });
 
   const mapRef = useRef<any>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
-    if (!mapRef.current || !locations) return;
+    if (!mapRef.current || !locations || !mapLoaded) return;
 
     const map = mapRef.current.getMap();
 
-    if (route) {
-      const { bounds } = route;
-      const padding = 50;
+    const animateToView = () => {
+      if (route) {
+        const { bounds } = route;
+        const padding = 50;
 
-      map.fitBounds(
-        [
-          [bounds.west, bounds.south],
-          [bounds.east, bounds.north],
-        ],
-        {
-          padding: {
-            top: padding,
-            bottom: padding,
-            left: padding,
-            right: padding,
+        map.fitBounds(
+          [
+            [bounds.west, bounds.south],
+            [bounds.east, bounds.north],
+          ],
+          {
+            padding: {
+              top: padding,
+              bottom: padding,
+              left: padding,
+              right: padding,
+            },
+            duration: 1200,
+            easing: (t: number) => t * (2 - t), // ease out quad
+          }
+        );
+      } else if (locations.length === 1) {
+        const [lng, lat] = locations[0].coordinates;
+        map.easeTo({
+          center: [lng, lat],
+          zoom: 14,
+          duration: 1200,
+          easing: (t: number) => t * (2 - t), // ease out quad
+        });
+      } else if (locations.length > 1) {
+        const coordinates = locations.map((loc) => loc.coordinates);
+        const bounds = coordinates.reduce(
+          (bounds, coord) => {
+            return [
+              [
+                Math.min(bounds[0][0], coord[0]),
+                Math.min(bounds[0][1], coord[1]),
+              ],
+              [
+                Math.max(bounds[1][0], coord[0]),
+                Math.max(bounds[1][1], coord[1]),
+              ],
+            ];
           },
-          duration: 1000,
-        }
-      );
-    } else if (locations.length === 1) {
-      const [lng, lat] = locations[0].coordinates;
-      map.easeTo({
-        center: [lng, lat],
-        zoom: 14,
-        duration: 2000,
-      });
-    } else if (locations.length > 1) {
-      const coordinates = locations.map((loc) => loc.coordinates);
-      const bounds = coordinates.reduce(
-        (bounds, coord) => {
-          return [
-            [
-              Math.min(bounds[0][0], coord[0]),
-              Math.min(bounds[0][1], coord[1]),
-            ],
-            [
-              Math.max(bounds[1][0], coord[0]),
-              Math.max(bounds[1][1], coord[1]),
-            ],
-          ];
-        },
-        [
-          [coordinates[0][0], coordinates[0][1]],
-          [coordinates[0][0], coordinates[0][1]],
-        ]
-      );
+          [
+            [coordinates[0][0], coordinates[0][1]],
+            [coordinates[0][0], coordinates[0][1]],
+          ]
+        );
 
-      map.fitBounds(bounds, {
-        padding: { top: 80, bottom: 80, left: 80, right: 80 },
-        duration: 1000,
-      });
-    }
-  }, [locations, route]);
+        map.fitBounds(bounds, {
+          padding: { top: 80, bottom: 80, left: 80, right: 80 },
+          duration: 1200,
+          easing: (t: number) => t * (2 - t),
+        });
+      }
+    };
+
+    setTimeout(animateToView, 200);
+  }, [locations, route, mapLoaded]);
 
   const handleViewStateChange = (evt: any) => {
     setViewState(evt.viewState);
@@ -119,7 +127,10 @@ export default function MapView({
           },
           geometry: {
             type: 'Point' as const,
-            coordinates: location.coordinates,
+            coordinates: [
+              location.coordinates[0],
+              location.coordinates[1] - 0.0001,
+            ],
           },
         }))
       : [],
@@ -146,23 +157,38 @@ export default function MapView({
       ref={mapRef}
       {...viewState}
       onMove={handleViewStateChange}
+      onLoad={() => setMapLoaded(true)}
       style={containerStyle}
       mapStyle={
         mapStyle ||
         `https://api.maptiler.com/maps/streets/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`
       }
-      fadeDuration={300}
+      fadeDuration={500}
       attributionControl={false}
     >
       {routeGeoJSON && (
         <Source id="route" type="geojson" data={routeGeoJSON}>
           <Layer
+            id="route-line-shadow"
+            type="line"
+            paint={{
+              'line-color': '#000000',
+              'line-width': 8,
+              'line-opacity': 0.2,
+              'line-blur': 1,
+            }}
+            layout={{
+              'line-join': 'round',
+              'line-cap': 'round',
+            }}
+          />
+          <Layer
             id="route-line"
             type="line"
             paint={{
-              'line-color': '#1f2937',
-              'line-width': 4,
-              'line-opacity': 0.8,
+              'line-color': '#2563eb',
+              'line-offset': 2,
+              'line-width': 7,
             }}
             layout={{
               'line-join': 'round',
@@ -171,8 +197,26 @@ export default function MapView({
           />
         </Source>
       )}
+
       {locationsGeoJSON && (
         <Source id="locations" type="geojson" data={locationsGeoJSON}>
+          <Layer
+            id="location-shadows"
+            type="circle"
+            paint={{
+              'circle-radius': [
+                'case',
+                ['==', ['get', 'type'], 'start'],
+                10,
+                ['==', ['get', 'type'], 'end'],
+                10,
+                8,
+              ],
+              'circle-color': '#000000',
+              'circle-opacity': 0.2,
+              'circle-translate': [2, 2],
+            }}
+          />
           <Layer
             id="location-circles"
             type="circle"
@@ -188,12 +232,12 @@ export default function MapView({
               'circle-color': [
                 'case',
                 ['==', ['get', 'type'], 'start'],
-                '#328032',
+                '#22c55e',
                 ['==', ['get', 'type'], 'end'],
-                '#E85C0C',
+                '#ef4444',
                 '#f59e0b',
               ],
-              'circle-stroke-width': 2,
+              'circle-stroke-width': 3,
               'circle-stroke-color': '#ffffff',
             }}
           />
@@ -202,15 +246,18 @@ export default function MapView({
             type="symbol"
             layout={{
               'text-field': ['get', 'name'],
-              'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+              'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
               'text-offset': [0, 1.5],
               'text-anchor': 'top',
-              'text-size': 12,
+              'text-size': 13,
+              'text-max-width': 12,
+              'text-line-height': 1.2,
             }}
             paint={{
               'text-color': '#1f2937',
               'text-halo-color': '#ffffff',
-              'text-halo-width': 1,
+              'text-halo-width': 2.5,
+              'text-halo-blur': 0.5,
             }}
           />
         </Source>
