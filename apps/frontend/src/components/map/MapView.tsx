@@ -17,6 +17,7 @@ interface MapViewProps {
   initialViewState?: Partial<ViewState>;
   locations?: Location[];
   route?: Route | null;
+  routeLoading?: boolean;
   onViewStateChange?: (viewState: ViewState) => void;
 }
 
@@ -26,6 +27,7 @@ export default function MapView({
   initialViewState = { zoom: 1.5, longitude: 0, latitude: 0 },
   locations,
   route,
+  routeLoading = false,
   onViewStateChange,
 }: MapViewProps) {
   const [viewState, setViewState] = useState<ViewState>({
@@ -63,7 +65,7 @@ export default function MapView({
               right: padding,
             },
             duration: 1200,
-            easing: (t: number) => t * (2 - t), // ease out quad
+            easing: (t: number) => t * (2 - t),
           }
         );
       } else if (locations.length === 1) {
@@ -72,7 +74,7 @@ export default function MapView({
           center: [lng, lat],
           zoom: 14,
           duration: 1200,
-          easing: (t: number) => t * (2 - t), // ease out quad
+          easing: (t: number) => t * (2 - t),
         });
       } else if (locations.length > 1) {
         const coordinates = locations.map((loc) => loc.coordinates);
@@ -261,6 +263,15 @@ export default function MapView({
             }}
           />
         </Source>
+      )}
+
+      {routeLoading && (
+        <div className="absolute bottom-4 right-4 bg-background/90 backdrop-blur-sm rounded-lg p-3 shadow-lg border border-accent">
+          <div className="flex items-center gap-2 text-sm text-foreground">
+            <div className="animate-spin h-4 w-4 border-2 border-foreground/20 border-t-foreground rounded-full"></div>
+            <span>Calculating route...</span>
+          </div>
+        </div>
       )}
     </MapLibreMap>
   );

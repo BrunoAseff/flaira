@@ -259,6 +259,7 @@ export default function Journey() {
               }}
               locations={locations}
               route={route}
+              routeLoading={routeLoading}
             />
           </div>
 
