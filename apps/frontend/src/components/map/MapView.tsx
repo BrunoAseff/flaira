@@ -190,7 +190,7 @@ export default function MapView({
             paint={{
               'line-color': '#2563eb',
               'line-offset': 2,
-              'line-width': 7,
+              'line-width': 5,
             }}
             layout={{
               'line-join': 'round',
@@ -249,7 +249,7 @@ export default function MapView({
             layout={{
               'text-field': ['get', 'name'],
               'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
-              'text-offset': [0, 1.5],
+              'text-offset': [0, 1],
               'text-anchor': 'top',
               'text-size': 13,
               'text-max-width': 12,
