@@ -15,7 +15,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react';
 
 interface TransportModeSelectorProps {
-  onTransportModeChange: (value: string[]) => void;
+  onTransportModeChange: (value: string) => void;
 }
 
 export default function TransportModeSelector({
@@ -37,7 +37,7 @@ export default function TransportModeSelector({
       <Label className="text-base">Transportation</Label>
       <ToggleGroup
         type="single"
-        onValueChange={(value) => value && onTransportModeChange([value])}
+        onValueChange={(value) => value && onTransportModeChange(value)}
         variant="outline"
         className="grid grid-cols-2 gap-3"
       >

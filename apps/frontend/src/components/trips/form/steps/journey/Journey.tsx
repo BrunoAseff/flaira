@@ -15,7 +15,7 @@ import RouteStats from './RouteStats';
 export default function Journey() {
   const [hasTripFinished, setHasTripFinished] = useState(false);
   const [stops, setStops] = useState<{ id: number }[]>([]);
-  const [transportMode, setTransportMode] = useState<string[]>(['car']);
+  const [transportMode, setTransportMode] = useState<string>('car');
   const [locations, setLocations] = useState<Location[]>([]);
   const [inputValues, setInputValues] = useState<Record<string, string>>({
     start: '',
