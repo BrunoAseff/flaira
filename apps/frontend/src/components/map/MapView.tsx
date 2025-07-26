@@ -106,9 +106,7 @@ export default function MapView({
       }
     };
 
-    setTimeout(() => {
-      animateToView();
-    }, 200);
+    setTimeout(animateToView, 200);
   }, [locations, route, mapLoaded]);
 
   const handleViewStateChange = (evt: any) => {
@@ -166,7 +164,7 @@ export default function MapView({
       style={containerStyle}
       mapStyle={
         mapStyle ||
-        `https://api.maptiler.com/maps/streets/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`
+        `https://api.maptiler.com/maps/${process.env.NEXT_PUBLIC_MAPTILER_STYLE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`
       }
       fadeDuration={500}
       reuseMaps
