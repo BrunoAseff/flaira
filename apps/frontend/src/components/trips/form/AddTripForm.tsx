@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import FormHeader from './FormHeader';
 import Companions from './steps/Companions';
-import Journey from './steps/Journey';
 import Prologue from './steps/Prologue';
 import Review from './steps/Review';
-
+import Journey from './steps/journey/Journey';
 import { Button } from '@/components/ui/button';
 
 export default function AddTripForm() {

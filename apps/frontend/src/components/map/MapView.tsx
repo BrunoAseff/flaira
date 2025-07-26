@@ -130,10 +130,7 @@ export default function MapView({
           },
           geometry: {
             type: 'Point' as const,
-            coordinates: [
-              location.coordinates[0],
-              location.coordinates[1] - 0.0001,
-            ],
+            coordinates: [location.coordinates[0], location.coordinates[1]],
           },
         }))
       : [],
@@ -164,7 +161,7 @@ export default function MapView({
       style={containerStyle}
       mapStyle={
         mapStyle ||
-        `https://api.maptiler.com/maps/streets/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`
+        `https://api.maptiler.com/maps/${process.env.NEXT_PUBLIC_MAPTILER_STYLE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`
       }
       fadeDuration={500}
       reuseMaps
@@ -176,10 +173,11 @@ export default function MapView({
           <Layer
             id="route-line-shadow"
             type="line"
+            beforeId="location-shadows"
             paint={{
               'line-color': '#000000',
               'line-width': 8,
-              'line-opacity': 0.2,
+              'line-opacity': 0,
               'line-blur': 1,
             }}
             layout={{
@@ -190,10 +188,11 @@ export default function MapView({
           <Layer
             id="route-line"
             type="line"
+            beforeId="location-shadows"
             paint={{
-              'line-color': '#2563eb',
-              'line-offset': 2,
-              'line-width': 5,
+              'line-color': '#000',
+              'line-offset': 0,
+              'line-width': 4,
             }}
             layout={{
               'line-join': 'round',
@@ -237,13 +236,13 @@ export default function MapView({
               'circle-color': [
                 'case',
                 ['==', ['get', 'type'], 'start'],
-                '#22c55e',
+                '#fff',
                 ['==', ['get', 'type'], 'end'],
-                '#ef4444',
-                '#f59e0b',
+                '#ef4458',
+                '#fff',
               ],
-              'circle-stroke-width': 3,
-              'circle-stroke-color': '#ffffff',
+              'circle-stroke-width': 1,
+              'circle-stroke-color': '#000',
             }}
           />
           <Layer
@@ -271,7 +270,7 @@ export default function MapView({
       {routeLoading && (
         <div className="absolute bottom-4 right-4 bg-background/90 backdrop-blur-sm rounded-lg p-3 shadow-lg border border-accent">
           <div className="flex items-center gap-2 text-sm text-foreground">
-            <div className="animate-spin h-4 w-4 border-2 border-foreground/20 border-t-foreground rounded-full"></div>
+            <div className="animate-spin h-4 w-4 border-2 border-foreground/20 border-t-foreground rounded-full" />
             <span>Calculating route...</span>
           </div>
         </div>
