@@ -1,5 +1,9 @@
 import { useState, useCallback } from 'react';
 import type { Location, Route } from '../types/route';
+import {
+  calculateTotalApproximateDistance,
+  OPEN_ROUTE_MAX_DISTANCE_METERS,
+} from '@/utils/routing';
 
 export function useRouting() {
   const [route, setRoute] = useState<Route | null>(null);
@@ -12,11 +16,15 @@ export function useRouting() {
         return;
       }
 
+      const coordinates = locations.map((loc) => loc.coordinates);
+
+      const distance = calculateTotalApproximateDistance(coordinates);
+
+      if (distance > OPEN_ROUTE_MAX_DISTANCE_METERS) return;
+
       setLoading(true);
 
       try {
-        const coordinates = locations.map((loc) => loc.coordinates);
-
         const profileMap: Record<string, string> = {
           car: 'driving-car',
           feet: 'foot-walking',
@@ -93,10 +101,6 @@ export function useRouting() {
         };
 
         setRoute(routeData);
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : 'Failed to calculate route';
-        console.error('Routing error:', err);
       } finally {
         setLoading(false);
       }
