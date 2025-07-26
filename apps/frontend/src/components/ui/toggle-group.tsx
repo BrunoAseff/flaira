@@ -17,7 +17,8 @@ const toggleVariants = cva(
   {
     variants: {
       type: {
-        single: '',
+        single:
+          'data-[state=on]:bg-primary-foreground data-[state=on]:text-primary data-[state=on]:border-primary shadow-xs',
         multiple:
           'data-[state=on]:bg-primary-foreground data-[state=on]:text-primary data-[state=on]:border-primary shadow-xs',
       },

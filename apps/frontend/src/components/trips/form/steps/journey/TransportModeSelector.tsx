@@ -36,8 +36,8 @@ export default function TransportModeSelector({
     <div className="flex flex-col gap-3 pt-4">
       <Label className="text-base">Transportation</Label>
       <ToggleGroup
-        type="multiple"
-        onValueChange={(value) => value && onTransportModeChange([value[0]])}
+        type="single"
+        onValueChange={(value) => value && onTransportModeChange([value])}
         variant="outline"
         className="grid grid-cols-2 gap-3"
       >
