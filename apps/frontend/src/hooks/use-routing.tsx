@@ -4,7 +4,6 @@ import type { Location, Route } from '../types/route';
 export function useRouting() {
   const [route, setRoute] = useState<Route | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const calculateRoute = useCallback(
     async (locations: Location[], transportMode: string = 'driving') => {
@@ -14,7 +13,6 @@ export function useRouting() {
       }
 
       setLoading(true);
-      setError(null);
 
       try {
         const coordinates = locations.map((loc) => loc.coordinates);
@@ -98,7 +96,6 @@ export function useRouting() {
       } catch (err) {
         const errorMessage =
           err instanceof Error ? err.message : 'Failed to calculate route';
-        setError(errorMessage);
         console.error('Routing error:', err);
       } finally {
         setLoading(false);
@@ -109,8 +106,7 @@ export function useRouting() {
 
   const clearRoute = useCallback(() => {
     setRoute(null);
-    setError(null);
   }, []);
 
-  return { route, loading, error, calculateRoute, clearRoute };
+  return { route, loading, calculateRoute, clearRoute };
 }
