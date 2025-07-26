@@ -8,6 +8,7 @@ import {
 import { Clock01Icon, RouteIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import type { Route } from '@/types/route';
+import { formatDistance, formatTravelDuration } from '@/utils/formatters';
 
 interface RouteStatsProps {
   route: Route | null;
@@ -22,7 +23,7 @@ export default function RouteStats({ route }: RouteStatsProps) {
         <TooltipTrigger>
           <div className="flex items-center gap-2 text-sm text-foreground/80 cursor-default">
             <HugeiconsIcon icon={RouteIcon} size={20} />
-            <span>{(route.totalDistance / 1000).toFixed(1)} km</span>
+            <span>{formatDistance(route.totalDistance)}</span>
           </div>
         </TooltipTrigger>
         <TooltipContent>
@@ -34,7 +35,7 @@ export default function RouteStats({ route }: RouteStatsProps) {
         <TooltipTrigger>
           <div className="flex items-center gap-2 text-sm text-foreground/80 cursor-default">
             <HugeiconsIcon icon={Clock01Icon} size={20} />
-            <span>{Math.round(route.totalDuration / 60)} minutes</span>
+            <span>{formatTravelDuration(route.totalDuration)}</span>
           </div>
         </TooltipTrigger>
         <TooltipContent>
