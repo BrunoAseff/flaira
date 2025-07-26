@@ -130,10 +130,7 @@ export default function MapView({
           },
           geometry: {
             type: 'Point' as const,
-            coordinates: [
-              location.coordinates[0],
-              location.coordinates[1] - 0.0001,
-            ],
+            coordinates: [location.coordinates[0], location.coordinates[1]],
           },
         }))
       : [],
