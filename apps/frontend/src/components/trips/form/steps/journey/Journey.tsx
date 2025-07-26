@@ -70,6 +70,7 @@ export default function Journey() {
 
   useEffect(() => {
     if (isMobile) {
+      clearRoute();
       return;
     }
 
@@ -83,11 +84,11 @@ export default function Journey() {
         return order.indexOf(a.id) - order.indexOf(b.id);
       });
 
-      calculateRoute(sortedLocations, transportMode[0]);
+      calculateRoute(sortedLocations, transportMode);
     } else {
       clearRoute();
     }
-  }, [locations, transportMode, stops, isMobile]);
+  }, [locations, transportMode, stops, isMobile, clearRoute]);
 
   return (
     <TooltipProvider>
