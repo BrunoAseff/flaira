@@ -93,6 +93,9 @@ export function DeleteAccountDialog({
               onChange={(e) => setDeleteText(e.target.value)}
               placeholder="Delete my account"
               autoComplete="off"
+              data-1p-ignore
+              data-lpignore
+              data-form-type="other"
             />
           </div>
 
@@ -106,6 +109,9 @@ export function DeleteAccountDialog({
               <div className="flex flex-col mb-3 gap-1">
                 <Label htmlFor="password">Password</Label>
                 <Input
+                  data-1p-ignore
+                  data-lpignore
+                  data-form-type="other"
                   iconLeft={<KeyRound />}
                   iconRight={
                     showPassword ? (
