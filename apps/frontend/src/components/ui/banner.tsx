@@ -16,7 +16,7 @@ export function Banner({
   ...props
 }: BannerProps) {
   const variantStyles = {
-    error: 'text-error bg-error/10 border-error',
+    error: 'text-error bg-error/10 border-error/20',
   };
   const variantStyle =
     variant && variantStyles[variant] ? variantStyles[variant] : '';

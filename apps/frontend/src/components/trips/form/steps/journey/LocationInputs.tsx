@@ -9,7 +9,7 @@ import {
   StopCircleIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react';
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import type { Location } from '@/types/route';
 
 interface AnimatedStopsProps {
@@ -20,7 +20,7 @@ function AnimatedStops({ children }: AnimatedStopsProps) {
   const contentWrapperRef = useRef<HTMLDivElement>(null);
   const [currentMaxHeight, setCurrentMaxHeight] = useState('0px');
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (contentWrapperRef.current) {
       const hasStops = contentWrapperRef.current.scrollHeight > 0;
       const marginOffset = hasStops ? 16 : 0;
