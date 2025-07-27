@@ -7,6 +7,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   iconRight?: React.ReactNode;
   success?: boolean;
   showClear?: boolean;
+  disableAutoComplete?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -18,6 +19,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       iconRight,
       success = false,
       showClear = true,
+      disableAutoComplete = false,
       ...props
     },
     ref
@@ -66,6 +68,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const hasValue = String(internalValue).length > 0;
     const showClearIcon = showClear && hasValue;
 
+    const autoCompleteProps = disableAutoComplete
+      ? {
+          autoComplete: 'off',
+          'data-1p-ignore': true,
+          'data-lpignore': true,
+          'data-form-type': 'other',
+          'data-bwignore': true,
+          'data-dashlane-rid': '',
+          'data-kwignore': true,
+        }
+      : {};
+
     return (
       <div className="relative flex items-center w-full">
         {iconLeft && (
@@ -93,6 +107,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             iconRight && showClearIcon && 'pr-20',
             className
           )}
+          {...autoCompleteProps}
           {...props}
           onChange={handleInputChange}
         />

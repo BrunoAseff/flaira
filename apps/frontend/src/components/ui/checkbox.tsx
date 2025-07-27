@@ -3,13 +3,37 @@
 import * as React from 'react';
 import { Checkbox as CheckboxPrimitive } from 'radix-ui';
 import { motion, type HTMLMotionProps } from 'motion/react';
+import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
 
-type CheckboxProps = React.ComponentProps<typeof CheckboxPrimitive.Root> &
-  HTMLMotionProps<'button'>;
+const checkboxVariants = cva(
+  'peer size-5 flex items-center justify-center shrink-0 rounded-sm border-1 shadow-xs transition-colors duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+  {
+    variants: {
+      variant: {
+        default:
+          'border-accent bg-muted data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-background',
+        destructive:
+          'border-accent bg-muted data-[state=checked]:bg-error data-[state=checked]:border-error data-[state=checked]:text-background',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }
+);
 
-function Checkbox({ className, onCheckedChange, ...props }: CheckboxProps) {
+type CheckboxProps = React.ComponentProps<typeof CheckboxPrimitive.Root> &
+  HTMLMotionProps<'button'> &
+  VariantProps<typeof checkboxVariants>;
+
+function Checkbox({
+  className,
+  variant,
+  onCheckedChange,
+  ...props
+}: CheckboxProps) {
   const [isChecked, setIsChecked] = React.useState(
     props?.checked ?? props?.defaultChecked ?? false
   );
@@ -34,10 +58,7 @@ function Checkbox({ className, onCheckedChange, ...props }: CheckboxProps) {
     >
       <motion.button
         data-slot="checkbox"
-        className={cn(
-          'peer size-5 flex items-center justify-center shrink-0 rounded-sm border-1 border-accent bg-muted shadow-xs transition-colors duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-background',
-          className
-        )}
+        className={cn(checkboxVariants({ variant }), className)}
         whileTap={{ scale: 0.95 }}
         whileHover={{ scale: 1.05 }}
         {...props}
