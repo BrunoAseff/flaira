@@ -1,13 +1,14 @@
 import FileInput from '@/components/file-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import RangeDatePicker from '@/components/ui/RangeDatePicker';
 import { Textarea } from '@/components/ui/textarea';
 import { Tag01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 
 export default function Prologue() {
   return (
-    <div className="flex flex-col md:flex-row mx-6 md:mx-10 gap-8 h-full py-2">
+    <div className="flex flex-col md:flex-row mx-6 md:mx-10 gap-8 h-[95%] py-2">
       <div className="flex flex-col w-full md:w-[40%] gap-4 h-full">
         <div className="flex flex-col gap-1 px-1 flex-shrink-0">
           <Label className="text-base">What's the name of this journey?</Label>
@@ -22,6 +23,10 @@ export default function Prologue() {
             How would you describe this experience?
           </Label>
           <Textarea className="flex-1 min-h-[150px] resize-none" />
+        </div>
+        <div className="flex flex-col gap-1">
+          <Label className="text-base">When was this journey?</Label>
+          <RangeDatePicker />
         </div>
       </div>
       <div className="flex flex-col w-full md:w-[60%] gap-1 h-full">
