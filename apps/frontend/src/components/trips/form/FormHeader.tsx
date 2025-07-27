@@ -4,6 +4,7 @@ import {
   Backpack03Icon,
   Route03Icon,
   SearchList01Icon,
+  Tick01Icon,
   UserGroupIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react';
@@ -20,18 +21,22 @@ function Step({
   return (
     <div
       className={cn(
-        'flex items-center justify-center size-12 rounded-full border shrink-0 z-10 shadow-lg',
+        'flex items-center justify-center size-11 rounded-full border shrink-0 z-10 shadow-lg',
         isDone || isCurrent
           ? 'bg-foreground text-background border-foreground'
           : 'bg-background text-foreground/60 border-[1px] border-accent'
       )}
     >
-      <HugeiconsIcon
-        className="size-6"
-        icon={icon}
-        color="currentColor"
-        strokeWidth={1.5}
-      />
+      {isCurrent ? (
+        <div className="size-4 bg-white rounded-full" />
+      ) : (
+        <HugeiconsIcon
+          className="size-6"
+          icon={isDone ? Tick01Icon : icon}
+          color="currentColor"
+          strokeWidth={1.5}
+        />
+      )}
     </div>
   );
 }
