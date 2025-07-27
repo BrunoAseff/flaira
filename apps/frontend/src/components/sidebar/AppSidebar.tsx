@@ -101,7 +101,7 @@ export function AppSidebar() {
                               className={cn(
                                 'border border-transparent',
                                 active &&
-                                  'text-primary-foreground border border-primary/10 bg-gradient-to-b from-primary-foreground to-primary-foreground/70'
+                                  'text-primary-foreground border border-primary/10! bg-gradient-to-b from-primary-foreground to-primary-foreground/70'
                               )}
                             >
                               <Link
