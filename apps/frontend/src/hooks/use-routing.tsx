@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import type { Location, Route } from '../types/route';
 import {
   calculateTotalApproximateDistance,
@@ -7,12 +8,75 @@ import {
 
 export function useRouting() {
   const [route, setRoute] = useState<Route | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [queryParams, setQueryParams] = useState<{
+    coordinates: number[][];
+    profile: string;
+  } | null>(null);
+
+  const { isLoading: loading } = useQuery({
+    queryKey: ['directions', queryParams],
+    queryFn: async () => {
+      if (!queryParams) return null;
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/directions`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(queryParams),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Routing failed: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      const route = data.data.routes[0];
+
+      if (!route) {
+        throw new Error('No route found');
+      }
+
+      const geometry = route.geometry.coordinates;
+      const lngs = geometry.map((coord: [number, number]) => coord[0]);
+      const lats = geometry.map((coord: [number, number]) => coord[1]);
+
+      const routeData: Route = {
+        segments: [
+          {
+            coordinates: geometry,
+            distance: route.distance,
+            duration: route.duration,
+            instructions:
+              route.legs[0]?.steps?.map(
+                (step: any) => step.maneuver.instruction
+              ) || [],
+          },
+        ],
+        totalDistance: route.distance,
+        totalDuration: route.duration,
+        bounds: {
+          west: Math.min(...lngs),
+          east: Math.max(...lngs),
+          north: Math.max(...lats),
+          south: Math.min(...lats),
+        },
+      };
+
+      setRoute(routeData);
+      return routeData;
+    },
+    enabled: !!queryParams,
+  });
 
   const calculateRoute = useCallback(
-    async (locations: Location[], transportMode: string = 'driving') => {
+    (locations: Location[], transportMode: string = 'driving') => {
       if (locations.length < 2) {
         setRoute(null);
+        setQueryParams(null);
         return;
       }
 
@@ -22,94 +86,27 @@ export function useRouting() {
 
       if (distance > OPEN_ROUTE_MAX_DISTANCE_METERS) return;
 
-      setLoading(true);
+      const profileMap: Record<string, string> = {
+        car: 'driving',
+        feet: 'walking',
+        bicycle: 'cycling',
+        motorbike: 'driving',
+        bus: 'driving',
+        plane: 'driving',
+        ship: 'driving',
+        boat: 'driving',
+      };
 
-      try {
-        const profileMap: Record<string, string> = {
-          car: 'driving-car',
-          feet: 'foot-walking',
-          bicycle: 'cycling-regular',
-          motorbike: 'driving-car',
-          bus: 'driving-hgv',
-          plane: 'driving-car',
-          ship: 'driving-car',
-          boat: 'driving-car',
-        };
+      const profile = profileMap[transportMode] || 'driving';
 
-        const profile = profileMap[transportMode] || 'driving-car';
-
-        const response = await fetch(
-          `https://api.openrouteservice.org/v2/directions/${profile}/geojson`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: process.env.NEXT_PUBLIC_OPENROUTE_API_KEY!,
-            },
-            body: JSON.stringify({
-              coordinates,
-              format: 'geojson',
-              instructions: true,
-              geometry_simplify: false,
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          if (response.status === 401) {
-            throw new Error('Invalid OpenRouteService API key');
-          } else if (response.status === 422) {
-            throw new Error('Invalid coordinates or routing parameters');
-          }
-          throw new Error(`Routing failed: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-
-        const feature = data.features[0];
-
-        if (!feature) {
-          throw new Error('No route found');
-        }
-
-        const geometry = feature.geometry.coordinates;
-        const properties = feature.properties;
-
-        const lngs = geometry.map((coord: [number, number]) => coord[0]);
-        const lats = geometry.map((coord: [number, number]) => coord[1]);
-
-        const routeData: Route = {
-          segments: [
-            {
-              coordinates: geometry,
-              distance: properties.segments?.[0]?.distance || 0,
-              duration: properties.segments?.[0]?.duration || 0,
-              instructions:
-                properties.segments?.[0]?.steps?.map(
-                  (step: any) => step.instruction
-                ) || [],
-            },
-          ],
-          totalDistance: properties.summary?.distance || 0,
-          totalDuration: properties.summary?.duration || 0,
-          bounds: {
-            west: Math.min(...lngs),
-            east: Math.max(...lngs),
-            north: Math.max(...lats),
-            south: Math.min(...lats),
-          },
-        };
-
-        setRoute(routeData);
-      } finally {
-        setLoading(false);
-      }
+      setQueryParams({ coordinates, profile });
     },
     []
   );
 
   const clearRoute = useCallback(() => {
     setRoute(null);
+    setQueryParams(null);
   }, []);
 
   return { route, loading, calculateRoute, clearRoute };
