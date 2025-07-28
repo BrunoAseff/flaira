@@ -80,7 +80,7 @@ export default function Travelers() {
   return (
     <div className="flex flex-col gap-3">
       <Label className="text-base">Travelers</Label>
-      
+
       {travelers.map((traveler) => (
         <div key={traveler.id} className="flex gap-2 items-center">
           <div className="flex-1">
@@ -91,7 +91,7 @@ export default function Travelers() {
               onChange={(e) => handleEmailChange(traveler.id, e.target.value)}
             />
           </div>
-          
+
           <Select
             value={traveler.role}
             onValueChange={(value) => handleRoleChange(traveler.id, value)}
@@ -115,7 +115,7 @@ export default function Travelers() {
               ))}
             </SelectContent>
           </Select>
-          
+
           <Button
             variant="outline"
             size="icon"
@@ -126,7 +126,7 @@ export default function Travelers() {
           </Button>
         </div>
       ))}
-      
+
       <Button
         variant="outline"
         onClick={handleAddTraveler}
