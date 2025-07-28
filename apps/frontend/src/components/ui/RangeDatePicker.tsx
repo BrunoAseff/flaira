@@ -51,17 +51,16 @@ export default function RangeDatePicker() {
               {date && (
                 <div
                   onClick={handleClear}
-                  className="absolute flex items-center justify-center w-6 h-6 text-foreground/30 hover:text-foreground cursor-pointer rounded-sm hover:bg-popover-foreground/10 right-13 transition-all"
+                  className="absolute flex items-center justify-center size-6 text-foreground/30 hover:text-foreground cursor-pointer rounded-sm hover:bg-popover-foreground/10 right-13 transition-all"
                   tabIndex={0}
                   aria-label="Clear input"
                 >
                   <X size={26} />
                 </div>
               )}
-              <div className="absolute flex items-center justify-center w-6 h-6 text-foreground/30 hover:text-foreground cursor-pointer rounded-sm hover:bg-popover-foreground/10 right-3 transition-all">
+              <div className="absolute flex items-center justify-center size-6 text-foreground/30 hover:text-foreground cursor-pointer rounded-sm hover:bg-popover-foreground/10 right-3 transition-all">
                 <HugeiconsIcon
                   icon={Calendar03Icon}
-                  tabIndex={0}
                   className="size-6"
                   color="currentColor"
                   strokeWidth={1.5}
