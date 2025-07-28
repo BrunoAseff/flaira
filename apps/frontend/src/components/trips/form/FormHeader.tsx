@@ -44,34 +44,32 @@ function Step({
 export default function FormHeader({ currentStep }: { currentStep: number }) {
   const steps = [
     {
-      title: 'Prologue',
+      title: 'Details',
       description:
-        'Name your adventure and set the scene with photos and words.',
+        'Give your trip a name, write a short intro, and add some photos.',
       step: 1,
       icon: Backpack03Icon,
     },
     {
-      title: 'Journey',
+      title: 'Route',
       description:
-        'Plot your route, choose transport, and mark the key moments.',
+        'Set the starting point, stops, destination, and how you got there.',
       step: 2,
       icon: Route03Icon,
     },
     {
-      title: 'Companions',
-      description: 'Decide who joins the story — privately or out in the open.',
+      title: 'Travelers',
+      description: 'Add people who joined you — it’s optional.',
       step: 3,
       icon: UserGroupIcon,
     },
     {
       title: 'Review',
-      description:
-        'Take one last look. Map it out, feel the vibe, and save it all.',
+      description: 'Double-check everything before saving your trip.',
       step: 4,
       icon: SearchList01Icon,
     },
   ];
-
   const progressValue = ((currentStep - 1) / (steps.length - 1)) * 100;
   const activeStep = steps[currentStep - 1] || steps[0];
 
