@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 import { auth } from './utils/auth';
 import { corsConfig } from './utils/http';
 import { user } from '@/modules/user/route';
+import { directions } from '@/modules/directions/route';
 import { status } from '@/modules/status/route';
 
 const app = new Hono<{
@@ -35,5 +36,7 @@ app.on(['POST', 'GET'], '/auth/*', (c) => {
 app.route('/status', status);
 
 app.route('/user', user);
+
+app.route('/directions', directions);
 
 export { app };

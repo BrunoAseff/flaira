@@ -14,6 +14,7 @@ const envSchema = z.object({
   AWS_REGION: z.string(),
   AWS_SECRET_ACCESS_KEY: z.string(),
   AWS_ACCESS_KEY_ID: z.string(),
+  MAP_BOX_API_KEY: z.string(),
 });
 
 const _env = envSchema.safeParse(process.env);

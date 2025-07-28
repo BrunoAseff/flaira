@@ -12,7 +12,7 @@ import LocationInputs from './LocationInputs';
 import TransportModeSelector from './TransportModeSelector';
 import RouteStats from './RouteStats';
 
-export default function Journey() {
+export default function Route() {
   const [hasTripFinished, setHasTripFinished] = useState(false);
   const [stops, setStops] = useState<{ id: number }[]>([]);
   const [transportMode, setTransportMode] = useState<string>('car');

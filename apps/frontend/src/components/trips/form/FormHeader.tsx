@@ -4,6 +4,7 @@ import {
   Backpack03Icon,
   Route03Icon,
   SearchList01Icon,
+  Tick01Icon,
   UserGroupIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react';
@@ -20,18 +21,22 @@ function Step({
   return (
     <div
       className={cn(
-        'flex items-center justify-center size-12 rounded-full border shrink-0 z-10 shadow-lg',
+        'flex items-center justify-center size-11 rounded-full border shrink-0 z-10 shadow-lg',
         isDone || isCurrent
           ? 'bg-foreground text-background border-foreground'
           : 'bg-background text-foreground/60 border-[1px] border-accent'
       )}
     >
-      <HugeiconsIcon
-        className="size-6"
-        icon={icon}
-        color="currentColor"
-        strokeWidth={1.5}
-      />
+      {isCurrent ? (
+        <div className="size-4 bg-white rounded-full" />
+      ) : (
+        <HugeiconsIcon
+          className="size-6"
+          icon={isDone ? Tick01Icon : icon}
+          color="currentColor"
+          strokeWidth={1.5}
+        />
+      )}
     </div>
   );
 }
@@ -39,34 +44,32 @@ function Step({
 export default function FormHeader({ currentStep }: { currentStep: number }) {
   const steps = [
     {
-      title: 'Prologue',
+      title: 'Details',
       description:
-        'Name your adventure and set the scene with photos and words.',
+        'Give your trip a name, write a short intro, and add some photos.',
       step: 1,
       icon: Backpack03Icon,
     },
     {
-      title: 'Journey',
+      title: 'Route',
       description:
-        'Plot your route, choose transport, and mark the key moments.',
+        'Set the starting point, stops, destination, and how you got there.',
       step: 2,
       icon: Route03Icon,
     },
     {
-      title: 'Companions',
-      description: 'Decide who joins the story — privately or out in the open.',
+      title: 'Travelers',
+      description: 'Add people who joined you — it’s optional.',
       step: 3,
       icon: UserGroupIcon,
     },
     {
       title: 'Review',
-      description:
-        'Take one last look. Map it out, feel the vibe, and save it all.',
+      description: 'Double-check everything before saving your trip.',
       step: 4,
       icon: SearchList01Icon,
     },
   ];
-
   const progressValue = ((currentStep - 1) / (steps.length - 1)) * 100;
   const activeStep = steps[currentStep - 1] || steps[0];
 

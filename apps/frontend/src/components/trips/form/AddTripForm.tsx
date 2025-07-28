@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import FormHeader from './FormHeader';
-import Companions from './steps/Companions';
-import Prologue from './steps/Prologue';
+import Travelers from './steps/Travelers';
+import Details from './steps/Details';
 import Review from './steps/Review';
-import Journey from './steps/journey/Journey';
+import Route from './steps/Route/Route';
 import { Button } from '@/components/ui/button';
 
 export default function AddTripForm() {
@@ -13,15 +13,15 @@ export default function AddTripForm() {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <Prologue />;
+        return <Details />;
       case 2:
-        return <Journey />;
+        return <Route />;
       case 3:
-        return <Companions />;
+        return <Travelers />;
       case 4:
         return <Review />;
       default:
-        return <Prologue />;
+        return <Details />;
     }
   };
 

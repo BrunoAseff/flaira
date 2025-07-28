@@ -4,6 +4,8 @@ import { AlertCircleIcon, ImageIcon, UploadIcon, XIcon } from 'lucide-react';
 
 import { useFileUpload } from '@/hooks/use-file-upload';
 import { Button } from '@/components/ui/button';
+import { ImageUploadIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 
 export default function FileInput() {
   const maxSizeMB = 5;
@@ -35,9 +37,10 @@ export default function FileInput() {
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
+        onClick={openFileDialog}
         data-dragging={isDragging || undefined}
         data-files={files.length > 0 || undefined}
-        className="border-input data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex flex-col items-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:ring-[3px] flex-1 min-h-0"
+        className="border-accent shadow-xs data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex flex-col items-center overflow-hidden rounded-xl border-2 border-dashed p-4 hover:border-primary/60 hover:bg-primary-foreground/60 transition-all not-data-[files]:justify-center has-[input:focus]:ring-[3px] flex-1 min-h-0 cursor-pointer"
       >
         <input
           {...getInputProps()}
@@ -94,10 +97,15 @@ export default function FileInput() {
         ) : (
           <div className="flex flex-col items-center justify-center px-4 py-3 text-center">
             <div
-              className="bg-background mb-2 flex size-11 shrink-0 items-center justify-center rounded-full border"
+              className="mb-2 flex shrink-0 items-center justify-center"
               aria-hidden="true"
             >
-              <ImageIcon className="size-4 opacity-60" />
+              <HugeiconsIcon
+                className="size-16"
+                icon={ImageUploadIcon}
+                color="currentColor"
+                strokeWidth={1.5}
+              />{' '}
             </div>
             <p className="mb-1.5 text-sm font-medium">Drop your images here</p>
             <p className="text-foreground/60 text-xs">
