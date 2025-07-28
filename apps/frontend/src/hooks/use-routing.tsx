@@ -17,7 +17,14 @@ export function useRouting() {
     isLoading: loading,
     error,
   } = useQuery({
-    queryKey: ['directions', queryParams],
+    queryKey: ['directions', queryParams?.coordinates, queryParams?.profile],
+    enabled: !!queryParams,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
+    retry: (failureCount, error) => {
+      if (error.message.includes('4')) return false;
+      return failureCount < 2;
+    },
     queryFn: async () => {
       if (!queryParams) return null;
 
@@ -71,7 +78,6 @@ export function useRouting() {
 
       return route;
     },
-    enabled: !!queryParams,
   });
 
   const calculateRoute = useCallback(
