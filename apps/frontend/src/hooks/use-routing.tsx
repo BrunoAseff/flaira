@@ -7,14 +7,24 @@ import {
 } from '@/utils/routing';
 
 export function useRouting() {
-  const [route, setRoute] = useState<Route | null>(null);
   const [queryParams, setQueryParams] = useState<{
     coordinates: number[][];
     profile: string;
   } | null>(null);
 
-  const { isLoading: loading } = useQuery({
-    queryKey: ['directions', queryParams],
+  const {
+    data: route,
+    isLoading: loading,
+    error,
+  } = useQuery({
+    queryKey: ['directions', queryParams?.coordinates, queryParams?.profile],
+    enabled: !!queryParams,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
+    retry: (failureCount, error) => {
+      if (error.message.includes('4')) return false;
+      return failureCount < 2;
+    },
     queryFn: async () => {
       if (!queryParams) return null;
 
@@ -34,30 +44,30 @@ export function useRouting() {
       }
 
       const data = await response.json();
-      const route = data.data.routes[0];
+      const routeData = data.data.routes[0];
 
-      if (!route) {
+      if (!routeData) {
         throw new Error('No route found');
       }
 
-      const geometry = route.geometry.coordinates;
+      const geometry = routeData.geometry.coordinates;
       const lngs = geometry.map((coord: [number, number]) => coord[0]);
       const lats = geometry.map((coord: [number, number]) => coord[1]);
 
-      const routeData: Route = {
+      const route: Route = {
         segments: [
           {
             coordinates: geometry,
-            distance: route.distance,
-            duration: route.duration,
+            distance: routeData.distance,
+            duration: routeData.duration,
             instructions:
-              route.legs[0]?.steps?.map(
+              routeData.legs[0]?.steps?.map(
                 (step: any) => step.maneuver.instruction
               ) || [],
           },
         ],
-        totalDistance: route.distance,
-        totalDuration: route.duration,
+        totalDistance: routeData.distance,
+        totalDuration: routeData.duration,
         bounds: {
           west: Math.min(...lngs),
           east: Math.max(...lngs),
@@ -66,22 +76,18 @@ export function useRouting() {
         },
       };
 
-      setRoute(routeData);
-      return routeData;
+      return route;
     },
-    enabled: !!queryParams,
   });
 
   const calculateRoute = useCallback(
     (locations: Location[], transportMode: string = 'driving') => {
       if (locations.length < 2) {
-        setRoute(null);
         setQueryParams(null);
         return;
       }
 
       const coordinates = locations.map((loc) => loc.coordinates);
-
       const distance = calculateTotalApproximateDistance(coordinates);
 
       if (distance > OPEN_ROUTE_MAX_DISTANCE_METERS) return;
@@ -98,16 +104,20 @@ export function useRouting() {
       };
 
       const profile = profileMap[transportMode] || 'driving';
-
       setQueryParams({ coordinates, profile });
     },
     []
   );
 
   const clearRoute = useCallback(() => {
-    setRoute(null);
     setQueryParams(null);
   }, []);
 
-  return { route, loading, calculateRoute, clearRoute };
+  return {
+    route,
+    loading,
+    error,
+    calculateRoute,
+    clearRoute,
+  };
 }

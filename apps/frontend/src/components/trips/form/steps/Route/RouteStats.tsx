@@ -11,7 +11,7 @@ import type { Route } from '@/types/route';
 import { formatDistance, formatTravelDuration } from '@/utils/formatters';
 
 interface RouteStatsProps {
-  route: Route | null;
+  route?: Route | null;
 }
 
 export default function RouteStats({ route }: RouteStatsProps) {

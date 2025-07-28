@@ -1,10 +1,12 @@
 import type { Context } from 'hono';
 import { getRouteDirections } from './service';
 import { getBody, getHeaders, getResponse } from '@/utils/http';
+import type { DirectionsRequest } from './validator';
 
 export const getDirections = async (context: Context) => {
   try {
-    const { coordinates, profile = 'driving' } = await context.req.json();
+    const { coordinates, profile } =
+      (await context.req.json()) as DirectionsRequest;
 
     const result = await getRouteDirections(coordinates, profile);
 

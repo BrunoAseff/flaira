@@ -180,10 +180,7 @@ function ToggleGroupItem({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={transition}
-              className={cn(
-                'absolute inset-0 z-0 rounded-md bg-muted',
-                activeClassName
-              )}
+              className={cn('absolute inset-0 z-0 rounded-md', activeClassName)}
             />
           )}
         </AnimatePresence>
