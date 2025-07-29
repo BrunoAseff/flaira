@@ -16,8 +16,10 @@ import {
   UserIcon,
   Add01Icon,
   Cancel01Icon,
+  CrownIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { auth } from '@/auth/client';
 
 interface Traveler {
   id: number;
@@ -26,10 +28,17 @@ interface Traveler {
 }
 
 export default function TravelersForm() {
-  const currentUserEmail = 'you@example.com'; // Pode vir do session, context, etc.
+  const { data: session } = auth.useSession();
+
   const [travelers, setTravelers] = useState<Traveler[]>([]);
 
   const roleOptions = [
+    {
+      value: 'owner',
+      label: 'Owner',
+      icon: CrownIcon, // or use UserIcon if CrownIcon is not available
+      description: 'Trip owner with full control',
+    },
     {
       value: 'viewer',
       label: 'Viewer',
@@ -49,6 +58,10 @@ export default function TravelersForm() {
       description: 'Full access and control',
     },
   ];
+
+  const travelerRoleOptions = roleOptions.filter(
+    (role) => role.value !== 'owner'
+  );
 
   const handleAddTraveler = () => {
     setTravelers((prev) => [
@@ -73,6 +86,36 @@ export default function TravelersForm() {
 
   return (
     <div className="flex flex-col gap-6  px-32 mt-6">
+      <div className="border border-accent relative rounded-xl p-4 w-full bg-muted/10">
+        <p className="text-sm font-medium mb-2">Owner</p>
+        <div className="flex  flex-col justify-between sm:flex-row w-full sm:items-center">
+          <div className="flex gap-4 items-center justify-center">
+            <Input type="email" disabled value={session?.user?.email || ''} />
+
+            <Select value="owner" disabled>
+              <SelectTrigger className="w-[350px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {roleOptions.map(({ value, label, icon, description }) => (
+                  <SelectItem key={value} value={value}>
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <HugeiconsIcon icon={icon} size={16} />
+                        <span>{label}</span>
+                      </div>
+                      <span className="text-xs text-foreground/60">
+                        {description}
+                      </span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
+
       {travelers.map((traveler, index) => (
         <div
           key={traveler.id}
@@ -80,7 +123,7 @@ export default function TravelersForm() {
         >
           <p className="text-sm font-medium mb-2">Traveler {index + 1}</p>
           <div className="flex  flex-col justify-between sm:flex-row w-full sm:items-center">
-            <div className="flex gap-4 items-center justify-center">
+            <div className="flex gap-4">
               <Input
                 type="email"
                 placeholder="Enter email address"
@@ -96,19 +139,21 @@ export default function TravelersForm() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {roleOptions.map(({ value, label, icon, description }) => (
-                    <SelectItem key={value} value={value}>
-                      <div className="flex flex-col">
-                        <div className="flex items-center gap-2">
-                          <HugeiconsIcon icon={icon} size={16} />
-                          <span>{label}</span>
+                  {travelerRoleOptions.map(
+                    ({ value, label, icon, description }) => (
+                      <SelectItem key={value} value={value}>
+                        <div className="flex flex-col">
+                          <div className="flex items-center gap-2">
+                            <HugeiconsIcon icon={icon} size={16} />
+                            <span>{label}</span>
+                          </div>
+                          <span className="text-xs text-foreground/60">
+                            {description}
+                          </span>
                         </div>
-                        <span className="text-xs text-foreground/60">
-                          {description}
-                        </span>
-                      </div>
-                    </SelectItem>
-                  ))}
+                      </SelectItem>
+                    )
+                  )}
                 </SelectContent>
               </Select>
             </div>
