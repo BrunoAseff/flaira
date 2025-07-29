@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -16,7 +15,7 @@ import {
   PencilEdit02Icon,
   UserIcon,
   Add01Icon,
-  Delete02Icon,
+  Cancel01Icon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 
@@ -26,7 +25,8 @@ interface Traveler {
   role: string;
 }
 
-export default function Travelers() {
+export default function TravelersForm() {
+  const currentUserEmail = 'you@example.com'; // Pode vir do session, context, etc.
   const [travelers, setTravelers] = useState<Traveler[]>([]);
 
   const roleOptions = [
@@ -58,83 +58,81 @@ export default function Travelers() {
   };
 
   const handleRemoveTraveler = (id: number) => {
-    setTravelers((prev) => prev.filter((traveler) => traveler.id !== id));
+    setTravelers((prev) => prev.filter((t) => t.id !== id));
   };
 
   const handleEmailChange = (id: number, email: string) => {
     setTravelers((prev) =>
-      prev.map((traveler) =>
-        traveler.id === id ? { ...traveler, email } : traveler
-      )
+      prev.map((t) => (t.id === id ? { ...t, email } : t))
     );
   };
 
   const handleRoleChange = (id: number, role: string) => {
-    setTravelers((prev) =>
-      prev.map((traveler) =>
-        traveler.id === id ? { ...traveler, role } : traveler
-      )
-    );
+    setTravelers((prev) => prev.map((t) => (t.id === id ? { ...t, role } : t)));
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      <Label className="text-base">Travelers</Label>
+    <div className="flex flex-col gap-6  px-32 mt-6">
+      {travelers.map((traveler, index) => (
+        <div
+          key={traveler.id}
+          className="border border-accent relative rounded-xl p-4 w-full bg-muted/10"
+        >
+          <p className="text-sm font-medium mb-2">Traveler {index + 1}</p>
+          <div className="flex  flex-col justify-between sm:flex-row w-full sm:items-center">
+            <div className="flex gap-4 items-center justify-center">
+              <Input
+                type="email"
+                placeholder="Enter email address"
+                value={traveler.email}
+                onChange={(e) => handleEmailChange(traveler.id, e.target.value)}
+              />
 
-      {travelers.map((traveler) => (
-        <div key={traveler.id} className="flex gap-2 items-center">
-          <div className="flex-1">
-            <Input
-              type="email"
-              placeholder="Enter email address"
-              value={traveler.email}
-              onChange={(e) => handleEmailChange(traveler.id, e.target.value)}
-            />
+              <Select
+                value={traveler.role}
+                onValueChange={(value) => handleRoleChange(traveler.id, value)}
+              >
+                <SelectTrigger className="w-[350px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {roleOptions.map(({ value, label, icon, description }) => (
+                    <SelectItem key={value} value={value}>
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-2">
+                          <HugeiconsIcon icon={icon} size={16} />
+                          <span>{label}</span>
+                        </div>
+                        <span className="text-xs text-foreground/60">
+                          {description}
+                        </span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-
-          <Select
-            value={traveler.role}
-            onValueChange={(value) => handleRoleChange(traveler.id, value)}
-          >
-            <SelectTrigger className="w-[140px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {roleOptions.map(({ value, label, icon, description }) => (
-                <SelectItem key={value} value={value}>
-                  <div className="flex flex-col">
-                    <div className="flex items-center gap-2">
-                      <HugeiconsIcon icon={icon} size={16} />
-                      <span>{label}</span>
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {description}
-                    </span>
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
           <Button
-            variant="outline"
+            variant="ghost"
             size="icon"
             onClick={() => handleRemoveTraveler(traveler.id)}
-            className="shrink-0"
+            className="absolute right-4 top-4"
           >
-            <HugeiconsIcon icon={Delete02Icon} size={16} />
+            <HugeiconsIcon icon={Cancel01Icon} size={16} />
           </Button>
         </div>
       ))}
 
-      <Button
-        variant="outline"
-        onClick={handleAddTraveler}
-        className="flex items-center gap-2 w-fit"
-      >
-        <HugeiconsIcon icon={Add01Icon} size={16} />
-        Add Traveler
-      </Button>
+      <div className="flex justify-center">
+        <Button
+          variant="ghost"
+          onClick={handleAddTraveler}
+          className="flex items-center gap-2 border-dashed border-foreground/30 border cursor-pointer text-foreground/70 hover:bg-primary-foreground/30 hover:text-primary hover:border-primary transition-all"
+        >
+          <HugeiconsIcon icon={Add01Icon} size={16} />
+        </Button>
+      </div>
     </div>
   );
 }
