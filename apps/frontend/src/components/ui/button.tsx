@@ -14,7 +14,7 @@ const buttonVariants = cva(
         destructive:
           'bg-error text-white shadow-xs hover:bg-error/90 focus-visible:ring-error/20 dark:focus-visible:ring-error/40 dark:bg-error/60',
         outline:
-          'bg-popover hover:bg-popover hover:text-accent-foreground border border-accent [&.h-10]:py-4',
+          'bg-popover hover:opacity/80 hover:text-accent-foreground border border-accent [&.h-10]:py-4',
         secondary:
           'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost:
