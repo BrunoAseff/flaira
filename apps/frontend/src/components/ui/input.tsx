@@ -97,7 +97,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={finalRef}
           data-slot="input"
           className={cn(
-            'file:text-foreground max-w-[32rem] pl-4 placeholder:text-foreground/30 selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-15 w-full min-w-0 rounded-xl border-1 border-accent bg-muted text-sm md:text-lg shadow-xs mt-1 transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
+            'file:text-foreground max-w-[32rem] pl-4 placeholder:text-foreground/30 selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex h-15 w-full min-w-0 rounded-xl border-1 border-accent bg-muted text-sm md:text-lg shadow-xs mt-1 transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-90 disabled:text-foreground/30',
             'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px]',
             'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
             success &&
