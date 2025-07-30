@@ -11,6 +11,7 @@ import type { Location } from '@/types/route';
 import LocationInputs from './LocationInputs';
 import TransportModeSelector from './TransportModeSelector';
 import RouteStats from './RouteStats';
+import CurrentLocationDialog from './CurrentLocationDialog';
 
 export default function Route() {
   const [hasTripFinished, setHasTripFinished] = useState(false);
@@ -21,6 +22,10 @@ export default function Route() {
     start: '',
     end: '',
   });
+  const [showGeoModal, setShowGeoModal] = useState(false);
+  const [geoCoordinates, setGeoCoordinates] = useState<[number, number] | null>(
+    null
+  );
 
   const isMobile = useIsMobile();
   const {
@@ -66,6 +71,28 @@ export default function Route() {
     if (!value.trim()) {
       setLocations((prev) => prev.filter((loc) => loc.id !== key));
     }
+  };
+
+  const handleGeolocate = (coordinates: [number, number]) => {
+    setGeoCoordinates(coordinates);
+    setShowGeoModal(true);
+  };
+
+  const handleLocationSet = (
+    locationType: 'start' | 'end',
+    location: Location
+  ) => {
+    setLocations((prev) => {
+      const filtered = prev.filter((loc) => loc.id !== locationType);
+      return [...filtered, location];
+    });
+
+    setInputValues((prev) => ({
+      ...prev,
+      [locationType]: location.name,
+    }));
+
+    setGeoCoordinates(null);
   };
 
   useEffect(() => {
@@ -130,6 +157,7 @@ export default function Route() {
                 locations={locations}
                 route={route}
                 routeLoading={routeLoading}
+                onGeolocate={handleGeolocate}
               />
             </div>
           </div>
@@ -137,6 +165,13 @@ export default function Route() {
           <RouteStats route={route} />
         </div>
       </div>
+
+      <CurrentLocationDialog
+        open={showGeoModal}
+        onOpenChange={setShowGeoModal}
+        coordinates={geoCoordinates}
+        onLocationSet={handleLocationSet}
+      />
     </TooltipProvider>
   );
 }
