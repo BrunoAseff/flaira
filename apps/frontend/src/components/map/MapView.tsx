@@ -23,7 +23,7 @@ interface MapViewProps {
 
 export default function MapView({
   mapStyle,
-  containerStyle = { width: '100vw', height: '100vh', borderRadius: '16px' },
+  containerStyle = { width: '100vw', height: '100vh' },
   initialViewState = { zoom: 1.5, longitude: 0, latitude: 0 },
   locations,
   route,
