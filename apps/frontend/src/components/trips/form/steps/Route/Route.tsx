@@ -11,6 +11,7 @@ import type { Location } from '@/types/route';
 import LocationInputs from './LocationInputs';
 import TransportModeSelector from './TransportModeSelector';
 import RouteStats from './RouteStats';
+import CurrentLocationDialog from './CurrentLocationDialog';
 
 export default function Route() {
   const [hasTripFinished, setHasTripFinished] = useState(false);
@@ -21,6 +22,10 @@ export default function Route() {
     start: '',
     end: '',
   });
+  const [showGeoModal, setShowGeoModal] = useState(false);
+  const [geoCoordinates, setGeoCoordinates] = useState<[number, number] | null>(
+    null
+  );
 
   const isMobile = useIsMobile();
   const {
@@ -66,6 +71,28 @@ export default function Route() {
     if (!value.trim()) {
       setLocations((prev) => prev.filter((loc) => loc.id !== key));
     }
+  };
+
+  const handleGeolocate = (coordinates: [number, number]) => {
+    setGeoCoordinates(coordinates);
+    setShowGeoModal(true);
+  };
+
+  const handleLocationSet = (
+    locationType: 'start' | 'end',
+    location: Location
+  ) => {
+    setLocations((prev) => {
+      const filtered = prev.filter((loc) => loc.id !== locationType);
+      return [...filtered, location];
+    });
+
+    setInputValues((prev) => ({
+      ...prev,
+      [locationType]: location.name,
+    }));
+
+    setGeoCoordinates(null);
   };
 
   useEffect(() => {
@@ -121,21 +148,30 @@ export default function Route() {
 
         <div className="w-full md:w-[60%] flex flex-col mx-2 mt-2">
           <div className="flex-1 rounded-xl p-2 hidden md:flex justify-start min-h-0">
-            <MapView
-              containerStyle={{
-                borderRadius: '16px',
-                width: '100%',
-                height: '100%',
-              }}
-              locations={locations}
-              route={route}
-              routeLoading={routeLoading}
-            />
+            <div className="w-full h-full rounded-xl overflow-hidden shadow-md">
+              <MapView
+                containerStyle={{
+                  width: '100%',
+                  height: '100%',
+                }}
+                locations={locations}
+                route={route}
+                routeLoading={routeLoading}
+                onGeolocate={handleGeolocate}
+              />
+            </div>
           </div>
 
           <RouteStats route={route} />
         </div>
       </div>
+
+      <CurrentLocationDialog
+        open={showGeoModal}
+        onOpenChange={setShowGeoModal}
+        coordinates={geoCoordinates}
+        onLocationSet={handleLocationSet}
+      />
     </TooltipProvider>
   );
 }

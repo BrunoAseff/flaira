@@ -1,14 +1,14 @@
 'use client';
 
 import {
-  Map as MapLibreMap,
+  Map as MapBoxMap,
   Source,
   Layer,
-  AttributionControl,
   type ViewState,
-} from 'react-map-gl/maplibre';
+  GeolocateControl,
+} from 'react-map-gl/mapbox';
 import { useEffect, useState, useRef } from 'react';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import type { CSSProperties } from 'react';
 import type { Location, Route } from '../../types/route';
 
@@ -20,17 +20,21 @@ interface MapViewProps {
   route?: Route | null;
   routeLoading?: boolean;
   onViewStateChange?: (viewState: ViewState) => void;
+  onGeolocate?: (coordinates: [number, number]) => void;
 }
 
 export default function MapView({
   mapStyle,
-  containerStyle = { width: '100vw', height: '100vh', borderRadius: '16px' },
+  containerStyle = { width: '100vw', height: '100vh' },
   initialViewState = { zoom: 1.5, longitude: 0, latitude: 0 },
   locations,
   route,
   routeLoading = false,
   onViewStateChange,
+  onGeolocate,
 }: MapViewProps) {
+  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
+
   const [viewState, setViewState] = useState<ViewState>({
     longitude: initialViewState.longitude || 0,
     latitude: initialViewState.latitude || 0,
@@ -41,7 +45,15 @@ export default function MapView({
   });
 
   const mapRef = useRef<any>(null);
+  const geoControlRef = useRef<any>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+
+  const handleGeolocate = (event: any) => {
+    const { coords } = event;
+    if (onGeolocate && coords) {
+      onGeolocate([coords.longitude, coords.latitude]);
+    }
+  };
 
   useEffect(() => {
     if (!mapRef.current || !locations || !mapLoaded) return;
@@ -153,21 +165,30 @@ export default function MapView({
     : null;
 
   return (
-    <MapLibreMap
+    <MapBoxMap
       ref={mapRef}
       {...viewState}
       onMove={handleViewStateChange}
       onLoad={() => setMapLoaded(true)}
       style={containerStyle}
+      projection="mercator"
+      mapboxAccessToken={mapboxToken}
       mapStyle={
         mapStyle ||
-        `https://api.maptiler.com/maps/${process.env.NEXT_PUBLIC_MAPTILER_STYLE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`
+        `https://api.mapbox.com/styles/v1/mapbox/outdoors-v12?access_token=${mapboxToken}`
       }
       fadeDuration={500}
       reuseMaps
       attributionControl={false}
     >
-      <AttributionControl position="top-right" />
+      <GeolocateControl
+        ref={geoControlRef}
+        onGeolocate={handleGeolocate}
+        positionOptions={{ enableHighAccuracy: true }}
+        trackUserLocation={false}
+        showUserHeading={true}
+      />
+
       {routeGeoJSON && (
         <Source id="route" type="geojson" data={routeGeoJSON}>
           <Layer
@@ -190,7 +211,7 @@ export default function MapView({
             type="line"
             beforeId="location-shadows"
             paint={{
-              'line-color': '#000',
+              'line-color': '#349dff',
               'line-offset': 0,
               'line-width': 4,
             }}
@@ -216,7 +237,7 @@ export default function MapView({
                 10,
                 8,
               ],
-              'circle-color': '#000000',
+              'circle-color': '#2290f7',
               'circle-opacity': 0.2,
               'circle-translate': [2, 2],
             }}
@@ -236,13 +257,13 @@ export default function MapView({
               'circle-color': [
                 'case',
                 ['==', ['get', 'type'], 'start'],
-                '#fff',
+                '#2290f7',
                 ['==', ['get', 'type'], 'end'],
-                '#ef4458',
-                '#fff',
+                '#17e06b',
+                '#17e06b',
               ],
-              'circle-stroke-width': 1,
-              'circle-stroke-color': '#000',
+              'circle-stroke-width': 2,
+              'circle-stroke-color': '#fff',
             }}
           />
           <Layer
@@ -250,7 +271,7 @@ export default function MapView({
             type="symbol"
             layout={{
               'text-field': ['get', 'name'],
-              'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+              'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
               'text-offset': [0, 1],
               'text-anchor': 'top',
               'text-size': 13,
@@ -275,6 +296,6 @@ export default function MapView({
           </div>
         </div>
       )}
-    </MapLibreMap>
+    </MapBoxMap>
   );
 }

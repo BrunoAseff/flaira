@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { Location, Route } from '../types/route';
 import {
   calculateTotalApproximateDistance,
-  OPEN_ROUTE_MAX_DISTANCE_METERS,
+  getMaxDistanceForProfile,
 } from '@/utils/routing';
 
 export function useRouting() {
@@ -35,7 +35,11 @@ export function useRouting() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(queryParams),
+          body: JSON.stringify({
+            ...queryParams,
+            overview: 'full',
+            geometries: 'geojson',
+          }),
         }
       );
 
@@ -88,9 +92,6 @@ export function useRouting() {
       }
 
       const coordinates = locations.map((loc) => loc.coordinates);
-      const distance = calculateTotalApproximateDistance(coordinates);
-
-      if (distance > OPEN_ROUTE_MAX_DISTANCE_METERS) return;
 
       const profileMap: Record<string, string> = {
         car: 'driving',
@@ -104,6 +105,11 @@ export function useRouting() {
       };
 
       const profile = profileMap[transportMode] || 'driving';
+      const distance = calculateTotalApproximateDistance(coordinates);
+      const maxDistance = getMaxDistanceForProfile(profile);
+
+      if (distance > maxDistance) return setQueryParams(null);
+
       setQueryParams({ coordinates, profile });
     },
     []

@@ -1,4 +1,10 @@
-export const OPEN_ROUTE_MAX_DISTANCE_METERS = 6000000;
+export const MAPBOX_DISTANCE_LIMITS = {
+  driving: 4_000_000,
+  'driving-traffic': 4_000_000,
+  cycling: 1_000_000,
+  walking: 1_000_000,
+} as const;
+
 const EARTH_RADIUS_METERS = 6371000;
 
 const degreesToRadians = (degrees: number): number => (degrees * Math.PI) / 180;
@@ -54,4 +60,20 @@ export const calculateTotalApproximateDistance = (
   }
 
   return sumSegmentDistances(coordinates);
+};
+
+export const getMaxDistanceForProfile = (profile: string): number => {
+  return (
+    MAPBOX_DISTANCE_LIMITS[profile as keyof typeof MAPBOX_DISTANCE_LIMITS] ||
+    MAPBOX_DISTANCE_LIMITS.driving
+  );
+};
+
+export const isRouteWithinLimits = (
+  coordinates: [number, number][],
+  profile: string
+): boolean => {
+  const distance = calculateTotalApproximateDistance(coordinates);
+  const maxDistance = getMaxDistanceForProfile(profile);
+  return distance <= maxDistance;
 };
