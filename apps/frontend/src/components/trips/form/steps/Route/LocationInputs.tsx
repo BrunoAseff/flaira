@@ -9,38 +9,8 @@ import {
   StopCircleIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon, type IconSvgElement } from '@hugeicons/react';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { AnimatedList } from '@/components/ui/AnimatedList';
 import type { Location } from '@/types/route';
-
-interface AnimatedStopsProps {
-  children: React.ReactNode;
-}
-
-function AnimatedStops({ children }: AnimatedStopsProps) {
-  const contentWrapperRef = useRef<HTMLDivElement>(null);
-  const [currentMaxHeight, setCurrentMaxHeight] = useState('0px');
-
-  useLayoutEffect(() => {
-    if (contentWrapperRef.current) {
-      const hasStops = contentWrapperRef.current.scrollHeight > 0;
-      const marginOffset = hasStops ? 16 : 0;
-
-      const height = contentWrapperRef.current.scrollHeight + marginOffset;
-      setCurrentMaxHeight(`${height}px`);
-    }
-  }, [children]);
-
-  return (
-    <div
-      style={{ maxHeight: currentMaxHeight }}
-      className="w-full overflow-hidden transition-[max-height] duration-500 ease-in-out"
-    >
-      <div ref={contentWrapperRef} className="flex flex-col gap-3 m-2">
-        {children}
-      </div>
-    </div>
-  );
-}
 
 interface LocationInputsProps {
   stops: { id: number }[];
@@ -98,7 +68,7 @@ export default function LocationInputs({
     <div className="flex flex-col gap-1 pt-5">
       {renderInputRow(Location01Icon, 'Start location', 'start')}
 
-      <AnimatedStops>
+      <AnimatedList marginOffset={16} gap="gap-3">
         {stops.map((stop, index) =>
           renderInputRow(
             StopCircleIcon,
@@ -107,7 +77,7 @@ export default function LocationInputs({
             () => onRemoveStop(stop.id)
           )
         )}
-      </AnimatedStops>
+      </AnimatedList>
 
       <div className="flex items-start w-full">
         <Button

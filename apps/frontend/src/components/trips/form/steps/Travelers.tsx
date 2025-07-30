@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useLayoutEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -20,36 +20,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { auth } from '@/auth/client';
-
-interface AnimatedTravelersProps {
-  children: React.ReactNode;
-}
-
-function AnimatedTravelers({ children }: AnimatedTravelersProps) {
-  const contentWrapperRef = useRef<HTMLDivElement>(null);
-  const [currentMaxHeight, setCurrentMaxHeight] = useState('0px');
-
-  useLayoutEffect(() => {
-    if (contentWrapperRef.current) {
-      const hasTravelers = contentWrapperRef.current.scrollHeight > 0;
-      const marginOffset = hasTravelers ? 24 : 0;
-
-      const height = contentWrapperRef.current.scrollHeight + marginOffset;
-      setCurrentMaxHeight(`${height}px`);
-    }
-  }, [children]);
-
-  return (
-    <div
-      style={{ maxHeight: currentMaxHeight }}
-      className="w-full overflow-hidden transition-[max-height] duration-500 ease-in-out"
-    >
-      <div ref={contentWrapperRef} className="flex flex-col gap-6">
-        {children}
-      </div>
-    </div>
-  );
-}
+import { AnimatedList } from '@/components/ui/AnimatedList';
 
 interface Traveler {
   id: number;
@@ -152,7 +123,7 @@ export default function TravelersForm() {
         </div>
       </div>
 
-      <AnimatedTravelers>
+      <AnimatedList marginOffset={24} gap="gap-6">
         {travelers.map((traveler, index) => (
           <div
             key={traveler.id}
@@ -211,7 +182,7 @@ export default function TravelersForm() {
             </Button>
           </div>
         ))}
-      </AnimatedTravelers>
+      </AnimatedList>
 
       <div className="flex justify-center">
         <Button
