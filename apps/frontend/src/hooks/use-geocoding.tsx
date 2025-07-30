@@ -19,6 +19,7 @@ interface GeocodingResult {
 export function useGeocoding() {
   const [results, setResults] = useState<GeocodingResult[]>([]);
   const [loading, setLoading] = useState(false);
+  const [reverseLoading, setReverseLoading] = useState(false);
   const abortController = useRef<AbortController | null>(null);
 
   const search = useCallback(async (query: string) => {
@@ -41,7 +42,8 @@ export function useGeocoding() {
             access_token: process.env.NEXT_PUBLIC_MAPBOX_KEY!,
             autocomplete: 'true',
             limit: '5',
-            types: 'country,region,postcode,district,place,locality,neighborhood,address,poi',
+            types:
+              'country,region,postcode,district,place,locality,neighborhood,address,poi',
           }),
         { signal: abortController.current.signal }
       );
@@ -67,5 +69,47 @@ export function useGeocoding() {
     }
   }, []);
 
-  return { results, loading, search, clearResults };
+  const reverseGeocode = useCallback(
+    async (coordinates: [number, number]): Promise<string> => {
+      setReverseLoading(true);
+
+      try {
+        const [lng, lat] = coordinates;
+        const response = await fetch(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?` +
+            new URLSearchParams({
+              access_token: process.env.NEXT_PUBLIC_MAPBOX_KEY!,
+              types: 'address,poi,place,locality',
+              limit: '1',
+            })
+        );
+
+        if (!response.ok) throw new Error('Reverse geocoding failed');
+
+        const data = await response.json();
+
+        if (data.features && data.features.length > 0) {
+          return data.features[0].place_name;
+        }
+
+        return `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+      } catch (error) {
+        console.error('Reverse geocoding error:', error);
+        const [lng, lat] = coordinates;
+        return `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+      } finally {
+        setReverseLoading(false);
+      }
+    },
+    []
+  );
+
+  return {
+    results,
+    loading,
+    reverseLoading,
+    search,
+    clearResults,
+    reverseGeocode,
+  };
 }
