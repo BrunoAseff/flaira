@@ -79,7 +79,7 @@ export function useGeocoding() {
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?` +
             new URLSearchParams({
               access_token: process.env.NEXT_PUBLIC_MAPBOX_KEY!,
-              types: 'address,poi,place,locality',
+              types: 'address,poi,place,locality,neighborhood,district,region',
               limit: '1',
             })
         );
