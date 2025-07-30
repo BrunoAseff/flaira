@@ -1,14 +1,13 @@
 'use client';
 
 import {
-  Map as MapLibreMap,
+  Map as MapBoxMap,
   Source,
   Layer,
-  AttributionControl,
   type ViewState,
-} from 'react-map-gl/maplibre';
+} from 'react-map-gl/mapbox';
 import { useEffect, useState, useRef } from 'react';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import type { CSSProperties } from 'react';
 import type { Location, Route } from '../../types/route';
 
@@ -31,6 +30,8 @@ export default function MapView({
   routeLoading = false,
   onViewStateChange,
 }: MapViewProps) {
+  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
+
   const [viewState, setViewState] = useState<ViewState>({
     longitude: initialViewState.longitude || 0,
     latitude: initialViewState.latitude || 0,
@@ -153,21 +154,22 @@ export default function MapView({
     : null;
 
   return (
-    <MapLibreMap
+    <MapBoxMap
       ref={mapRef}
       {...viewState}
       onMove={handleViewStateChange}
       onLoad={() => setMapLoaded(true)}
       style={containerStyle}
+      projection="mercator"
+      mapboxAccessToken={mapboxToken}
       mapStyle={
         mapStyle ||
-        `https://api.maptiler.com/maps/${process.env.NEXT_PUBLIC_MAPTILER_STYLE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`
+        `https://api.mapbox.com/styles/v1/mapbox/outdoors-v12?access_token=${mapboxToken}`
       }
       fadeDuration={500}
       reuseMaps
       attributionControl={false}
     >
-      <AttributionControl position="top-right" />
       {routeGeoJSON && (
         <Source id="route" type="geojson" data={routeGeoJSON}>
           <Layer
@@ -250,7 +252,7 @@ export default function MapView({
             type="symbol"
             layout={{
               'text-field': ['get', 'name'],
-              'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+              'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
               'text-offset': [0, 1],
               'text-anchor': 'top',
               'text-size': 13,
@@ -275,6 +277,6 @@ export default function MapView({
           </div>
         </div>
       )}
-    </MapLibreMap>
+    </MapBoxMap>
   );
 }
