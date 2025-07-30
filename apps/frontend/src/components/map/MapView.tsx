@@ -5,6 +5,7 @@ import {
   Source,
   Layer,
   type ViewState,
+  GeolocateControl,
 } from 'react-map-gl/mapbox';
 import { useEffect, useState, useRef } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -19,6 +20,7 @@ interface MapViewProps {
   route?: Route | null;
   routeLoading?: boolean;
   onViewStateChange?: (viewState: ViewState) => void;
+  onGeolocate?: (coordinates: [number, number]) => void;
 }
 
 export default function MapView({
@@ -29,6 +31,7 @@ export default function MapView({
   route,
   routeLoading = false,
   onViewStateChange,
+  onGeolocate,
 }: MapViewProps) {
   const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
 
@@ -42,7 +45,15 @@ export default function MapView({
   });
 
   const mapRef = useRef<any>(null);
+  const geoControlRef = useRef<any>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+
+  const handleGeolocate = (event: any) => {
+    const { coords } = event;
+    if (onGeolocate && coords) {
+      onGeolocate([coords.longitude, coords.latitude]);
+    }
+  };
 
   useEffect(() => {
     if (!mapRef.current || !locations || !mapLoaded) return;
@@ -170,6 +181,14 @@ export default function MapView({
       reuseMaps
       attributionControl={false}
     >
+      <GeolocateControl
+        ref={geoControlRef}
+        onGeolocate={handleGeolocate}
+        positionOptions={{ enableHighAccuracy: true }}
+        trackUserLocation={false}
+        showUserHeading={true}
+      />
+
       {routeGeoJSON && (
         <Source id="route" type="geojson" data={routeGeoJSON}>
           <Layer
@@ -192,7 +211,7 @@ export default function MapView({
             type="line"
             beforeId="location-shadows"
             paint={{
-              'line-color': '#000',
+              'line-color': '#349dff',
               'line-offset': 0,
               'line-width': 4,
             }}
@@ -218,7 +237,7 @@ export default function MapView({
                 10,
                 8,
               ],
-              'circle-color': '#000000',
+              'circle-color': '#2290f7',
               'circle-opacity': 0.2,
               'circle-translate': [2, 2],
             }}
@@ -238,13 +257,13 @@ export default function MapView({
               'circle-color': [
                 'case',
                 ['==', ['get', 'type'], 'start'],
-                '#fff',
+                '#2290f7',
                 ['==', ['get', 'type'], 'end'],
-                '#ef4458',
-                '#fff',
+                '#17e06b',
+                '#17e06b',
               ],
-              'circle-stroke-width': 1,
-              'circle-stroke-color': '#000',
+              'circle-stroke-width': 2,
+              'circle-stroke-color': '#fff',
             }}
           />
           <Layer
