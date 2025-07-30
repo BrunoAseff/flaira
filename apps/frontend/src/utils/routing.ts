@@ -77,10 +77,3 @@ export const isRouteWithinLimits = (
   const maxDistance = getMaxDistanceForProfile(profile);
   return distance <= maxDistance;
 };
-
-export const formatDistance = (meters: number): string => {
-  if (meters < 1000) {
-    return `${Math.round(meters)}m`;
-  }
-  return `${Math.round(meters / 1000)}km`;
-};
