@@ -121,16 +121,17 @@ export default function Route() {
 
         <div className="w-full md:w-[60%] flex flex-col mx-2 mt-2">
           <div className="flex-1 rounded-xl p-2 hidden md:flex justify-start min-h-0">
-            <MapView
-              containerStyle={{
-                borderRadius: '16px',
-                width: '100%',
-                height: '100%',
-              }}
-              locations={locations}
-              route={route}
-              routeLoading={routeLoading}
-            />
+            <div className="w-full h-full rounded-xl overflow-hidden shadow-md">
+              <MapView
+                containerStyle={{
+                  width: '100%',
+                  height: '100%',
+                }}
+                locations={locations}
+                route={route}
+                routeLoading={routeLoading}
+              />
+            </div>
           </div>
 
           <RouteStats route={route} />

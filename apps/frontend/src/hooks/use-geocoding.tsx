@@ -5,7 +5,15 @@ interface GeocodingResult {
   place_name: string;
   center: [number, number];
   place_type: string[];
-  address?: string;
+  properties: {
+    address?: string;
+    category?: string;
+  };
+  context?: Array<{
+    id: string;
+    text: string;
+    short_code?: string;
+  }>;
 }
 
 export function useGeocoding() {
@@ -28,13 +36,12 @@ export function useGeocoding() {
 
     try {
       const response = await fetch(
-        `https://api.maptiler.com/geocoding/${encodeURIComponent(query)}.json?` +
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?` +
           new URLSearchParams({
-            key: process.env.NEXT_PUBLIC_MAPTILER_KEY!,
+            access_token: process.env.NEXT_PUBLIC_MAPBOX_KEY!,
             autocomplete: 'true',
             limit: '5',
-            types:
-              'country,region,postal_code,municipality,locality,neighbourhood,place,address,poi',
+            types: 'country,region,postcode,district,place,locality,neighborhood,address,poi',
           }),
         { signal: abortController.current.signal }
       );
