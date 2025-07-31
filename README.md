@@ -4,8 +4,6 @@ This is a **travel tracking platform**, where users can log and explore their tr
 
 ⚙️ **Overengineered on purpose** — I'm using this project to learn DevOps, AWS, backend, and infrastructure. Expect way more complexity than necessary.
 
-## What will it do in the future
-
 - Track trips.
 - Store photos, videos, notes, and memories.
 - Show trips on an interactive map.
