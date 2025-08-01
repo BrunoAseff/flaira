@@ -173,7 +173,7 @@ export function DeleteAccountDialog({
           <form.Field
             name="understandRisks"
             children={(field) => (
-              <div className="flex items-start gap-3 mb-4 p-3 bg-destructive/10 rounded-lg border border-destructive/20">
+              <div className="flex items-start gap-3 my-3 p-3 bg-destructive/10 rounded-lg border border-destructive/20">
                 <Checkbox
                   variant="destructive"
                   id="understand-checkbox"
