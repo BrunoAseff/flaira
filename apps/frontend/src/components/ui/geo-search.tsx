@@ -15,6 +15,13 @@ interface GeoSearchInputProps {
   className?: string;
 }
 
+interface GeocodingResult {
+  id: string;
+  place_name: string;
+  center: [number, number];
+  place_type?: string[];
+}
+
 export const GeoSearchInput = forwardRef<HTMLInputElement, GeoSearchInputProps>(
   ({ placeholder, value, onChange, onLocationSelect, className }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -122,7 +129,7 @@ export const GeoSearchInput = forwardRef<HTMLInputElement, GeoSearchInputProps>(
       }
     };
 
-    const handleSelect = (result: any) => {
+    const handleSelect = (result: GeocodingResult) => {
       const location: Location = {
         id: result.id,
         name: result.place_name,
