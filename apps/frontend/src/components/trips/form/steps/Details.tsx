@@ -1,4 +1,4 @@
-import FileInput from '@/components/file-input';
+import FileInput from '@/components/ui/file-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import RangeDatePicker from '@/components/ui/RangeDatePicker';

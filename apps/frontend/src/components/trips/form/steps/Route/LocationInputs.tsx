@@ -1,6 +1,6 @@
 'use client';
 
-import { AutocompleteInput } from '@/components/autocompleteInput';
+import { GeoSearchInput } from '@/components/ui/geo-search';
 import { Button } from '@/components/ui/button';
 import {
   Cancel01Icon,
@@ -44,7 +44,7 @@ export default function LocationInputs({
         size={28}
         className="min-w-[18px] rounded-full"
       />
-      <AutocompleteInput
+      <GeoSearchInput
         placeholder={placeholder}
         value={inputValues[key] || ''}
         onChange={(value) => onInputChange(key, value)}
