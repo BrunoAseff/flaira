@@ -194,7 +194,6 @@ export default function MapView({
           <Layer
             id="route-line-shadow"
             type="line"
-            beforeId="location-shadows"
             paint={{
               'line-color': '#000000',
               'line-width': 8,
@@ -209,7 +208,6 @@ export default function MapView({
           <Layer
             id="route-line"
             type="line"
-            beforeId="location-shadows"
             paint={{
               'line-color': '#349dff',
               'line-offset': 0,
@@ -226,7 +224,6 @@ export default function MapView({
       {locationsGeoJSON && (
         <Source id="locations" type="geojson" data={locationsGeoJSON}>
           <Layer
-            id="location-shadows"
             type="circle"
             paint={{
               'circle-radius': [
