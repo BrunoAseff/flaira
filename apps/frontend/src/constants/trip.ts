@@ -66,7 +66,7 @@ export const TRIP_FORM_STEPS = [
   },
   {
     title: 'Travelers',
-    description: 'Add people who joined you — it’s optional.',
+    description: 'Add people who joined you — it\u2019s optional.',
     step: 3,
   },
   {
