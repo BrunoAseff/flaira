@@ -11,16 +11,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  ViewIcon,
-  PencilEdit02Icon,
-  UserIcon,
   Add01Icon,
   Cancel01Icon,
-  CrownIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { auth } from '@/auth/client';
 import { AnimatedList } from '@/components/ui/AnimatedList';
+import { TRAVELER_ROLE_OPTIONS } from '@/constants/trip';
 
 interface Traveler {
   id: number;
@@ -33,34 +30,7 @@ export default function TravelersForm() {
 
   const [travelers, setTravelers] = useState<Traveler[]>([]);
 
-  const roleOptions = [
-    {
-      value: 'owner',
-      label: 'Owner',
-      icon: CrownIcon,
-      description: 'Trip owner with full control',
-    },
-    {
-      value: 'viewer',
-      label: 'Viewer',
-      icon: ViewIcon,
-      description: 'Can view trip details',
-    },
-    {
-      value: 'editor',
-      label: 'Editor',
-      icon: PencilEdit02Icon,
-      description: 'Can edit trip details',
-    },
-    {
-      value: 'admin',
-      label: 'Admin',
-      icon: UserIcon,
-      description: 'Full access and control',
-    },
-  ];
-
-  const travelerRoleOptions = roleOptions.filter(
+  const travelerRoleOptions = TRAVELER_ROLE_OPTIONS.filter(
     (role) => role.value !== 'owner'
   );
 
@@ -104,7 +74,7 @@ export default function TravelersForm() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {roleOptions.map(({ value, label, icon, description }) => (
+                {TRAVELER_ROLE_OPTIONS.map(({ value, label, icon, description }) => (
                   <SelectItem key={value} value={value}>
                     <div className="flex flex-col">
                       <div className="flex items-center gap-2">
