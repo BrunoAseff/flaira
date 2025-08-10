@@ -12,7 +12,6 @@ interface TransportModeSelectorProps {
 export default function TransportModeSelector({
   onTransportModeChange,
 }: TransportModeSelectorProps) {
-
   return (
     <div className="flex flex-col gap-3 pt-4">
       <Label className="text-base">Transportation</Label>

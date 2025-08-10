@@ -10,10 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Add01Icon,
-  Cancel01Icon,
-} from '@hugeicons/core-free-icons';
+import { Add01Icon, Cancel01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { auth } from '@/auth/client';
 import { AnimatedList } from '@/components/ui/AnimatedList';
@@ -74,19 +71,21 @@ export default function TravelersForm() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {TRAVELER_ROLE_OPTIONS.map(({ value, label, icon, description }) => (
-                  <SelectItem key={value} value={value}>
-                    <div className="flex flex-col">
-                      <div className="flex items-center gap-2">
-                        <HugeiconsIcon icon={icon} size={14} />
-                        <span>{label}</span>
+                {TRAVELER_ROLE_OPTIONS.map(
+                  ({ value, label, icon, description }) => (
+                    <SelectItem key={value} value={value}>
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-2">
+                          <HugeiconsIcon icon={icon} size={14} />
+                          <span>{label}</span>
+                        </div>
+                        <span className="text-xs text-foreground/60">
+                          {description}
+                        </span>
                       </div>
-                      <span className="text-xs text-foreground/60">
-                        {description}
-                      </span>
-                    </div>
-                  </SelectItem>
-                ))}
+                    </SelectItem>
+                  )
+                )}
               </SelectContent>
             </Select>
           </div>
