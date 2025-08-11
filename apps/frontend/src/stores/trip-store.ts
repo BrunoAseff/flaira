@@ -1,28 +1,18 @@
 import { create } from 'zustand';
-import type { Location, Route } from '@/types/route';
+import type { Location } from '@/types/route';
 import type { TripForm } from '@/types/trip';
 
 interface TripStoreActions {
-  setCurrentStep: (step: number) => void;
-
   setTitle: (title: string) => void;
   setDescription: (description: string) => void;
   setStartDate: (date: Date | null) => void;
   setEndDate: (date: Date | null) => void;
-  setMemories: (memories: File[]) => void;
-
   setHasTripFinished: (finished: boolean) => void;
   setStops: (stops: Array<{ id: number }>) => void;
   setTransportMode: (mode: string) => void;
   setLocations: (locations: Location[]) => void;
-  setInputValues: (values: Record<string, string>) => void;
-  setShowGeoModal: (show: boolean) => void;
-  setGeoCoordinates: (coords: [number, number] | null) => void;
-  setRoute: (route: Route | null) => void;
-  setRouteLoading: (loading: boolean) => void;
-
   setTravelers: (
-    travelers: Array<{ id: number; email: string; role: string }>
+    users: Array<{ id: number; email: string; role: string }>
   ) => void;
 
   resetTrip: () => void;
@@ -31,28 +21,21 @@ interface TripStoreActions {
 type TripStore = TripForm & TripStoreActions;
 
 export const useTripStore = create<TripStore>((set) => ({
-  currentStep: 1,
   details: {
     title: '',
     description: '',
     startDate: null,
     endDate: null,
-    memories: [],
+    hasTripFinished: false,
   },
   route: {
-    hasTripFinished: false,
-    stops: [],
     transportMode: 'car',
     locations: [],
-    inputValues: { start: '', end: '' },
-    showGeoModal: false,
-    geoCoordinates: null,
-    route: null,
-    routeLoading: false,
+    stops: [],
   },
-  travelers: { travelers: [] },
-
-  setCurrentStep: (currentStep) => set({ currentStep }),
+  travelers: {
+    users: [],
+  },
 
   setTitle: (title) =>
     set((state) => ({
@@ -69,10 +52,6 @@ export const useTripStore = create<TripStore>((set) => ({
   setEndDate: (endDate) =>
     set((state) => ({
       details: { ...state.details, endDate },
-    })),
-  setMemories: (memories) =>
-    set((state) => ({
-      details: { ...state.details, memories },
     })),
 
   setHasTripFinished: (hasTripFinished) =>
@@ -91,26 +70,6 @@ export const useTripStore = create<TripStore>((set) => ({
     set((state) => ({
       route: { ...state.route, locations },
     })),
-  setInputValues: (inputValues) =>
-    set((state) => ({
-      route: { ...state.route, inputValues },
-    })),
-  setShowGeoModal: (showGeoModal) =>
-    set((state) => ({
-      route: { ...state.route, showGeoModal },
-    })),
-  setGeoCoordinates: (geoCoordinates) =>
-    set((state) => ({
-      route: { ...state.route, geoCoordinates },
-    })),
-  setRoute: (route) =>
-    set((state) => ({
-      route: { ...state.route, route },
-    })),
-  setRouteLoading: (routeLoading) =>
-    set((state) => ({
-      route: { ...state.route, routeLoading },
-    })),
 
   setTravelers: (travelers) =>
     set((state) => ({
@@ -119,25 +78,18 @@ export const useTripStore = create<TripStore>((set) => ({
 
   resetTrip: () =>
     set({
-      currentStep: 1,
       details: {
         title: '',
         description: '',
         startDate: null,
         endDate: null,
-        memories: [],
+        hasTripFinished: false,
       },
       route: {
-        hasTripFinished: false,
         stops: [],
         transportMode: 'car',
         locations: [],
-        inputValues: { start: '', end: '' },
-        showGeoModal: false,
-        geoCoordinates: null,
-        route: null,
-        routeLoading: false,
       },
-      travelers: { travelers: [] },
+      travelers: { users: [] },
     }),
 }));
