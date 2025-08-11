@@ -28,7 +28,7 @@ function Step({
       )}
     >
       {isCurrent ? (
-        <div className="size-4 bg-white rounded-full" />
+        <div className="size-3 bg-white rounded-full" />
       ) : (
         <HugeiconsIcon
           className="size-6"
