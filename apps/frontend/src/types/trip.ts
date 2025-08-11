@@ -1,32 +1,40 @@
-import type { Location, Route } from './route';
+import type { Location } from './route';
+
+interface TripStoreActions {
+  setTitle: (title: string) => void;
+  setDescription: (description: string) => void;
+  setStartDate: (date: Date | null) => void;
+  setEndDate: (date: Date | null) => void;
+  setHasTripFinished: (finished: boolean) => void;
+  setStops: (stops: Array<{ id: number }>) => void;
+  setTransportMode: (mode: string) => void;
+  setLocations: (locations: Location[]) => void;
+  setTravelers: (
+    users: Array<{ id: number; email: string; role: string }>
+  ) => void;
+}
 
 export interface TripDetails {
   title: string;
   description: string;
   startDate: Date | null;
   endDate: Date | null;
-  memories: File[];
+  hasTripFinished: boolean;
 }
 
 export interface TripRoute {
-  hasTripFinished: boolean;
   stops: Array<{ id: number }>;
   transportMode: string;
   locations: Location[];
-  inputValues: Record<string, string>;
-  showGeoModal: boolean;
-  geoCoordinates: [number, number] | null;
-  route: Route | null;
-  routeLoading: boolean;
 }
 
 export interface TripTravelers {
-  travelers: Array<{ id: number; email: string; role: string }>;
+  users: Array<{ id: number; email: string; role: string }>;
 }
 
 export interface TripForm {
-  currentStep: number;
   details: TripDetails;
   route: TripRoute;
   travelers: TripTravelers;
+  actions: TripStoreActions;
 }

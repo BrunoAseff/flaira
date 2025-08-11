@@ -1,8 +1,8 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useId } from 'react';
 import { format } from 'date-fns';
-import { DateRange } from 'react-day-picker';
+import type { DateRange } from 'react-day-picker';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -16,39 +16,58 @@ import { Calendar03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { X } from 'lucide-react';
 
-export default function RangeDatePicker() {
-  const id = useId();
-  const [date, setDate] = useState<DateRange | undefined>();
+interface RangeDatePickerProps {
+  value?: DateRange;
+  onValueChange?: (date: DateRange | undefined) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
+}
 
-  const handleClear = () => {
-    setDate(undefined);
+export default function RangeDatePicker({
+  value,
+  onValueChange,
+  placeholder = 'Pick a date range',
+  disabled = false,
+  className,
+}: RangeDatePickerProps) {
+  const id = useId();
+
+  const handleDateSelect = (selectedDate: DateRange | undefined) => {
+    onValueChange?.(selectedDate);
+  };
+
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onValueChange?.(undefined);
   };
 
   return (
-    <div>
+    <div className={className}>
       <div className="*:not-first:mt-2">
         <Popover>
           <PopoverTrigger asChild>
             <Button
               id={id}
               variant="ghost"
-              className="group bg-muted border border-accent w-full hover:bg-muted justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px] relative shadow-xs"
+              disabled={disabled}
+              className="group bg-muted border border-accent w-full hover:bg-muted justify-between px-3 font-normal outline-offset-0 outline-none focus-visible:outline-[3px] relative shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span className={cn('truncate', !date && 'text-foreground/60')}>
-                {date?.from ? (
-                  date.to ? (
+              <span className={cn('truncate', !value && 'text-foreground/60')}>
+                {value?.from ? (
+                  value.to ? (
                     <>
-                      {format(date.from, 'dd/MM/yyyy')} -{' '}
-                      {format(date.to, 'dd/MM/yyyy')}
+                      {format(value.from, 'dd/MM/yyyy')} -{' '}
+                      {format(value.to, 'dd/MM/yyyy')}
                     </>
                   ) : (
-                    format(date.from, 'dd/MM/yyyy')
+                    format(value.from, 'dd/MM/yyyy')
                   )
                 ) : (
-                  'Pick a date range'
+                  placeholder
                 )}
               </span>
-              {date && (
+              {value && !disabled && (
                 <div
                   onClick={handleClear}
                   className="absolute flex items-center justify-center size-6 text-foreground/30 hover:text-foreground cursor-pointer rounded-sm hover:bg-popover-foreground/10 right-13 transition-all"
@@ -69,7 +88,12 @@ export default function RangeDatePicker() {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-2" align="start">
-            <Calendar mode="range" selected={date} onSelect={setDate} />
+            <Calendar
+              mode="range"
+              selected={value}
+              onSelect={handleDateSelect}
+              disabled={disabled}
+            />
           </PopoverContent>
         </Popover>
       </div>
