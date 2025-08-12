@@ -7,20 +7,24 @@ import { Textarea } from '@/components/ui/textarea';
 import { useDetails, useTripActions } from '@/stores/trip-store';
 import { Tag01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useMemo } from 'react';
 import { DateRange } from 'react-day-picker';
 
 export default function Details() {
   const details = useDetails();
   const actions = useTripActions();
 
-  const dateRange: DateRange | undefined = {
-    from: details.startDate || undefined,
-    to: details.endDate || undefined,
-  };
+  const dateRange = useMemo<DateRange | undefined>(() => {
+    const from = details.startDate ?? undefined;
+    const to = details.endDate ?? undefined;
+    return from || to ? { from, to } : undefined;
+  }, [details.startDate, details.endDate]);
 
   const handleDateRangeChange = (range: DateRange | undefined) => {
-    actions.setStartDate(range?.from || null);
-    actions.setEndDate(range?.to || null);
+    const from = range?.from ?? null;
+    const to = range?.to ?? null;
+    if (details.startDate !== from) actions.setStartDate(from);
+    if (details.endDate !== to) actions.setEndDate(to);
   };
 
   const handleTripStatusChange = (checked: boolean) => {

@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import FormHeader from './FormHeader';
 import Travelers from './steps/Travelers';
 import Details from './steps/Details';
@@ -20,16 +20,26 @@ export default function AddTripForm() {
   const handleNext = useCallback(() => {
     if (currentStep < totalSteps) {
       api?.scrollNext();
-      setCurrentStep((prev) => prev + 1);
     }
   }, [api, currentStep, totalSteps]);
 
   const handlePrevious = useCallback(() => {
     if (currentStep > 1) {
       api?.scrollPrev();
-      setCurrentStep((prev) => prev - 1);
     }
   }, [api, currentStep]);
+
+  useEffect(() => {
+    if (!api) return;
+    const update = () => setCurrentStep(api.selectedScrollSnap() + 1);
+    update();
+    api.on('select', update);
+    api.on('reInit', update);
+    return () => {
+      api.off('select', update);
+      api.off('reInit', update);
+    };
+  }, [api]);
 
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === totalSteps;
