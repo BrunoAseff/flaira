@@ -32,15 +32,12 @@ export default function Route() {
   } = useRouting();
 
   const handleAddStop = () => {
-    actions.setStops([...route.stops, { id: Date.now() }]);
+    actions.addStop();
   };
 
   const handleRemoveStop = (id: number) => {
-    actions.setStops(route.stops.filter((stop) => stop.id !== id));
+    actions.removeStop(id);
 
-    actions.setLocations(
-      route.locations.filter((loc) => !loc.id.includes(`stop-${id}`))
-    );
     setInputValues((prev) => {
       const newValues = { ...prev };
       delete newValues[`stop-${id}`];
@@ -89,25 +86,34 @@ export default function Route() {
       return;
     }
 
+    const order = ['start', ...route.stops.map((s) => `stop-${s.id}`), 'end'];
+
     const validLocations = route.locations.filter(
-      (loc) => loc.coordinates && loc.coordinates.length === 2
+      (loc) =>
+        loc &&
+        loc.id &&
+        order.includes(loc.id) &&
+        loc.coordinates &&
+        loc.coordinates.length === 2
     );
 
     if (validLocations.length >= 2) {
-      const sortedLocations = [...validLocations].sort((a, b) => {
-        const order = [
-          'start',
-          ...route.stops.map((s) => `stop-${s.id}`),
-          'end',
-        ];
-        return order.indexOf(a.id) - order.indexOf(b.id);
-      });
+      const sortedLocations = [...validLocations].sort(
+        (a, b) => order.indexOf(a.id!) - order.indexOf(b.id!)
+      );
 
       calculateRoute(sortedLocations, route.transportMode);
     } else {
       clearRoute();
     }
-  }, [route.locations, route.transportMode, route.stops, isMobile, clearRoute]);
+  }, [
+    route.locations,
+    route.transportMode,
+    route.stops,
+    isMobile,
+    clearRoute,
+    calculateRoute,
+  ]);
 
   return (
     <TooltipProvider>

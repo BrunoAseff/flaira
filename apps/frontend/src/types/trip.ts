@@ -6,7 +6,8 @@ interface TripStoreActions {
   setStartDate: (date: Date | null) => void;
   setEndDate: (date: Date | null) => void;
   setHasTripFinished: (finished: boolean) => void;
-  setStops: (stops: Array<{ id: number }>) => void;
+  addStop: () => void;
+  removeStop: (id: number) => void;
   setTransportMode: (mode: string) => void;
   setLocations: (locations: Location[]) => void;
   setTravelers: (
@@ -37,4 +38,5 @@ export interface TripForm {
   route: TripRoute;
   travelers: TripTravelers;
   actions: TripStoreActions;
+  stopIdCounter: number;
 }
