@@ -1,11 +1,10 @@
 'use client';
 
 import MapView from '@/components/map/MapView';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { useRouting } from '@/hooks/use-routing';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useRoute, useTripActions } from '@/stores/trip-store';
 import { useEffect, useState } from 'react';
 import type { Location } from '@/types/route';
 import LocationInputs from './LocationInputs';
@@ -14,10 +13,8 @@ import RouteStats from './RouteStats';
 import CurrentLocationDialog from './CurrentLocationDialog';
 
 export default function Route() {
-  const [hasTripFinished, setHasTripFinished] = useState(false);
-  const [stops, setStops] = useState<{ id: number }[]>([]);
-  const [transportMode, setTransportMode] = useState<string>('car');
-  const [locations, setLocations] = useState<Location[]>([]);
+  const route = useRoute();
+  const actions = useTripActions();
   const [inputValues, setInputValues] = useState<Record<string, string>>({
     start: '',
     end: '',
@@ -26,29 +23,21 @@ export default function Route() {
   const [geoCoordinates, setGeoCoordinates] = useState<[number, number] | null>(
     null
   );
-
   const isMobile = useIsMobile();
   const {
-    route,
+    route: routeData,
     loading: routeLoading,
     calculateRoute,
     clearRoute,
   } = useRouting();
 
-  const handleTripStatusChange = (checked: boolean) => {
-    setHasTripFinished(!checked);
-  };
-
   const handleAddStop = () => {
-    setStops((prev) => [...prev, { id: Date.now() }]);
+    actions.addStop();
   };
 
   const handleRemoveStop = (id: number) => {
-    setStops((prev) => prev.filter((stop) => stop.id !== id));
+    actions.removeStop(id);
 
-    setLocations((prev) =>
-      prev.filter((loc) => !loc.id.includes(`stop-${id}`))
-    );
     setInputValues((prev) => {
       const newValues = { ...prev };
       delete newValues[`stop-${id}`];
@@ -59,17 +48,15 @@ export default function Route() {
   const handleLocationSelect = (key: string, location: Location) => {
     const updatedLocation = { ...location, id: key };
 
-    setLocations((prev) => {
-      const filtered = prev.filter((loc) => loc.id !== key);
-      return [...filtered, updatedLocation];
-    });
+    const filtered = route.locations.filter((loc) => loc.id !== key);
+    actions.setLocations([...filtered, updatedLocation]);
   };
 
   const handleInputChange = (key: string, value: string) => {
     setInputValues((prev) => ({ ...prev, [key]: value }));
 
     if (!value.trim()) {
-      setLocations((prev) => prev.filter((loc) => loc.id !== key));
+      actions.setLocations(route.locations.filter((loc) => loc.id !== key));
     }
   };
 
@@ -82,10 +69,8 @@ export default function Route() {
     locationType: 'start' | 'end',
     location: Location
   ) => {
-    setLocations((prev) => {
-      const filtered = prev.filter((loc) => loc.id !== locationType);
-      return [...filtered, location];
-    });
+    const filtered = route.locations.filter((loc) => loc.id !== locationType);
+    actions.setLocations([...filtered, location]);
 
     setInputValues((prev) => ({
       ...prev,
@@ -101,28 +86,41 @@ export default function Route() {
       return;
     }
 
-    const validLocations = locations.filter(
-      (loc) => loc.coordinates && loc.coordinates.length === 2
+    const order = ['start', ...route.stops.map((s) => `stop-${s.id}`), 'end'];
+
+    const validLocations = route.locations.filter(
+      (loc) =>
+        loc &&
+        loc.id &&
+        order.includes(loc.id) &&
+        loc.coordinates &&
+        loc.coordinates.length === 2
     );
 
     if (validLocations.length >= 2) {
-      const sortedLocations = [...validLocations].sort((a, b) => {
-        const order = ['start', ...stops.map((s) => `stop-${s.id}`), 'end'];
-        return order.indexOf(a.id) - order.indexOf(b.id);
-      });
+      const sortedLocations = [...validLocations].sort(
+        (a, b) => order.indexOf(a.id!) - order.indexOf(b.id!)
+      );
 
-      calculateRoute(sortedLocations, transportMode);
+      calculateRoute(sortedLocations, route.transportMode);
     } else {
       clearRoute();
     }
-  }, [locations, transportMode, stops, isMobile, clearRoute]);
+  }, [
+    route.locations,
+    route.transportMode,
+    route.stops,
+    isMobile,
+    clearRoute,
+    calculateRoute,
+  ]);
 
   return (
     <TooltipProvider>
       <div className="flex flex-col md:flex-row mx-6 h-full">
         <div className="flex flex-col justify-start w-full md:w-[40%] gap-2 max-h-full scrollbar-gutter-stable overflow-y-auto p-1">
           <LocationInputs
-            stops={stops}
+            stops={route.stops}
             inputValues={inputValues}
             onAddStop={handleAddStop}
             onRemoveStop={handleRemoveStop}
@@ -130,18 +128,9 @@ export default function Route() {
             onInputChange={handleInputChange}
           />
 
-          <div className="flex flex-col gap-1 w-full px-1">
-            <div className="flex items-center space-x-2 mt-2">
-              <Checkbox
-                id="current-trip"
-                checked={!hasTripFinished}
-                onCheckedChange={handleTripStatusChange}
-              />
-              <Label htmlFor="current-trip">I am still on this trip.</Label>
-            </div>
-          </div>
-
-          <TransportModeSelector onTransportModeChange={setTransportMode} />
+          <TransportModeSelector
+            onTransportModeChange={actions.setTransportMode}
+          />
 
           <div className="flex-1" />
         </div>
@@ -154,15 +143,15 @@ export default function Route() {
                   width: '100%',
                   height: '100%',
                 }}
-                locations={locations}
-                route={route}
+                locations={route.locations}
+                route={routeData}
                 routeLoading={routeLoading}
                 onGeolocate={handleGeolocate}
               />
             </div>
           </div>
 
-          <RouteStats route={route} />
+          <RouteStats route={routeData} />
         </div>
       </div>
 
