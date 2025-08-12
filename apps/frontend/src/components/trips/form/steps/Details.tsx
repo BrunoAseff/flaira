@@ -1,3 +1,4 @@
+import { Checkbox } from '@/components/ui/checkbox';
 import FileInput from '@/components/ui/file-input';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,6 +21,10 @@ export default function Details() {
   const handleDateRangeChange = (range: DateRange | undefined) => {
     actions.setStartDate(range?.from || null);
     actions.setEndDate(range?.to || null);
+  };
+
+  const handleTripStatusChange = (checked: boolean) => {
+    actions.setHasTripFinished(!checked);
   };
 
   return (
@@ -50,6 +55,17 @@ export default function Details() {
             onValueChange={handleDateRangeChange}
             placeholder="Select trip dates"
           />
+        </div>
+
+        <div className="flex flex-col gap-1 w-full px-1">
+          <div className="flex items-center space-x-2 mt-2">
+            <Checkbox
+              id="current-trip"
+              checked={!details.hasTripFinished}
+              onCheckedChange={handleTripStatusChange}
+            />
+            <Label htmlFor="current-trip">I am still on this trip.</Label>
+          </div>
         </div>
       </div>
       <div className="flex flex-col w-full md:w-[60%] gap-1 h-full">
