@@ -14,6 +14,11 @@ export default function Details() {
   const details = useDetails();
   const actions = useTripActions();
 
+  const isCurrentTrip = useMemo(
+    () => !details.hasTripFinished,
+    [details.hasTripFinished]
+  );
+
   const dateRange = useMemo<DateRange | undefined>(() => {
     const from = details.startDate ?? undefined;
     const to = details.endDate ?? undefined;
@@ -65,7 +70,7 @@ export default function Details() {
           <div className="flex items-center space-x-2 mt-2">
             <Checkbox
               id="current-trip"
-              checked={!details.hasTripFinished}
+              checked={isCurrentTrip}
               onCheckedChange={handleTripStatusChange}
             />
             <Label htmlFor="current-trip">I am still on this trip.</Label>

@@ -4,6 +4,7 @@ import type { TripForm } from '@/types/trip';
 type TripStore = TripForm;
 
 const useTripStore = create<TripStore>((set) => ({
+  stopIdCounter: 0,
   details: {
     title: '',
     description: '',
@@ -41,10 +42,29 @@ const useTripStore = create<TripStore>((set) => ({
         details: { ...state.details, hasTripFinished },
       })),
 
-    setStops: (stops) =>
+    addStop: () =>
+      set((state) => {
+        const newId = state.stopIdCounter;
+        return {
+          route: {
+            ...state.route,
+            stops: [...state.route.stops, { id: newId }],
+          },
+          stopIdCounter: state.stopIdCounter + 1,
+        };
+      }),
+
+    removeStop: (id: number) =>
       set((state) => ({
-        route: { ...state.route, stops },
+        route: {
+          ...state.route,
+          stops: state.route.stops.filter((stop) => stop.id !== id),
+          locations: state.route.locations.filter(
+            (loc) => loc.id !== `stop-${id}`
+          ),
+        },
       })),
+
     setTransportMode: (transportMode) =>
       set((state) => ({
         route: { ...state.route, transportMode },
