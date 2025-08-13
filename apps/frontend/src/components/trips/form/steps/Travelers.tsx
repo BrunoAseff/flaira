@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -15,41 +14,36 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { auth } from '@/auth/client';
 import { AnimatedList } from '@/components/ui/AnimatedList';
 import { TRAVELER_ROLE_OPTIONS } from '@/constants/trip';
-
-interface Traveler {
-  id: number;
-  email: string;
-  role: string;
-}
+import { useTravelers, useTripActions } from '@/stores/trip-store';
 
 export default function TravelersForm() {
   const { data: session } = auth.useSession();
-
-  const [travelers, setTravelers] = useState<Traveler[]>([]);
+  const travelers = useTravelers();
+  const actions = useTripActions();
 
   const travelerRoleOptions = TRAVELER_ROLE_OPTIONS.filter(
     (role) => role.value !== 'owner'
   );
 
   const handleAddTraveler = () => {
-    setTravelers((prev) => [
-      ...prev,
-      { id: Date.now(), email: '', role: 'viewer' },
-    ]);
+    const newTraveler = { id: Date.now(), email: '', role: 'viewer' };
+    actions.setTravelers([...travelers.users, newTraveler]);
   };
 
   const handleRemoveTraveler = (id: number) => {
-    setTravelers((prev) => prev.filter((t) => t.id !== id));
+    actions.setTravelers(travelers.users.filter((t) => t.id !== id));
   };
 
   const handleEmailChange = (id: number, email: string) => {
-    setTravelers((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, email } : t))
+    actions.setTravelers(
+      travelers.users.map((t) => (t.id === id ? { ...t, email } : t))
     );
   };
 
   const handleRoleChange = (id: number, role: string) => {
-    setTravelers((prev) => prev.map((t) => (t.id === id ? { ...t, role } : t)));
+    actions.setTravelers(
+      travelers.users.map((t) => (t.id === id ? { ...t, role } : t))
+    );
   };
 
   return (
@@ -93,7 +87,7 @@ export default function TravelersForm() {
       </div>
 
       <AnimatedList marginOffset={24} gap="gap-6">
-        {travelers.map((traveler, index) => (
+        {travelers.users.map((traveler, index) => (
           <div
             key={traveler.id}
             className="border border-accent relative rounded-xl p-4 w-full bg-muted/10"
