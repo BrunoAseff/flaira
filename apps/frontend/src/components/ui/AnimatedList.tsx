@@ -26,7 +26,7 @@ export function AnimatedList({
   return (
     <div
       style={{ maxHeight: currentMaxHeight }}
-      className="w-full overflow-hidden transition-[max-height] duration-500 ease-in-out"
+      className="w-full overflow-hidden transition-[max-height] duration-500 ease-in-out pb-1"
     >
       <div ref={contentWrapperRef} className={`flex flex-col ${gap}`}>
         {children}

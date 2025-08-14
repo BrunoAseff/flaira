@@ -65,7 +65,7 @@ export default function LocationInputs({
   );
 
   return (
-    <div className="flex flex-col gap-1 pt-5">
+    <div className="flex flex-col gap-2 pt-5">
       {renderInputRow(Location01Icon, 'Start location', 'start')}
 
       <AnimatedList marginOffset={16} gap="gap-3">
