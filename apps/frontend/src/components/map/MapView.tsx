@@ -7,7 +7,7 @@ import {
   type ViewState,
   GeolocateControl,
 } from 'react-map-gl/mapbox';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { CSSProperties } from 'react';
 import type { Location, Route } from '../../types/route';
@@ -54,6 +54,14 @@ export default function MapView({
       onGeolocate([coords.longitude, coords.latitude]);
     }
   };
+
+  useLayoutEffect(() => {
+    if (!mapRef.current || !mapLoaded) return;
+
+    const map = mapRef.current.getMap();
+
+    map.resize();
+  }, [mapLoaded, containerStyle]);
 
   useEffect(() => {
     if (!mapRef.current || !locations || !mapLoaded) return;
