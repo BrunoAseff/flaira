@@ -82,8 +82,7 @@ const useTripStore = create<TripStore>((set) => ({
       })),
 
     setImages: (images) =>
-      set((state) => ({
-        ...state,
+      set(() => ({
         images,
       })),
   },
