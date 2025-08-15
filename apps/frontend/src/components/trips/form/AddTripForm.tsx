@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import FormHeader from './FormHeader';
 import Travelers from './steps/Travelers';
 import Details from './steps/Details';
