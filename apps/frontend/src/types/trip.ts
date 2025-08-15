@@ -1,4 +1,5 @@
 import type { Location } from './route';
+import type { FileWithPreview } from '@/hooks/use-file-upload';
 
 interface TripStoreActions {
   setTitle: (title: string) => void;
@@ -13,6 +14,7 @@ interface TripStoreActions {
   setTravelers: (
     users: Array<{ id: number; email: string; role: string }>
   ) => void;
+  setImages: (images: FileWithPreview[]) => void;
 }
 
 export interface TripDetails {
@@ -37,6 +39,7 @@ export interface TripForm {
   details: TripDetails;
   route: TripRoute;
   travelers: TripTravelers;
+  images: FileWithPreview[];
   actions: TripStoreActions;
   stopIdCounter: number;
 }

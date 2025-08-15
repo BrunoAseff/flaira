@@ -1,16 +1,19 @@
 'use client';
 
-import { AlertCircleIcon, ImageIcon, UploadIcon, XIcon } from 'lucide-react';
+import { AlertCircleIcon, UploadIcon, XIcon } from 'lucide-react';
 
 import { useFileUpload } from '@/hooks/use-file-upload';
 import { Button } from '@/components/ui/button';
 import { ImageUploadIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { useTripActions } from '@/stores/trip-store';
 
 export default function FileInput() {
   const maxSizeMB = 5;
   const maxSize = maxSizeMB * 1024 * 1024;
   const maxFiles = 18;
+
+  const actions = useTripActions();
 
   const [
     { files, isDragging, errors },
@@ -28,6 +31,9 @@ export default function FileInput() {
     maxSize,
     multiple: true,
     maxFiles,
+    onFilesChange: (newFiles) => {
+      actions.setImages(newFiles);
+    },
   });
 
   return (
@@ -85,7 +91,7 @@ export default function FileInput() {
                   <Button
                     onClick={() => removeFile(file.id)}
                     size="icon"
-                    className="border-background bg-foreground focus-visible:border-background absolute -top-2 -right-2 size-6 rounded-full border-1 shadow-none"
+                    className="border-background bg-foreground focus-visible:border-background absolute -top-2 -right-2 size-6 rounded-full border shadow-none"
                     aria-label="Remove image"
                   >
                     <XIcon className="size-3.5" />

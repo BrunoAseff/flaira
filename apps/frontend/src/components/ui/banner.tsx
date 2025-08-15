@@ -49,7 +49,7 @@ export function Banner({
     >
       <div
         ref={contentWrapperRef}
-        className={`rounded-xl text-sm md:text-base md:font-semibold p-4 border-1
+        className={`rounded-xl text-sm md:text-base md:font-semibold p-4 border
                     font-medium flex items-center
                     ${variantStyle}`}
       >

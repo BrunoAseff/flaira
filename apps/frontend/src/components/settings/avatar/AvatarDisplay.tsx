@@ -44,7 +44,7 @@ export default function AvatarDisplay({
     <DropdownMenu>
       <DropdownMenuTrigger asChild disabled={isActionPending}>
         <div className="relative group cursor-pointer">
-          <Avatar className="size-24 border-1 border-accent shadow-xl">
+          <Avatar className="size-24 border border-accent shadow-xl">
             {displayImageSrc && (
               <AvatarImage
                 src={displayImageSrc}
