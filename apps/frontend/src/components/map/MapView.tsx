@@ -12,8 +12,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import type { CSSProperties } from 'react';
 import type { Location, Route } from '../../types/route';
 
-const DEFAULT_CONTAINER_STYLE: CSSProperties = { width: '100vw', height: '100vh' };
-
 interface MapViewProps {
   mapStyle?: string;
   containerStyle?: CSSProperties;
@@ -27,7 +25,7 @@ interface MapViewProps {
 
 export default function MapView({
   mapStyle,
-  containerStyle = DEFAULT_CONTAINER_STYLE,
+  containerStyle = { width: '100vw', height: '100vh' },
   initialViewState = { zoom: 1.5, longitude: 0, latitude: 0 },
   locations,
   route,
@@ -59,10 +57,15 @@ export default function MapView({
 
   useLayoutEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
+
     const map = mapRef.current.getMap();
-    const raf = requestAnimationFrame(() => map.resize());
-    return () => cancelAnimationFrame(raf);
-  }, [mapLoaded, containerStyle?.width, containerStyle?.height]);
+
+    const timer = setTimeout(() => {
+      map.resize();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [mapLoaded, containerStyle]);
 
   useEffect(() => {
     if (!mapRef.current || !locations || !mapLoaded) return;
