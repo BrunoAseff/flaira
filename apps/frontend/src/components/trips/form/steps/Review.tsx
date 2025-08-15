@@ -56,7 +56,7 @@ export default function Review() {
   return (
     <div className="flex flex-col gap-6 px-6 md:px-10 py-6 max-h-full overflow-y-auto scrollbar-gutter-stable">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="p-6 bg-muted border-1 border-accent rounded-xl">
+        <div className="p-6 bg-muted border border-accent rounded-xl">
           <div className="flex items-center gap-2 mb-6">
             <HugeiconsIcon icon={CalendarIcon} size={20} />
             <h3 className="text-lg font-semibold">Trip Details</h3>
@@ -112,7 +112,7 @@ export default function Review() {
           </div>
         </div>
 
-        <div className="p-6 bg-muted border-1 border-accent rounded-xl">
+        <div className="p-6 bg-muted border border-accent rounded-xl">
           <div className="flex items-center gap-2 mb-1">
             <HugeiconsIcon icon={ImageIcon} size={20} />
             <h3 className="text-lg font-medium">Memories</h3>
@@ -156,7 +156,7 @@ export default function Review() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="p-6 bg-muted border-1 border-accent rounded-xl">
+        <div className="p-6 bg-muted border border-accent rounded-xl">
           <div className="flex items-center gap-2 mb-6">
             <HugeiconsIcon icon={LocationIcon} size={20} />
             <h3 className="text-lg font-medium">Route</h3>
@@ -228,7 +228,7 @@ export default function Review() {
           )}
         </div>
 
-        <div className="p-6 bg-muted border-1 border-accent rounded-xl">
+        <div className="p-6 bg-muted border border-accent rounded-xl">
           <div className="flex items-center gap-2 mb-4">
             <HugeiconsIcon icon={UserMultiple02Icon} size={20} />
             <h3 className="text-lg font-medium">Travelers</h3>
