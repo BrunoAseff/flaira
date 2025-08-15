@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { TripForm } from '@/types/trip';
+import type { FileWithPreview } from '@/hooks/use-file-upload';
 
 type TripStore = TripForm;
 
@@ -20,6 +21,7 @@ const useTripStore = create<TripStore>((set) => ({
   travelers: {
     users: [],
   },
+  images: [],
   actions: {
     setTitle: (title) =>
       set((state) => ({
@@ -78,10 +80,17 @@ const useTripStore = create<TripStore>((set) => ({
       set((state) => ({
         travelers: { ...state.travelers, users },
       })),
+
+    setImages: (images) =>
+      set((state) => ({
+        ...state,
+        images,
+      })),
   },
 }));
 
 export const useDetails = () => useTripStore((state) => state.details);
 export const useRoute = () => useTripStore((state) => state.route);
 export const useTravelers = () => useTripStore((state) => state.travelers);
+export const useImages = () => useTripStore((state) => state.images);
 export const useTripActions = () => useTripStore((state) => state.actions);
