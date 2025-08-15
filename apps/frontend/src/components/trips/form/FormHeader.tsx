@@ -65,7 +65,8 @@ export default function FormHeader({ currentStep }: { currentStep: number }) {
     },
     {
       title: 'Review',
-      description: 'Double-check everything before saving your trip.',
+      description:
+        'Double-check everything before saving your trip. All information can be edited later.',
       step: 4,
       icon: SearchList01Icon,
     },
