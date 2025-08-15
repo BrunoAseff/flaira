@@ -128,13 +128,13 @@ export default function Review() {
 
                 <div className="max-h-64 overflow-y-auto p-2 scrollbar-gutter-stable">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    {images.slice(0, 6).map((image) => (
+                    {images.map((image) => (
                       <div
                         key={image.id}
                         className="aspect-square rounded-lg overflow-hidden bg-muted"
                       >
                         <img
-                          src={image.preview}
+                          src={image.preview!}
                           alt={
                             typeof image.file === 'object' &&
                             'name' in image.file
@@ -145,24 +145,6 @@ export default function Review() {
                         />
                       </div>
                     ))}
-                    {images.length > 6 &&
-                      images.slice(6).map((image) => (
-                        <div
-                          key={image.id}
-                          className="aspect-square rounded-lg overflow-hidden bg-muted"
-                        >
-                          <img
-                            src={image.preview}
-                            alt={
-                              typeof image.file === 'object' &&
-                              'name' in image.file
-                                ? image.file.name
-                                : 'Trip memory'
-                            }
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
-                          />
-                        </div>
-                      ))}
                   </div>
                 </div>
               </div>
@@ -219,8 +201,15 @@ export default function Review() {
                                 ? 'Start'
                                 : isEnd
                                   ? 'Destination'
-                                  : `Stop ${index}`}
+                                  : `Stop ${
+                                      orderedLocations
+                                        .slice(0, index)
+                                        .filter((loc) =>
+                                          loc.id.startsWith('stop-')
+                                        ).length + 1
+                                    }`}
                             </span>
+
                             <p className="text-sm font-medium text-foreground mt-1">
                               {location.name}
                             </p>
@@ -255,7 +244,7 @@ export default function Review() {
               </div>
               <Badge variant="default">
                 <HugeiconsIcon
-                  icon={getRoleInfo('owner')?.icon as any}
+                  icon={getRoleInfo('owner')!.icon}
                   size={12}
                   className="mr-1"
                 />
