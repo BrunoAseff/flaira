@@ -15,11 +15,14 @@ import { auth } from '@/auth/client';
 import { AnimatedList } from '@/components/ui/AnimatedList';
 import { TRAVELER_ROLE_OPTIONS } from '@/constants/trip';
 import { useTravelers, useTripActions } from '@/stores/trip-store';
+import { emailSchema } from '@/schemas/trip';
+import { useState } from 'react';
 
 export default function TravelersForm() {
   const { data: session } = auth.useSession();
   const travelers = useTravelers();
   const actions = useTripActions();
+  const [emailErrors, setEmailErrors] = useState<Record<number, string>>({});
 
   const travelerRoleOptions = TRAVELER_ROLE_OPTIONS.filter(
     (role) => role.value !== 'owner'
@@ -32,12 +35,39 @@ export default function TravelersForm() {
 
   const handleRemoveTraveler = (id: number) => {
     actions.setTravelers(travelers.users.filter((t) => t.id !== id));
+    setEmailErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[id];
+      return newErrors;
+    });
   };
 
   const handleEmailChange = (id: number, email: string) => {
     actions.setTravelers(
       travelers.users.map((t) => (t.id === id ? { ...t, email } : t))
     );
+
+    if (email.trim() === '') {
+      setEmailErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[id];
+        return newErrors;
+      });
+    } else {
+      const result = emailSchema.safeParse(email);
+      if (!result.success) {
+        setEmailErrors((prev) => ({
+          ...prev,
+          [id]: result.error.issues[0]?.message || 'Invalid email address',
+        }));
+      } else {
+        setEmailErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors[id];
+          return newErrors;
+        });
+      }
+    }
   };
 
   const handleRoleChange = (id: number, role: string) => {
@@ -93,8 +123,8 @@ export default function TravelersForm() {
             className="border border-accent relative rounded-xl p-4 w-full bg-muted/10"
           >
             <p className="text-sm font-medium mb-2">Traveler {index + 1}</p>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center w-full">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center flex-1 pr-8 sm:pr-0">
+            <div className="flex flex-col gap-4 sm:flex-row w-full">
+              <div className="flex flex-col gap-4 sm:flex-row flex-1 pr-8 sm:pr-0">
                 <div className="w-full sm:w-96">
                   <Input
                     type="email"
@@ -104,35 +134,45 @@ export default function TravelersForm() {
                       handleEmailChange(traveler.id, e.target.value)
                     }
                   />
+                  <em className="h-5 flex items-start">
+                    {emailErrors[traveler.id] && (
+                      <p className="text-error text-sm font-medium">
+                        {emailErrors[traveler.id]}
+                      </p>
+                    )}
+                  </em>
                 </div>
 
-                <Select
-                  value={traveler.role}
-                  onValueChange={(value) =>
-                    handleRoleChange(traveler.id, value)
-                  }
-                >
-                  <SelectTrigger className="w-full sm:w-56">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {travelerRoleOptions.map(
-                      ({ value, label, icon, description }) => (
-                        <SelectItem key={value} value={value}>
-                          <div className="flex flex-col">
-                            <div className="flex items-center gap-2">
-                              <HugeiconsIcon icon={icon} size={14} />
-                              <span>{label}</span>
+                <div className="w-full sm:w-56">
+                  <Select
+                    value={traveler.role}
+                    onValueChange={(value) =>
+                      handleRoleChange(traveler.id, value)
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {travelerRoleOptions.map(
+                        ({ value, label, icon, description }) => (
+                          <SelectItem key={value} value={value}>
+                            <div className="flex flex-col">
+                              <div className="flex items-center gap-2">
+                                <HugeiconsIcon icon={icon} size={14} />
+                                <span>{label}</span>
+                              </div>
+                              <span className="text-xs text-foreground/60">
+                                {description}
+                              </span>
                             </div>
-                            <span className="text-xs text-foreground/60">
-                              {description}
-                            </span>
-                          </div>
-                        </SelectItem>
-                      )
-                    )}
-                  </SelectContent>
-                </Select>
+                          </SelectItem>
+                        )
+                      )}
+                    </SelectContent>
+                  </Select>
+                  <div className="h-5 flex items-start" />
+                </div>
               </div>
             </div>
             <Button
