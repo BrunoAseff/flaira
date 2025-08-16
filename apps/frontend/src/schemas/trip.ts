@@ -3,10 +3,10 @@ import { z } from 'zod';
 export const tripDetailsSchema = z.object({
   title: z.string().min(1, 'Title is required').trim(),
   description: z.string(),
-  startDate: z.date({ required_error: 'Start date is required' }).nullable().refine(
-    (date) => date !== null,
-    { message: 'Start date is required' }
-  ),
+  startDate: z
+    .date({ required_error: 'Start date is required' })
+    .nullable()
+    .refine((date) => date !== null, { message: 'Start date is required' }),
   endDate: z.date().nullable().optional(),
   hasTripFinished: z.boolean(),
 });
