@@ -16,6 +16,7 @@ export default function TransportModeSelector({
     <div className="flex flex-col gap-3 pt-4">
       <Label className="text-base">Transportation</Label>
       <ToggleGroup
+        defaultValue="car"
         type="single"
         onValueChange={(value) => value && onTransportModeChange(value)}
         variant="outline"
