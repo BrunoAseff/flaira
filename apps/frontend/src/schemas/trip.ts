@@ -1,12 +1,12 @@
 import { z } from 'zod';
 
 export const tripDetailsSchema = z.object({
-  title: z.string().min(1, 'Title is required').trim(),
+  title: z.string().trim().min(1, 'Title is required'),
   description: z.string(),
   startDate: z
-    .date({ required_error: 'Start date is required' })
+    .date({ required_error: 'Date is required' })
     .nullable()
-    .refine((date) => date !== null, { message: 'Start date is required' }),
+    .refine((date) => date !== null, { message: 'Date is required' }),
   endDate: z.date().nullable().optional(),
   hasTripFinished: z.boolean(),
 });

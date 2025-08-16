@@ -14,7 +14,6 @@ import {
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useDetails, useRoute, useTravelers } from '@/stores/trip-store';
@@ -141,7 +140,7 @@ export default function AddTripForm() {
   }, [isValid, isLastStep, errors]);
 
   return (
-    <TooltipProvider>
+    <div>
       <div className="flex flex-col h-full overflow-auto max-h-full">
         <div className="flex-shrink-0">
           <FormHeader currentStep={currentStep} />
@@ -206,6 +205,6 @@ export default function AddTripForm() {
           )}
         </div>
       </div>
-    </TooltipProvider>
+    </div>
   );
 }
