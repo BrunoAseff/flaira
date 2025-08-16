@@ -1,10 +1,5 @@
 import { create } from 'zustand';
 import type { TripForm } from '@/types/trip';
-import {
-  tripDetailsSchema,
-  tripRouteSchema,
-  emailSchema,
-} from '@/schemas/trip';
 
 type TripStore = TripForm;
 
@@ -97,52 +92,3 @@ export const useRoute = () => useTripStore((state) => state.route);
 export const useTravelers = () => useTripStore((state) => state.travelers);
 export const useImages = () => useTripStore((state) => state.images);
 export const useTripActions = () => useTripStore((state) => state.actions);
-
-export const useDetailsValidation = () =>
-  useTripStore((state) => {
-    const result = tripDetailsSchema.safeParse(state.details);
-    return {
-      isValid: result.success,
-      errors: result.success
-        ? []
-        : result.error.issues.map((issue) => issue.message),
-    };
-  });
-
-export const useRouteValidation = () =>
-  useTripStore((state) => {
-    const result = tripRouteSchema.safeParse(state.route);
-    return {
-      isValid: result.success,
-      errors: result.success
-        ? []
-        : result.error.issues.map((issue) => issue.message),
-    };
-  });
-
-export const useTravelersValidation = () =>
-  useTripStore((state) => {
-    if (state.travelers.users.length === 0) {
-      return { isValid: true, errors: [] };
-    }
-
-    const missingEmails = state.travelers.users.filter(
-      (user) => !user.email.trim()
-    );
-    if (missingEmails.length > 0) {
-      return {
-        isValid: false,
-        errors: ['All travelers must have an email address'],
-      };
-    }
-
-    const hasInvalidEmails = state.travelers.users.some((user) => {
-      return user.email.trim() && !emailSchema.safeParse(user.email).success;
-    });
-
-    if (hasInvalidEmails) {
-      return { isValid: false, errors: [] };
-    }
-
-    return { isValid: true, errors: [] };
-  });
