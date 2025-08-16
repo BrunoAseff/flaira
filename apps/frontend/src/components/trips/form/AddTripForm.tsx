@@ -140,70 +140,68 @@ export default function AddTripForm() {
   }, [isValid, isLastStep, errors]);
 
   return (
-    <div>
-      <div className="flex flex-col h-full overflow-auto max-h-full">
-        <div className="flex-shrink-0">
-          <FormHeader currentStep={currentStep} />
-        </div>
+    <div className="flex flex-col h-full overflow-auto max-h-full">
+      <div className="flex-shrink-0">
+        <FormHeader currentStep={currentStep} />
+      </div>
 
-        <div className="flex-1 min-h-0">
-          <Carousel
-            setApi={setApi}
-            opts={{ watchDrag: false }}
-            className="h-full"
-          >
-            <CarouselContent className="h-full">
-              <CarouselItem className="h-full overflow-auto">
-                <Details />
-              </CarouselItem>
-              <CarouselItem className="h-full overflow-auto">
-                <Route />
-              </CarouselItem>
-              <CarouselItem className="h-full overflow-auto">
-                <Travelers />
-              </CarouselItem>
-              <CarouselItem className="h-full overflow-auto">
-                <Review />
-              </CarouselItem>
-            </CarouselContent>
-          </Carousel>
-        </div>
+      <div className="flex-1 min-h-0">
+        <Carousel
+          setApi={setApi}
+          opts={{ watchDrag: false }}
+          className="h-full"
+        >
+          <CarouselContent className="h-full">
+            <CarouselItem className="h-full overflow-auto">
+              <Details />
+            </CarouselItem>
+            <CarouselItem className="h-full overflow-auto">
+              <Route />
+            </CarouselItem>
+            <CarouselItem className="h-full overflow-auto">
+              <Travelers />
+            </CarouselItem>
+            <CarouselItem className="h-full overflow-auto">
+              <Review />
+            </CarouselItem>
+          </CarouselContent>
+        </Carousel>
+      </div>
 
-        <div className="flex justify-end mr-10 gap-4 flex-shrink-0 pt-4 pb-2">
+      <div className="flex justify-end mr-10 gap-4 flex-shrink-0 pt-4 pb-2">
+        <Button
+          onClick={handlePrevious}
+          variant="outline"
+          size="sm"
+          disabled={isFirstStep}
+        >
+          Previous
+        </Button>
+
+        {tooltipContent ? (
+          <Tooltip>
+            <TooltipTrigger>
+              <span>
+                <Button
+                  onClick={handleNext}
+                  size="sm"
+                  disabled={isLastStep || (!isValid && !isLastStep)}
+                >
+                  {isLastStep ? 'Complete' : 'Next'}
+                </Button>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>{tooltipContent}</TooltipContent>
+          </Tooltip>
+        ) : (
           <Button
-            onClick={handlePrevious}
-            variant="outline"
+            onClick={handleNext}
             size="sm"
-            disabled={isFirstStep}
+            disabled={isLastStep || (!isValid && !isLastStep)}
           >
-            Previous
+            {isLastStep ? 'Complete' : 'Next'}
           </Button>
-
-          {tooltipContent ? (
-            <Tooltip>
-              <TooltipTrigger>
-                <span>
-                  <Button
-                    onClick={handleNext}
-                    size="sm"
-                    disabled={isLastStep || (!isValid && !isLastStep)}
-                  >
-                    {isLastStep ? 'Complete' : 'Next'}
-                  </Button>
-                </span>
-              </TooltipTrigger>
-              <TooltipContent>{tooltipContent}</TooltipContent>
-            </Tooltip>
-          ) : (
-            <Button
-              onClick={handleNext}
-              size="sm"
-              disabled={isLastStep || (!isValid && !isLastStep)}
-            >
-              {isLastStep ? 'Complete' : 'Next'}
-            </Button>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );
