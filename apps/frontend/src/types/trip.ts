@@ -15,6 +15,7 @@ interface TripStoreActions {
     users: Array<{ id: number; email: string; role: string }>
   ) => void;
   setImages: (images: FileWithPreview[]) => void;
+  resetForm: () => void;
 }
 
 export interface TripDetails {

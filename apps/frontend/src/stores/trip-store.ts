@@ -84,6 +84,27 @@ const useTripStore = create<TripStore>((set) => ({
       set(() => ({
         images,
       })),
+
+    resetForm: () =>
+      set(() => ({
+        stopIdCounter: 0,
+        details: {
+          title: '',
+          description: '',
+          startDate: null,
+          endDate: null,
+          hasTripFinished: false,
+        },
+        route: {
+          transportMode: 'car',
+          locations: [],
+          stops: [],
+        },
+        travelers: {
+          users: [],
+        },
+        images: [],
+      })),
   },
 }));
 

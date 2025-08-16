@@ -6,7 +6,8 @@ import { useFileUpload } from '@/hooks/use-file-upload';
 import { Button } from '@/components/ui/button';
 import { ImageUploadIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useTripActions } from '@/stores/trip-store';
+import { useTripActions, useImages } from '@/stores/trip-store';
+import { useEffect, useRef } from 'react';
 
 export default function FileInput() {
   const maxSizeMB = 5;
@@ -14,6 +15,8 @@ export default function FileInput() {
   const maxFiles = 18;
 
   const actions = useTripActions();
+  const images = useImages();
+  const previousImagesLength = useRef(images.length);
 
   const [
     { files, isDragging, errors },
@@ -24,6 +27,7 @@ export default function FileInput() {
       handleDrop,
       openFileDialog,
       removeFile,
+      clearFiles,
       getInputProps,
     },
   ] = useFileUpload({
@@ -35,6 +39,13 @@ export default function FileInput() {
       actions.setImages(newFiles);
     },
   });
+
+  useEffect(() => {
+    if (images.length === 0 && previousImagesLength.current > 0) {
+      clearFiles();
+    }
+    previousImagesLength.current = images.length;
+  }, [images.length, clearFiles]);
 
   return (
     <div className="flex flex-col gap-2 h-full">
