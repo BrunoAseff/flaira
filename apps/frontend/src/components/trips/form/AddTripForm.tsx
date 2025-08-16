@@ -17,11 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import {
-  useDetails,
-  useRoute,
-  useTravelers,
-} from '@/stores/trip-store';
+import { useDetails, useRoute, useTravelers } from '@/stores/trip-store';
 import {
   tripDetailsSchema,
   tripRouteSchema,
@@ -89,9 +85,7 @@ export default function AddTripForm() {
       return { isValid: true, errors: [] };
     }
 
-    const missingEmails = travelers.users.filter(
-      (user) => !user.email.trim()
-    );
+    const missingEmails = travelers.users.filter((user) => !user.email.trim());
     if (missingEmails.length > 0) {
       return {
         isValid: false,
