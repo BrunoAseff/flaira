@@ -16,7 +16,7 @@ export default function FileInput() {
 
   const actions = useTripActions();
   const images = useImages();
-  const previousImagesLength = useRef(images.length);
+  const previousImagesLength = useRef(0);
 
   const [
     { files, isDragging, errors },
