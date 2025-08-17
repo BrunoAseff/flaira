@@ -73,7 +73,10 @@ export default function FileInput() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={openFileDialog}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openFileDialog();
+                }}
                 disabled={files.length >= maxFiles}
               >
                 <UploadIcon
@@ -100,7 +103,10 @@ export default function FileInput() {
                     className="size-full rounded-[inherit] object-cover"
                   />
                   <Button
-                    onClick={() => removeFile(file.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFile(file.id);
+                    }}
                     size="icon"
                     className="border-background bg-foreground focus-visible:border-background absolute -top-2 -right-2 size-6 rounded-full border shadow-none"
                     aria-label="Remove image"
@@ -132,7 +138,10 @@ export default function FileInput() {
               variant="outline"
               className="mt-4"
               size="sm"
-              onClick={openFileDialog}
+              onClick={(e) => {
+                e.stopPropagation();
+                openFileDialog();
+              }}
             >
               <UploadIcon className="-ms-1 opacity-60" aria-hidden="true" />
               Select images
