@@ -86,25 +86,38 @@ const useTripStore = create<TripStore>((set) => ({
       })),
 
     resetForm: () =>
-      set(() => ({
-        stopIdCounter: 0,
-        details: {
-          title: '',
-          description: '',
-          startDate: null,
-          endDate: null,
-          hasTripFinished: false,
-        },
-        route: {
-          transportMode: 'car',
-          locations: [],
-          stops: [],
-        },
-        travelers: {
-          users: [],
-        },
-        images: [],
-      })),
+      set((state) => {
+        if (typeof window !== 'undefined') {
+          for (const img of state.images) {
+            if (
+              img?.preview &&
+              typeof img.preview === 'string' &&
+              img.preview.startsWith('blob:')
+            ) {
+              URL.revokeObjectURL(img.preview);
+            }
+          }
+        }
+        return {
+          stopIdCounter: 0,
+          details: {
+            title: '',
+            description: '',
+            startDate: null,
+            endDate: null,
+            hasTripFinished: false,
+          },
+          route: {
+            transportMode: 'car',
+            locations: [],
+            stops: [],
+          },
+          travelers: {
+            users: [],
+          },
+          images: [],
+        };
+      }),
   },
 }));
 
