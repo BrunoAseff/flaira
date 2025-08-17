@@ -7,16 +7,18 @@ import { TRANSPORT_OPTIONS } from '@/constants/trip';
 
 interface TransportModeSelectorProps {
   onTransportModeChange: (value: string) => void;
+  value: string;
 }
 
 export default function TransportModeSelector({
   onTransportModeChange,
+  value,
 }: TransportModeSelectorProps) {
   return (
     <div className="flex flex-col gap-3 pt-4">
       <Label className="text-base">Transportation</Label>
       <ToggleGroup
-        defaultValue="car"
+        value={value}
         type="single"
         onValueChange={(value) => value && onTransportModeChange(value)}
         variant="outline"
