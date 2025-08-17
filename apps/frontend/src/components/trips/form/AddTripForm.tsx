@@ -153,6 +153,12 @@ export default function AddTripForm() {
           setApi={setApi}
           opts={{ watchDrag: false }}
           className="h-full"
+          onKeyDownCapture={(e) => {
+            if (e.key === 'ArrowRight' && !isValid && !isLastStep) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
         >
           <CarouselContent className="h-full">
             <CarouselItem className="h-full overflow-auto">
