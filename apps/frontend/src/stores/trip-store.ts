@@ -3,7 +3,7 @@ import type { TripForm } from '@/types/trip';
 
 type TripStore = TripForm;
 
-const useTripStore = create<TripStore>((set) => ({
+const initialTripState = {
   stopIdCounter: 0,
   details: {
     title: '',
@@ -21,6 +21,10 @@ const useTripStore = create<TripStore>((set) => ({
     users: [],
   },
   images: [],
+};
+
+const useTripStore = create<TripStore>((set) => ({
+  ...initialTripState,
   actions: {
     setTitle: (title) =>
       set((state) => ({
@@ -98,25 +102,7 @@ const useTripStore = create<TripStore>((set) => ({
             }
           }
         }
-        return {
-          stopIdCounter: 0,
-          details: {
-            title: '',
-            description: '',
-            startDate: null,
-            endDate: null,
-            hasTripFinished: false,
-          },
-          route: {
-            transportMode: 'car',
-            locations: [],
-            stops: [],
-          },
-          travelers: {
-            users: [],
-          },
-          images: [],
-        };
+        return initialTripState;
       }),
   },
 }));
