@@ -22,10 +22,13 @@ import {
   tripRouteSchema,
   emailSchema,
 } from '@/schemas/trip';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function AddTripForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [api, setApi] = useState<CarouselApi>();
+  const isMobile = useIsMobile();
+
   const totalSteps = 4;
 
   const handleNext = useCallback(() => {
@@ -178,7 +181,7 @@ export default function AddTripForm() {
           Previous
         </Button>
 
-        {tooltipContent ? (
+        {tooltipContent && !isMobile ? (
           <Tooltip>
             <TooltipTrigger>
               <span>
