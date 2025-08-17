@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import FormHeader from './FormHeader';
 import Travelers from './steps/Travelers';
 import Details from './steps/Details';
@@ -11,10 +11,24 @@ import {
   CarouselItem,
   type CarouselApi,
 } from '@/components/ui/carousel';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { useDetails, useRoute, useTravelers } from '@/stores/trip-store';
+import {
+  tripDetailsSchema,
+  tripRouteSchema,
+  emailSchema,
+} from '@/schemas/trip';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function AddTripForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [api, setApi] = useState<CarouselApi>();
+  const isMobile = useIsMobile();
+
   const totalSteps = 4;
 
   const handleNext = useCallback(() => {
@@ -44,6 +58,90 @@ export default function AddTripForm() {
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === totalSteps;
 
+  const details = useDetails();
+  const route = useRoute();
+  const travelers = useTravelers();
+
+  const detailsValidation = useMemo(() => {
+    const result = tripDetailsSchema.safeParse(details);
+    return {
+      isValid: result.success,
+      errors: result.success
+        ? []
+        : result.error.issues.map((issue) => issue.message),
+    };
+  }, [details]);
+
+  const routeValidation = useMemo(() => {
+    const result = tripRouteSchema.safeParse(route);
+    return {
+      isValid: result.success,
+      errors: result.success
+        ? []
+        : result.error.issues.map((issue) => issue.message),
+    };
+  }, [route]);
+
+  const travelersValidation = useMemo(() => {
+    if (travelers.users.length === 0) {
+      return { isValid: true, errors: [] };
+    }
+
+    const missingEmails = travelers.users.filter((user) => !user.email.trim());
+    if (missingEmails.length > 0) {
+      return {
+        isValid: false,
+        errors: ['All travelers must have an email address'],
+      };
+    }
+
+    const hasInvalidEmails = travelers.users.some((user) => {
+      return user.email.trim() && !emailSchema.safeParse(user.email).success;
+    });
+
+    if (hasInvalidEmails) {
+      return { isValid: false, errors: [] };
+    }
+
+    return { isValid: true, errors: [] };
+  }, [travelers]);
+
+  const currentStepValidation = useMemo(() => {
+    switch (currentStep) {
+      case 1:
+        return detailsValidation;
+      case 2:
+        return routeValidation;
+      case 3:
+        return travelersValidation;
+      case 4:
+        return { isValid: true, errors: [] };
+      default:
+        return { isValid: false, errors: [] };
+    }
+  }, [currentStep, detailsValidation, routeValidation, travelersValidation]);
+
+  const { isValid, errors } = currentStepValidation;
+
+  const tooltipContent = useMemo(() => {
+    if (isValid || isLastStep || errors.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className="space-y-1">
+        <p className="font-medium">Required fields missing:</p>
+        <ul className="list-disc list-inside space-y-0.5">
+          {errors.map((error: string, index: number) => (
+            <li key={index} className="text-sm">
+              {error}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }, [isValid, isLastStep, errors]);
+
   return (
     <div className="flex flex-col h-full overflow-auto max-h-full">
       <div className="flex-shrink-0">
@@ -55,6 +153,12 @@ export default function AddTripForm() {
           setApi={setApi}
           opts={{ watchDrag: false }}
           className="h-full"
+          onKeyDownCapture={(e) => {
+            if (e.key === 'ArrowRight' && !isValid && !isLastStep) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
         >
           <CarouselContent className="h-full">
             <CarouselItem className="h-full overflow-auto">
@@ -82,9 +186,31 @@ export default function AddTripForm() {
         >
           Previous
         </Button>
-        <Button onClick={handleNext} size="sm" disabled={isLastStep}>
-          {isLastStep ? 'Complete' : 'Next'}
-        </Button>
+
+        {tooltipContent && !isMobile ? (
+          <Tooltip>
+            <TooltipTrigger>
+              <span>
+                <Button
+                  onClick={handleNext}
+                  size="sm"
+                  disabled={isLastStep || (!isValid && !isLastStep)}
+                >
+                  {isLastStep ? 'Complete' : 'Next'}
+                </Button>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>{tooltipContent}</TooltipContent>
+          </Tooltip>
+        ) : (
+          <Button
+            onClick={handleNext}
+            size="sm"
+            disabled={isLastStep || (!isValid && !isLastStep)}
+          >
+            {isLastStep ? 'Complete' : 'Next'}
+          </Button>
+        )}
       </div>
     </div>
   );

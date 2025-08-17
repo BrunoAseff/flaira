@@ -1,10 +1,9 @@
 import { create } from 'zustand';
 import type { TripForm } from '@/types/trip';
-import type { FileWithPreview } from '@/hooks/use-file-upload';
 
 type TripStore = TripForm;
 
-const useTripStore = create<TripStore>((set) => ({
+const initialTripState = {
   stopIdCounter: 0,
   details: {
     title: '',
@@ -22,6 +21,10 @@ const useTripStore = create<TripStore>((set) => ({
     users: [],
   },
   images: [],
+};
+
+const useTripStore = create<TripStore>((set) => ({
+  ...initialTripState,
   actions: {
     setTitle: (title) =>
       set((state) => ({
@@ -85,6 +88,22 @@ const useTripStore = create<TripStore>((set) => ({
       set(() => ({
         images,
       })),
+
+    resetForm: () =>
+      set((state) => {
+        if (typeof window !== 'undefined') {
+          for (const img of state.images) {
+            if (
+              img?.preview &&
+              typeof img.preview === 'string' &&
+              img.preview.startsWith('blob:')
+            ) {
+              URL.revokeObjectURL(img.preview);
+            }
+          }
+        }
+        return initialTripState;
+      }),
   },
 }));
 

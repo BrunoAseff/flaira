@@ -129,6 +129,7 @@ export default function Route() {
           />
 
           <TransportModeSelector
+            value={route.transportMode}
             onTransportModeChange={actions.setTransportMode}
           />
 

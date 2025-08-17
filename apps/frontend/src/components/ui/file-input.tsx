@@ -6,7 +6,8 @@ import { useFileUpload } from '@/hooks/use-file-upload';
 import { Button } from '@/components/ui/button';
 import { ImageUploadIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useTripActions } from '@/stores/trip-store';
+import { useTripActions, useImages } from '@/stores/trip-store';
+import { useEffect, useRef } from 'react';
 
 export default function FileInput() {
   const maxSizeMB = 5;
@@ -14,6 +15,8 @@ export default function FileInput() {
   const maxFiles = 18;
 
   const actions = useTripActions();
+  const images = useImages();
+  const previousImagesLength = useRef(0);
 
   const [
     { files, isDragging, errors },
@@ -24,6 +27,7 @@ export default function FileInput() {
       handleDrop,
       openFileDialog,
       removeFile,
+      clearFiles,
       getInputProps,
     },
   ] = useFileUpload({
@@ -35,6 +39,13 @@ export default function FileInput() {
       actions.setImages(newFiles);
     },
   });
+
+  useEffect(() => {
+    if (images.length === 0 && previousImagesLength.current > 0) {
+      clearFiles();
+    }
+    previousImagesLength.current = images.length;
+  }, [images.length, clearFiles]);
 
   return (
     <div className="flex flex-col gap-2 h-full">
@@ -62,7 +73,10 @@ export default function FileInput() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={openFileDialog}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openFileDialog();
+                }}
                 disabled={files.length >= maxFiles}
               >
                 <UploadIcon
@@ -89,7 +103,10 @@ export default function FileInput() {
                     className="size-full rounded-[inherit] object-cover"
                   />
                   <Button
-                    onClick={() => removeFile(file.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFile(file.id);
+                    }}
                     size="icon"
                     className="border-background bg-foreground focus-visible:border-background absolute -top-2 -right-2 size-6 rounded-full border shadow-none"
                     aria-label="Remove image"
@@ -121,7 +138,10 @@ export default function FileInput() {
               variant="outline"
               className="mt-4"
               size="sm"
-              onClick={openFileDialog}
+              onClick={(e) => {
+                e.stopPropagation();
+                openFileDialog();
+              }}
             >
               <UploadIcon className="-ms-1 opacity-60" aria-hidden="true" />
               Select images
