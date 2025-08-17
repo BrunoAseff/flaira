@@ -54,7 +54,7 @@ export default function TravelersForm() {
         return newErrors;
       });
     } else {
-      const result = emailSchema.safeParse(email);
+      const result = emailSchema.safeParse(email.trim());
       if (!result.success) {
         setEmailErrors((prev) => ({
           ...prev,
