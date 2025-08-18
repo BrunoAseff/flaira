@@ -25,11 +25,11 @@ function Step({
         'size-8 sm:size-10 md:size-11',
         isDone || isCurrent
           ? 'bg-foreground text-background border-foreground'
-          : 'bg-background text-foreground/60 border-[1px] border-accent'
+          : 'bg-background text-foreground/60 border-accent'
       )}
     >
       {isCurrent ? (
-        <div className="size-2 sm:size-2.5 md:size-3 bg-white rounded-full" />
+        <div className="size-2 sm:size-2.5 md:size-3 bg-background rounded-full" />
       ) : (
         <HugeiconsIcon
           className="size-4 sm:size-5 md:size-6"
