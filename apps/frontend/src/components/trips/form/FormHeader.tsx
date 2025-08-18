@@ -77,10 +77,8 @@ export default function FormHeader({ currentStep }: { currentStep: number }) {
 
   return (
     <div className="flex mx-4 sm:mx-6 md:mx-10 flex-col">
-      <h1 className="text-xl sm:text-2xl font-semibold">
-        {activeStep.title}
-      </h1>
-      <div className="text-sm sm:text-base text-foreground/80 mb-2"> 
+      <h1 className="text-xl sm:text-2xl font-semibold">{activeStep.title}</h1>
+      <div className="text-sm sm:text-base text-foreground/80 mb-2">
         {activeStep.description}
       </div>
       <div className="relative w-full py-3 sm:py-4">
