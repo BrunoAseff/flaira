@@ -36,9 +36,21 @@ export default function Route() {
   };
 
   useEffect(() => {
-    actions.setEstimatedDuration(routeData?.totalDuration || 0);
-    actions.setEstimatedDistance(routeData?.totalDistance || 0);
-  }, [routeData]);
+    const duration = routeData?.totalDuration ?? 0;
+    const distance = routeData?.totalDistance ?? 0;
+    if (route.estimatedDuration !== duration) {
+      actions.setEstimatedDuration(duration);
+    }
+    if (route.estimatedDistance !== distance) {
+      actions.setEstimatedDistance(distance);
+    }
+  }, [
+    routeData?.totalDuration,
+    routeData?.totalDistance,
+    route.estimatedDuration,
+    route.estimatedDistance,
+    actions,
+  ]);
 
   const handleRemoveStop = (id: number) => {
     actions.removeStop(id);
