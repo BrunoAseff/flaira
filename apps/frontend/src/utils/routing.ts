@@ -1,3 +1,5 @@
+import type { GeocodingResult } from '@/types/route';
+
 export const MAPBOX_DISTANCE_LIMITS = {
   driving: 4_000_000,
   'driving-traffic': 4_000_000,
@@ -76,4 +78,47 @@ export const isRouteWithinLimits = (
   const distance = calculateTotalApproximateDistance(coordinates);
   const maxDistance = getMaxDistanceForProfile(profile);
   return distance <= maxDistance;
+};
+
+export const extractLocationDetails = (result: GeocodingResult) => {
+  let country = '';
+  let city = '';
+
+  if (result.place_type?.includes('country')) {
+    country = result.text || result.place_name;
+    city = '';
+  } else if (result.place_type?.includes('place')) {
+    city = result.text || result.place_name.split(',')[0];
+
+    const countryContext = result.context?.find((ctx) =>
+      ctx.id.startsWith('country.')
+    );
+    country = countryContext?.text || '';
+  } else {
+    const placeContext = result.context?.find((ctx) =>
+      ctx.id.startsWith('place.')
+    );
+    const countryContext = result.context?.find((ctx) =>
+      ctx.id.startsWith('country.')
+    );
+
+    city = placeContext?.text || result.text || result.place_name.split(',')[0];
+    country = countryContext?.text || '';
+
+    if (!placeContext && !result.place_type?.includes('country')) {
+      city = result.text || result.place_name.split(',')[0];
+    }
+  }
+
+  if (!country && result.place_name.includes(',')) {
+    const parts = result.place_name.split(',').map((part) => part.trim());
+    if (parts.length >= 2) {
+      country = parts[parts.length - 1];
+      if (!city && parts.length >= 3) {
+        city = parts[0];
+      }
+    }
+  }
+
+  return { country: country.trim(), city: city.trim() };
 };
