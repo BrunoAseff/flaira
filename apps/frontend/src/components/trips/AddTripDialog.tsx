@@ -78,7 +78,7 @@ export function AddTripDialog({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-        <DialogContent className="w-full h-full min-w-full max-w-[1200px] md:min-w-[1000px] md:w-[65%] md:h-[95%] bg-background p-0 flex flex-col overflow-hidden">
+        <DialogContent className="fixed inset-0 z-50 w-full h-full translate-x-0 translate-y-0 min-[1400px]:left-[50%] min-[1400px]:top-[50%] min-[1400px]:translate-x-[-50%] min-[1400px]:translate-y-[-50%] min-[1400px]:max-w-[1200px] min-[1400px]:min-w-[1000px] min-[1400px]:w-[65%] min-[1400px]:h-[95%] min-[1400px]:rounded-lg bg-background p-0 flex flex-col overflow-hidden border shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
           <DialogHeader className="px-6 py-4 border-b border-accent">
             <DialogTitle className="text-foreground text-xl font-semibold">
               New trip
