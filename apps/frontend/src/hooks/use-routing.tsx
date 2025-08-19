@@ -94,7 +94,7 @@ export function useRouting() {
       const coordinates = locations.map((loc) => loc.coordinates);
 
       const profileMap: Record<string, string> = {
-        feet: 'walking',
+        on_foot: 'walking',
         bicycle: 'cycling',
       };
 

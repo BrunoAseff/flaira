@@ -135,7 +135,7 @@ export default function Route() {
   const isRouteStatsAccurate =
     route.transportMode === 'car' ||
     route.transportMode === 'bicycle' ||
-    route.transportMode === 'feet';
+    route.transportMode === 'on_foot';
 
   return (
     <TooltipProvider>

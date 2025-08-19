@@ -16,7 +16,7 @@ import {
 } from '@hugeicons/core-free-icons';
 
 export const TRANSPORT_OPTIONS = [
-  { value: 'feet', label: 'On foot', icon: WorkoutRunIcon },
+  { value: 'on_foot', label: 'On foot', icon: WorkoutRunIcon },
   { value: 'bicycle', label: 'Bicycle', icon: BicycleIcon },
   { value: 'car', label: 'Car', icon: Car05Icon },
   { value: 'motorbike', label: 'Motorbike', icon: Motorbike02Icon },
