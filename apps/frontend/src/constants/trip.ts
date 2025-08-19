@@ -28,6 +28,8 @@ export const TRANSPORT_OPTIONS = [
   { value: 'other', label: 'Other', icon: HelpSquareIcon },
 ] as const;
 
+export const SUPPORTED_MAPBOX_PROFILES = new Set(['car', 'bicycle', 'on_foot']);
+
 export const TRAVELER_ROLE_OPTIONS = [
   {
     value: 'owner',

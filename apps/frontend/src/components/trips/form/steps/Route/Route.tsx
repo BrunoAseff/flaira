@@ -11,6 +11,7 @@ import LocationInputs from './LocationInputs';
 import TransportModeSelector from './TransportModeSelector';
 import RouteStats from './RouteStats';
 import CurrentLocationDialog from './CurrentLocationDialog';
+import { SUPPORTED_MAPBOX_PROFILES } from '@/constants/trip';
 
 export default function Route() {
   const route = useRoute();
@@ -132,10 +133,9 @@ export default function Route() {
     calculateRoute,
   ]);
 
-  const isRouteStatsAccurate =
-    route.transportMode === 'car' ||
-    route.transportMode === 'bicycle' ||
-    route.transportMode === 'on_foot';
+  const isRouteStatsAccurate = SUPPORTED_MAPBOX_PROFILES.has(
+    route.transportMode
+  );
 
   return (
     <TooltipProvider>
