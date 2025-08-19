@@ -80,13 +80,9 @@ const useTripStore = create<TripStore>((set) => ({
       set((state) => ({
         route: { ...state.route, locations },
       })),
-    setEstimatedDuration: (estimatedDuration) =>
+    setRouteEstimates: (estimatedDuration: number, estimatedDistance: number) =>
       set((state) => ({
-        route: { ...state.route, estimatedDuration },
-      })),
-    setEstimatedDistance: (estimatedDistance) =>
-      set((state) => ({
-        route: { ...state.route, estimatedDistance },
+        route: { ...state.route, estimatedDuration, estimatedDistance },
       })),
 
     setTravelers: (users) =>

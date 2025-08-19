@@ -38,11 +38,11 @@ export default function Route() {
   useEffect(() => {
     const duration = routeData?.totalDuration ?? 0;
     const distance = routeData?.totalDistance ?? 0;
-    if (route.estimatedDuration !== duration) {
-      actions.setEstimatedDuration(duration);
-    }
-    if (route.estimatedDistance !== distance) {
-      actions.setEstimatedDistance(distance);
+    if (
+      route.estimatedDuration !== duration ||
+      route.estimatedDistance !== distance
+    ) {
+      actions.setRouteEstimates(duration, distance);
     }
   }, [
     routeData?.totalDuration,
