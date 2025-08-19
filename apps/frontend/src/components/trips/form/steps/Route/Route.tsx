@@ -11,7 +11,7 @@ import LocationInputs from './LocationInputs';
 import TransportModeSelector from './TransportModeSelector';
 import RouteStats from './RouteStats';
 import CurrentLocationDialog from './CurrentLocationDialog';
-import { SUPPORTED_MAPBOX_PROFILES } from '@/constants/trip';
+import { ROUTABLE_TRANSPORT_MODES } from '@/constants/trip';
 
 export default function Route() {
   const route = useRoute();
@@ -133,7 +133,7 @@ export default function Route() {
     calculateRoute,
   ]);
 
-  const isRouteStatsAccurate = SUPPORTED_MAPBOX_PROFILES.has(
+  const isRouteStatsAccurate = ROUTABLE_TRANSPORT_MODES.has(
     route.transportMode
   );
 
