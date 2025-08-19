@@ -15,6 +15,7 @@ interface TripStoreActions {
     users: Array<{ id: number; email: string; role: string }>
   ) => void;
   setImages: (images: FileWithPreview[]) => void;
+  setRouteEstimates: (duration: number, distance: number) => void;
   resetForm: () => void;
 }
 
@@ -30,6 +31,8 @@ export interface TripRoute {
   stops: Array<{ id: number }>;
   transportMode: string;
   locations: Location[];
+  estimatedDuration: number;
+  estimatedDistance: number;
 }
 
 export interface TripTravelers {

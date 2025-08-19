@@ -1,8 +1,10 @@
 export interface Location {
   id: string;
   name: string;
-  coordinates: [number, number];
   address?: string;
+  city?: string;
+  country?: string;
+  coordinates: [number, number];
 }
 
 export interface RouteSegment {
@@ -22,4 +24,21 @@ export interface Route {
     east: number;
     west: number;
   };
+}
+
+export interface GeocodingResult {
+  id: string;
+  place_name: string;
+  center: [number, number];
+  place_type: string[];
+  text: string;
+  properties?: {
+    address?: string;
+    category?: string;
+  };
+  context?: Array<{
+    id: string;
+    text: string;
+    short_code?: string;
+  }>;
 }

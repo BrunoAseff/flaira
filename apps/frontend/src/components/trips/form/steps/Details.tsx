@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import RangeDatePicker from '@/components/ui/RangeDatePicker';
 import { Textarea } from '@/components/ui/textarea';
-import { useDetails, useTripActions } from '@/stores/trip-store';
+import { useDetails, useImages, useTripActions } from '@/stores/trip-store';
 import { Tag01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { useMemo } from 'react';
@@ -12,6 +12,7 @@ import { DateRange } from 'react-day-picker';
 
 export default function Details() {
   const details = useDetails();
+  const images = useImages();
   const actions = useTripActions();
 
   const isCurrentTrip = useMemo(
@@ -80,7 +81,7 @@ export default function Details() {
       <div className="flex flex-col w-full md:w-[60%] gap-1 h-full">
         <Label className="text-base flex-shrink-0">Memories</Label>
         <div className="flex-1 min-h-0">
-          <FileInput />
+          <FileInput files={images} onFilesChange={actions.setImages} />
         </div>
       </div>
     </div>

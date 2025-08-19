@@ -194,9 +194,9 @@ export default function AddTripForm() {
                 <Button
                   onClick={handleNext}
                   size="sm"
-                  disabled={isLastStep || (!isValid && !isLastStep)}
+                  disabled={!isValid && !isLastStep}
                 >
-                  {isLastStep ? 'Complete' : 'Next'}
+                  {isLastStep ? 'Add trip' : 'Next'}
                 </Button>
               </span>
             </TooltipTrigger>
@@ -206,9 +206,9 @@ export default function AddTripForm() {
           <Button
             onClick={handleNext}
             size="sm"
-            disabled={isLastStep || (!isValid && !isLastStep)}
+            disabled={!isValid && !isLastStep}
           >
-            {isLastStep ? 'Complete' : 'Next'}
+            {isLastStep ? 'Add trip' : 'Next'}
           </Button>
         )}
       </div>

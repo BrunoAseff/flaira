@@ -5,7 +5,8 @@ import { createPortal } from 'react-dom';
 import { Input } from '@/components/ui/input';
 import { useGeocoding } from '../../hooks/use-geocoding';
 import { cn } from '@/lib/utils';
-import type { Location } from '../../types/route';
+import type { GeocodingResult, Location } from '@/types/route';
+import { extractLocationDetails } from '@/utils/routing';
 
 interface GeoSearchInputProps {
   placeholder: string;
@@ -13,13 +14,6 @@ interface GeoSearchInputProps {
   onChange: (value: string) => void;
   onLocationSelect: (location: Location) => void;
   className?: string;
-}
-
-interface GeocodingResult {
-  id: string;
-  place_name: string;
-  center: [number, number];
-  place_type?: string[];
 }
 
 export const GeoSearchInput = forwardRef<HTMLInputElement, GeoSearchInputProps>(
@@ -130,11 +124,15 @@ export const GeoSearchInput = forwardRef<HTMLInputElement, GeoSearchInputProps>(
     };
 
     const handleSelect = (result: GeocodingResult) => {
+      const { country, city } = extractLocationDetails(result);
+
       const location: Location = {
         id: result.id,
         name: result.place_name,
         coordinates: result.center,
         address: result.place_name,
+        city: city || undefined,
+        country: country || undefined,
       };
 
       isSelectingRef.current = true;

@@ -16,6 +16,8 @@ const initialTripState = {
     transportMode: 'car',
     locations: [],
     stops: [],
+    estimatedDuration: 0,
+    estimatedDistance: 0,
   },
   travelers: {
     users: [],
@@ -77,6 +79,10 @@ const useTripStore = create<TripStore>((set) => ({
     setLocations: (locations) =>
       set((state) => ({
         route: { ...state.route, locations },
+      })),
+    setRouteEstimates: (estimatedDuration: number, estimatedDistance: number) =>
+      set((state) => ({
+        route: { ...state.route, estimatedDuration, estimatedDistance },
       })),
 
     setTravelers: (users) =>

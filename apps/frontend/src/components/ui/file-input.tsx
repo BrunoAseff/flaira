@@ -2,21 +2,27 @@
 
 import { AlertCircleIcon, UploadIcon, XIcon } from 'lucide-react';
 
-import { useFileUpload } from '@/hooks/use-file-upload';
+import { useFileUpload, type FileWithPreview } from '@/hooks/use-file-upload';
 import { Button } from '@/components/ui/button';
 import { ImageUploadIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { useTripActions, useImages } from '@/stores/trip-store';
 import { useEffect, useRef } from 'react';
 
-export default function FileInput() {
-  const maxSizeMB = 5;
-  const maxSize = maxSizeMB * 1024 * 1024;
-  const maxFiles = 18;
+interface FileInputProps {
+  files?: FileWithPreview[];
+  onFilesChange?: (files: FileWithPreview[]) => void;
+  maxSizeMB?: number;
+  maxFiles?: number;
+}
 
-  const actions = useTripActions();
-  const images = useImages();
-  const previousImagesLength = useRef(0);
+export default function FileInput({
+  files: externalFiles = [],
+  onFilesChange,
+  maxSizeMB = 5,
+  maxFiles = 18,
+}: FileInputProps) {
+  const maxSize = maxSizeMB * 1024 * 1024;
+  const previousFilesLength = useRef(0);
 
   const [
     { files, isDragging, errors },
@@ -35,17 +41,15 @@ export default function FileInput() {
     maxSize,
     multiple: true,
     maxFiles,
-    onFilesChange: (newFiles) => {
-      actions.setImages(newFiles);
-    },
+    onFilesChange,
   });
 
   useEffect(() => {
-    if (images.length === 0 && previousImagesLength.current > 0) {
+    if (externalFiles.length === 0 && previousFilesLength.current > 0) {
       clearFiles();
     }
-    previousImagesLength.current = images.length;
-  }, [images.length, clearFiles]);
+    previousFilesLength.current = externalFiles.length;
+  }, [externalFiles.length, clearFiles]);
 
   return (
     <div className="flex flex-col gap-2 h-full">
