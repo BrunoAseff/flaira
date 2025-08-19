@@ -15,11 +15,11 @@ interface FileInputProps {
   maxFiles?: number;
 }
 
-export default function FileInput({ 
+export default function FileInput({
   files: externalFiles = [],
   onFilesChange,
   maxSizeMB = 5,
-  maxFiles = 18 
+  maxFiles = 18,
 }: FileInputProps) {
   const maxSize = maxSizeMB * 1024 * 1024;
   const previousFilesLength = useRef(0);
