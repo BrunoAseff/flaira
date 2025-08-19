@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { Input } from '@/components/ui/input';
 import { useGeocoding } from '../../hooks/use-geocoding';
 import { cn } from '@/lib/utils';
-import type { GeocodingResult, Location } from '../../types/route';
+import type { GeocodingResult, Location } from '@/types/route';
 import { extractLocationDetails } from '@/utils/routing';
 
 interface GeoSearchInputProps {
