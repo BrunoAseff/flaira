@@ -132,6 +132,11 @@ export default function Route() {
     calculateRoute,
   ]);
 
+  const isRouteStatsAccurate =
+    route.transportMode === 'car' ||
+    route.transportMode === 'bicycle' ||
+    route.transportMode === 'feet';
+
   return (
     <TooltipProvider>
       <div className="flex flex-col md:flex-row mx-6 h-full">
@@ -169,7 +174,7 @@ export default function Route() {
             </div>
           </div>
 
-          <RouteStats route={routeData} />
+          {isRouteStatsAccurate && <RouteStats route={routeData} />}
         </div>
       </div>
 
