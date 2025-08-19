@@ -128,7 +128,7 @@ export const GeoSearchInput = forwardRef<HTMLInputElement, GeoSearchInputProps>(
 
       const location: Location = {
         id: result.id,
-        name: result.place_name,
+        name: result.text || result.place_name,
         coordinates: result.center,
         address: result.place_name,
         city: city || undefined,
