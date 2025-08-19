@@ -3,8 +3,8 @@ import {
   text,
   timestamp,
   integer,
-  real,
   pgEnum,
+  doublePrecision,
 } from 'drizzle-orm/pg-core';
 import { user } from './auth';
 import { timestamps } from '../utils';
@@ -51,7 +51,7 @@ export const trips = pgTable('trips', {
   startDate: timestamp('start_date').notNull(),
   endDate: timestamp('end_date').notNull(),
   duration: integer('duration'),
-  distance: real('distance'),
+  distance: doublePrecision('distance'),
   visibility: visibilityEnum('visibility').notNull().default('private'),
   status: statusEnum('status').notNull().default('active'),
   ...timestamps,
@@ -66,8 +66,8 @@ export const tripLocations = pgTable('trip_locations', {
   address: text('address').notNull(),
   country: text('country'),
   city: text('city'),
-  lon: real('lon').notNull(),
-  lat: real('lat').notNull(),
+  lon: doublePrecision('lon').notNull(),
+  lat: doublePrecision('lat').notNull(),
   type: locationTypeEnum('type').notNull(),
   stopIndex: integer('stop_index'),
   ...timestamps,
