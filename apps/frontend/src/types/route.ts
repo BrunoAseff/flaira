@@ -32,7 +32,7 @@ export interface GeocodingResult {
   center: [number, number];
   place_type: string[];
   text: string;
-  properties: {
+  properties?: {
     address?: string;
     category?: string;
   };
