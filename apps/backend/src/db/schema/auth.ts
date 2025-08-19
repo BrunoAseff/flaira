@@ -1,4 +1,5 @@
 import { pgTable, text, timestamp, boolean } from 'drizzle-orm/pg-core';
+import { timestamps } from '../utils';
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -6,16 +7,14 @@ export const user = pgTable('user', {
   email: text('email').notNull().unique(),
   emailVerified: boolean('email_verified').notNull(),
   image: text('image'),
-  createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
+  ...timestamps,
 });
 
 export const session = pgTable('session', {
   id: text('id').primaryKey(),
   expiresAt: timestamp('expires_at').notNull(),
   token: text('token').notNull().unique(),
-  createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
+  ...timestamps,
   ipAddress: text('ip_address'),
   userAgent: text('user_agent'),
   userId: text('user_id')
@@ -37,8 +36,7 @@ export const account = pgTable('account', {
   refreshTokenExpiresAt: timestamp('refresh_token_expires_at'),
   scope: text('scope'),
   password: text('password'),
-  createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
+  ...timestamps,
 });
 
 export const verification = pgTable('verification', {

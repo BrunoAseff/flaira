@@ -7,6 +7,7 @@ import {
   pgEnum,
 } from 'drizzle-orm/pg-core';
 import { user } from './auth';
+import { timestamps } from '../utils';
 
 export const visibilityEnum = pgEnum('visibility', [
   'private',
@@ -51,8 +52,7 @@ export const trips = pgTable('trips', {
   distance: real('distance'),
   visibility: visibilityEnum('visibility').notNull().default('private'),
   status: statusEnum('status').notNull().default('active'),
-  createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
+  ...timestamps,
 });
 
 export const tripLocations = pgTable('trip_locations', {
@@ -68,8 +68,7 @@ export const tripLocations = pgTable('trip_locations', {
   lat: real('lat').notNull(),
   type: locationTypeEnum('type').notNull(),
   stopIndex: integer('stop_index'),
-  createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
+  ...timestamps,
 });
 
 export const tripDays = pgTable('trip_days', {
@@ -79,8 +78,7 @@ export const tripDays = pgTable('trip_days', {
     .references(() => trips.id, { onDelete: 'cascade' }),
   title: text('title'),
   dayNumber: integer('day_number').notNull(),
-  createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
+  ...timestamps,
 });
 
 export const tripDayNotes = pgTable('trip_day_notes', {
@@ -95,8 +93,7 @@ export const tripDayNotes = pgTable('trip_day_notes', {
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
   text: text('text').notNull(),
-  createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
+  ...timestamps,
 });
 
 export const tripMedia = pgTable('trip_media', {
@@ -112,8 +109,7 @@ export const tripMedia = pgTable('trip_media', {
   uploadedBy: text('uploaded_by')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
-  createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
+  ...timestamps,
 });
 
 export const tripTransports = pgTable('trip_transports', {
@@ -125,8 +121,7 @@ export const tripTransports = pgTable('trip_transports', {
     onDelete: 'cascade',
   }),
   type: transportTypeEnum('type').notNull(),
-  createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
+  ...timestamps,
 });
 
 export const tripUsers = pgTable('trip_users', {
@@ -141,8 +136,7 @@ export const tripUsers = pgTable('trip_users', {
   addedBy: text('added_by')
     .notNull()
     .references(() => user.id),
-  createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
+  ...timestamps,
 });
 
 export const tripInvites = pgTable('trip_invites', {
@@ -157,6 +151,5 @@ export const tripInvites = pgTable('trip_invites', {
     .references(() => user.id),
   status: inviteStatusEnum('status').notNull().default('pending'),
   answeredAt: timestamp('answered_at'),
-  createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
+  ...timestamps,
 });
