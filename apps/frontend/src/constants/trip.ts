@@ -11,6 +11,8 @@ import {
   PencilEdit02Icon,
   UserIcon,
   CrownIcon,
+  SpeedTrain01Icon,
+  HelpSquareIcon,
 } from '@hugeicons/core-free-icons';
 
 export const TRANSPORT_OPTIONS = [
@@ -22,6 +24,8 @@ export const TRANSPORT_OPTIONS = [
   { value: 'plane', label: 'Plane', icon: AirplaneModeIcon },
   { value: 'ship', label: 'Ship', icon: CargoShipIcon },
   { value: 'boat', label: 'Boat', icon: FerryBoatIcon },
+  { value: 'train', label: 'Train', icon: SpeedTrain01Icon },
+  { value: 'other', label: 'Other', icon: HelpSquareIcon },
 ] as const;
 
 export const TRAVELER_ROLE_OPTIONS = [

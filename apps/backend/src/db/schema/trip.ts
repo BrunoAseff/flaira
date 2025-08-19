@@ -30,6 +30,8 @@ export const transportTypeEnum = pgEnum('transport_type', [
   'plane',
   'ship',
   'boat',
+  'train',
+  'other',
 ]);
 export const roleEnum = pgEnum('role', ['viewer', 'editor', 'admin']);
 export const inviteStatusEnum = pgEnum('invite_status', [
