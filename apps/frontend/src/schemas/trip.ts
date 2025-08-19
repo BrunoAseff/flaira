@@ -13,6 +13,8 @@ export const tripDetailsSchema = z.object({
 
 export const tripRouteSchema = z.object({
   transportMode: z.string().min(1, 'Transportation mode is required'),
+  estimatedDuration: z.number().nonnegative(),
+  estimatedDistance: z.number().nonnegative(),
   locations: z
     .array(
       z.object({
@@ -20,6 +22,8 @@ export const tripRouteSchema = z.object({
         name: z.string(),
         coordinates: z.tuple([z.number(), z.number()]),
         address: z.string().optional(),
+        city: z.string().optional(),
+        country: z.string().optional(),
       })
     )
     .refine(
