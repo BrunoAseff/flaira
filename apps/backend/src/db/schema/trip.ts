@@ -48,8 +48,8 @@ export const trips = pgTable('trips', {
     .references(() => user.id, { onDelete: 'cascade' }),
   title: text('title').notNull(),
   description: text('description'),
-  startDate: timestamp('start_date').notNull(),
-  endDate: timestamp('end_date').notNull(),
+  startDate: timestamp('start_date', { withTimezone: true }).notNull(),
+  endDate: timestamp('end_date', { withTimezone: true }).notNull(),
   duration: integer('duration'),
   distance: doublePrecision('distance'),
   visibility: visibilityEnum('visibility').notNull().default('private'),
@@ -152,6 +152,6 @@ export const tripInvites = pgTable('trip_invites', {
     .notNull()
     .references(() => user.id),
   status: inviteStatusEnum('status').notNull().default('pending'),
-  answeredAt: timestamp('answered_at'),
+  answeredAt: timestamp('answered_at', { withTimezone: true }),
   ...timestamps,
 });
