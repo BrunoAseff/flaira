@@ -80,34 +80,27 @@ export const isRouteWithinLimits = (
   return distance <= maxDistance;
 };
 
-export const extractLocationDetails = (result: GeocodingResult) => {
+export const extractLocationDetails = (
+  result: GeocodingResult
+): { country: string; city: string } => {
   let country = '';
   let city = '';
 
-  if (result.place_type?.includes('country')) {
+  const types = result.place_type ?? [];
+  const contexts = result.context ?? [];
+  const findCtx = (prefix: string) =>
+    contexts.find((ctx) => ctx.id.startsWith(prefix));
+
+  if (types.includes('country')) {
     country = result.text || result.place_name;
-    city = '';
-  } else if (result.place_type?.includes('place')) {
+  } else if (types.includes('place') || types.includes('locality')) {
     city = result.text || result.place_name.split(',')[0];
-
-    const countryContext = result.context?.find((ctx) =>
-      ctx.id.startsWith('country.')
-    );
-    country = countryContext?.text || '';
+    country = findCtx('country.')?.text || '';
   } else {
-    const placeContext = result.context?.find((ctx) =>
-      ctx.id.startsWith('place.')
-    );
-    const countryContext = result.context?.find((ctx) =>
-      ctx.id.startsWith('country.')
-    );
-
-    city = placeContext?.text || result.text || result.place_name.split(',')[0];
-    country = countryContext?.text || '';
-
-    if (!placeContext && !result.place_type?.includes('country')) {
-      city = result.text || result.place_name.split(',')[0];
-    }
+    const cityFromCtx =
+      findCtx('place.')?.text || findCtx('locality.')?.text || '';
+    city = cityFromCtx || result.text || result.place_name.split(',')[0];
+    country = findCtx('country.')?.text || '';
   }
 
   if (!country && result.place_name.includes(',')) {
@@ -118,6 +111,11 @@ export const extractLocationDetails = (result: GeocodingResult) => {
         city = parts[0];
       }
     }
+  }
+
+  if (!country) {
+    const cc = findCtx('country.')?.short_code;
+    if (cc) country = cc.toUpperCase();
   }
 
   return { country: country.trim(), city: city.trim() };
