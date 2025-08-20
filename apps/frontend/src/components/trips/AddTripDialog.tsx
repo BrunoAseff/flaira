@@ -26,7 +26,7 @@ import {
   useImages,
   useTripActions,
 } from '@/stores/trip-store';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 
 export function AddTripDialog({
   isOpen,
@@ -71,10 +71,26 @@ export function AddTripDialog({
     setTimeout(() => setIsOpen(false), 0);
   };
 
-  const handleCancelExit = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setShowExitWarning(false);
-  };
+  const handleCancelExit = useCallback(
+    (event?: React.MouseEvent | React.TouchEvent) => {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      setShowExitWarning(false);
+    },
+    []
+  );
+
+  const handleAlertDialogChange = useCallback(
+    (open: boolean) => {
+      if (!open && showExitWarning) {
+        setShowExitWarning(false);
+      }
+    },
+    [showExitWarning]
+  );
 
   return (
     <>
@@ -93,7 +109,10 @@ export function AddTripDialog({
         </DialogContent>
       </Dialog>
 
-      <AlertDialog open={showExitWarning} onOpenChange={setShowExitWarning}>
+      <AlertDialog
+        open={showExitWarning}
+        onOpenChange={handleAlertDialogChange}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure you want to leave?</AlertDialogTitle>
@@ -103,7 +122,14 @@ export function AddTripDialog({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleCancelExit}>
+            <AlertDialogCancel
+              onClick={handleCancelExit}
+              onTouchEnd={(e: React.TouchEvent) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleCancelExit(e);
+              }}
+            >
               Stay here
             </AlertDialogCancel>
             <AlertDialogAction
