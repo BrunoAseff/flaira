@@ -26,7 +26,7 @@ import {
   useImages,
   useTripActions,
 } from '@/stores/trip-store';
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 
 export function AddTripDialog({
   isOpen,
@@ -56,6 +56,21 @@ export function AddTripDialog({
       images.length > 0
     );
   }, [details, route, travelers, images]);
+
+  useEffect(() => {
+    if (!isOpen || !hasUnsavedChanges) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isOpen, hasUnsavedChanges]);
 
   const handleOpenChange = (open: boolean) => {
     if (!open && hasUnsavedChanges) {
