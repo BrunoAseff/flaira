@@ -94,17 +94,15 @@ export function useRouting() {
       const coordinates = locations.map((loc) => loc.coordinates);
 
       const profileMap: Record<string, string> = {
-        car: 'driving',
-        feet: 'walking',
+        on_foot: 'walking',
         bicycle: 'cycling',
-        motorbike: 'driving',
-        bus: 'driving',
-        plane: 'driving',
-        ship: 'driving',
-        boat: 'driving',
       };
 
-      const profile = profileMap[transportMode] || 'driving';
+      const getProfile = (transport: string): string => {
+        return profileMap[transport] || 'driving';
+      };
+
+      const profile = getProfile(transportMode);
       const distance = calculateTotalApproximateDistance(coordinates);
       const maxDistance = getMaxDistanceForProfile(profile);
 

@@ -11,10 +11,12 @@ import {
   PencilEdit02Icon,
   UserIcon,
   CrownIcon,
+  SpeedTrain01Icon,
+  HelpSquareIcon,
 } from '@hugeicons/core-free-icons';
 
 export const TRANSPORT_OPTIONS = [
-  { value: 'feet', label: 'On foot', icon: WorkoutRunIcon },
+  { value: 'on_foot', label: 'On foot', icon: WorkoutRunIcon },
   { value: 'bicycle', label: 'Bicycle', icon: BicycleIcon },
   { value: 'car', label: 'Car', icon: Car05Icon },
   { value: 'motorbike', label: 'Motorbike', icon: Motorbike02Icon },
@@ -22,7 +24,11 @@ export const TRANSPORT_OPTIONS = [
   { value: 'plane', label: 'Plane', icon: AirplaneModeIcon },
   { value: 'ship', label: 'Ship', icon: CargoShipIcon },
   { value: 'boat', label: 'Boat', icon: FerryBoatIcon },
+  { value: 'train', label: 'Train', icon: SpeedTrain01Icon },
+  { value: 'other', label: 'Other', icon: HelpSquareIcon },
 ] as const;
+
+export const ROUTABLE_TRANSPORT_MODES = new Set(['car', 'bicycle', 'on_foot']);
 
 export const TRAVELER_ROLE_OPTIONS = [
   {
