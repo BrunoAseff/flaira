@@ -39,7 +39,7 @@ export default function Details() {
 
   return (
     <div className="flex flex-col md:flex-row mx-6 md:mx-10 gap-8 h-[95%] py-2">
-      <div className="flex flex-col w-full md:w-[40%] gap-4 h-full min-h-0 overflow-y-auto">
+      <div className="flex flex-col w-full md:w-[40%] gap-4 h-full min-h-0 overflow-y-auto p-1">
         <div className="flex flex-col gap-1 px-1 flex-shrink-0">
           <Label className="text-base">Title</Label>
           <Input
