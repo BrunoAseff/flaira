@@ -39,7 +39,7 @@ export default function Details() {
 
   return (
     <div className="flex flex-col md:flex-row mx-6 md:mx-10 gap-8 h-[95%] py-2">
-      <div className="flex flex-col w-full md:w-[40%] gap-4 h-full">
+      <div className="flex flex-col w-full md:w-[40%] gap-4 h-full min-h-0 overflow-y-auto p-1">
         <div className="flex flex-col gap-1 px-1 flex-shrink-0">
           <Label className="text-base">Title</Label>
           <Input
@@ -50,15 +50,15 @@ export default function Details() {
             type="text"
           />
         </div>
-        <div className="flex flex-col gap-1 flex-1 min-h-0">
+        <div className="flex flex-col gap-1">
           <Label className="text-base flex-shrink-0">Description</Label>
           <Textarea
             value={details.description}
             onChange={(e) => actions.setDescription(e.target.value)}
-            className="flex-1 min-h-[150px] resize-none"
+            className="h-48 resize-none"
           />
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 flex-shrink-0">
           <Label className="text-base">Dates</Label>
           <RangeDatePicker
             value={dateRange}
@@ -67,7 +67,7 @@ export default function Details() {
           />
         </div>
 
-        <div className="flex flex-col gap-1 w-full px-1">
+        <div className="flex flex-col gap-1 w-full px-1 flex-shrink-0">
           <div className="flex items-center space-x-2 mt-2">
             <Checkbox
               id="current-trip"

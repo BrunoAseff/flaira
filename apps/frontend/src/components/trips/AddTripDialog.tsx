@@ -26,7 +26,7 @@ import {
   useImages,
   useTripActions,
 } from '@/stores/trip-store';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 
 export function AddTripDialog({
   isOpen,
@@ -57,6 +57,21 @@ export function AddTripDialog({
     );
   }, [details, route, travelers, images]);
 
+  useEffect(() => {
+    if (!isOpen || !hasUnsavedChanges) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isOpen, hasUnsavedChanges]);
+
   const handleOpenChange = (open: boolean) => {
     if (!open && hasUnsavedChanges) {
       setShowExitWarning(true);
@@ -71,14 +86,31 @@ export function AddTripDialog({
     setTimeout(() => setIsOpen(false), 0);
   };
 
-  const handleCancelExit = () => {
-    setShowExitWarning(false);
-  };
+  const handleCancelExit = useCallback(
+    (event?: React.MouseEvent | React.TouchEvent) => {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      setShowExitWarning(false);
+    },
+    []
+  );
+
+  const handleAlertDialogChange = useCallback(
+    (open: boolean) => {
+      if (!open && showExitWarning) {
+        setShowExitWarning(false);
+      }
+    },
+    [showExitWarning]
+  );
 
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-        <DialogContent className="w-full h-full min-w-full max-w-[1200px] md:min-w-[1000px] md:w-[65%] md:h-[95%] bg-background p-0 flex flex-col overflow-hidden">
+        <DialogContent className="w-full h-full min-w-full 2xl:max-w-[1200px] 2xl:min-w-[1000px] 2xl:w-[65%] 2xl:h-[95%] bg-background p-0 flex flex-col overflow-hidden">
           <DialogHeader className="px-6 py-4 border-b border-accent">
             <DialogTitle className="text-foreground text-xl font-semibold">
               New trip
@@ -92,7 +124,10 @@ export function AddTripDialog({
         </DialogContent>
       </Dialog>
 
-      <AlertDialog open={showExitWarning} onOpenChange={setShowExitWarning}>
+      <AlertDialog
+        open={showExitWarning}
+        onOpenChange={handleAlertDialogChange}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure you want to leave?</AlertDialogTitle>
@@ -102,7 +137,14 @@ export function AddTripDialog({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleCancelExit}>
+            <AlertDialogCancel
+              onClick={handleCancelExit}
+              onTouchEnd={(e: React.TouchEvent) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleCancelExit(e);
+              }}
+            >
               Stay here
             </AlertDialogCancel>
             <AlertDialogAction
