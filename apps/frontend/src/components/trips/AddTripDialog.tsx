@@ -71,7 +71,8 @@ export function AddTripDialog({
     setTimeout(() => setIsOpen(false), 0);
   };
 
-  const handleCancelExit = () => {
+  const handleCancelExit = (event: React.MouseEvent) => {
+    event.preventDefault();
     setShowExitWarning(false);
   };
 
