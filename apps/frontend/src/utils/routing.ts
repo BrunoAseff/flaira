@@ -17,7 +17,7 @@ function calculateTurfDistance(
 ): number {
   const from = point([fromLongitude, fromLatitude]);
   const to = point([toLongitude, toLatitude]);
-  return distance(from, to, { units: 'meters' });
+  return distance(from, to, { units: 'kilometers' });
 }
 
 const sumSegmentDistances = (
