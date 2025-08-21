@@ -140,7 +140,7 @@ jobs:
         run: |
           pnpm install --no-frozen-lockfile
           cd apps/backend
-          npx drizzle-kit push
+          npx drizzle-kit push --force
 
   deploy-production:
     needs: [push-db-migrations]
