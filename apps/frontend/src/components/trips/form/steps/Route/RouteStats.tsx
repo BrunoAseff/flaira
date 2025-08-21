@@ -18,7 +18,7 @@ interface RouteStatsProps {
 
 export default function RouteStats({ route, transportMode }: RouteStatsProps) {
   const showDuration = ROUTABLE_TRANSPORT_MODES.has(transportMode);
-  
+
   return (
     <div className="flex justify-center items-center gap-8 py-2">
       {route && (

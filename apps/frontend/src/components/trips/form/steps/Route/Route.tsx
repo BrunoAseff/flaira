@@ -132,7 +132,6 @@ export default function Route() {
     calculateRoute,
   ]);
 
-
   return (
     <TooltipProvider>
       <div className="flex flex-col md:flex-row mx-6 h-full">
