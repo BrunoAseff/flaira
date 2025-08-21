@@ -11,7 +11,6 @@ import LocationInputs from './LocationInputs';
 import TransportModeSelector from './TransportModeSelector';
 import RouteStats from './RouteStats';
 import CurrentLocationDialog from './CurrentLocationDialog';
-import { ROUTABLE_TRANSPORT_MODES } from '@/constants/trip';
 
 export default function Route() {
   const route = useRoute();
@@ -133,10 +132,6 @@ export default function Route() {
     calculateRoute,
   ]);
 
-  const isRouteStatsAccurate = ROUTABLE_TRANSPORT_MODES.has(
-    route.transportMode
-  );
-
   return (
     <TooltipProvider>
       <div className="flex flex-col md:flex-row mx-6 h-full">
@@ -174,7 +169,7 @@ export default function Route() {
             </div>
           </div>
 
-          {isRouteStatsAccurate && <RouteStats route={routeData} />}
+          <RouteStats route={routeData} transportMode={route.transportMode} />
         </div>
       </div>
 

@@ -1,4 +1,6 @@
 import type { GeocodingResult } from '@/types/route';
+import { distance } from '@turf/turf';
+import { point } from '@turf/turf';
 
 export const MAPBOX_DISTANCE_LIMITS = {
   driving: 4_000_000,
@@ -7,34 +9,15 @@ export const MAPBOX_DISTANCE_LIMITS = {
   walking: 1_000_000,
 } as const;
 
-const EARTH_RADIUS_METERS = 6371000;
-
-const degreesToRadians = (degrees: number): number => (degrees * Math.PI) / 180;
-
-function calculateHaversineDistance(
+function calculateTurfDistance(
   fromLatitude: number,
   fromLongitude: number,
   toLatitude: number,
   toLongitude: number
 ): number {
-  const latitudeDifferenceRadians = degreesToRadians(toLatitude - fromLatitude);
-  const longitudeDifferenceRadians = degreesToRadians(
-    toLongitude - fromLongitude
-  );
-
-  const fromLatitudeRadians = degreesToRadians(fromLatitude);
-  const toLatitudeRadians = degreesToRadians(toLatitude);
-
-  const haversineValue =
-    Math.sin(latitudeDifferenceRadians / 2) ** 2 +
-    Math.cos(fromLatitudeRadians) *
-      Math.cos(toLatitudeRadians) *
-      Math.sin(longitudeDifferenceRadians / 2) ** 2;
-
-  const centralAngle =
-    2 * Math.atan2(Math.sqrt(haversineValue), Math.sqrt(1 - haversineValue));
-
-  return EARTH_RADIUS_METERS * centralAngle;
+  const from = point([fromLongitude, fromLatitude]);
+  const to = point([toLongitude, toLatitude]);
+  return distance(from, to, { units: 'kilometers' });
 }
 
 const sumSegmentDistances = (
@@ -49,9 +32,9 @@ const sumSegmentDistances = (
   const [fromLng, fromLat] = coordinates[index];
   const [toLng, toLat] = coordinates[index + 1];
 
-  const distance = calculateHaversineDistance(fromLat, fromLng, toLat, toLng);
+  const segmentDistance = calculateTurfDistance(fromLat, fromLng, toLat, toLng);
 
-  return sumSegmentDistances(coordinates, index + 1, total + distance);
+  return sumSegmentDistances(coordinates, index + 1, total + segmentDistance);
 };
 
 export const calculateTotalApproximateDistance = (

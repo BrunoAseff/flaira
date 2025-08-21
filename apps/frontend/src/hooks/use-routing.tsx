@@ -5,6 +5,7 @@ import {
   calculateTotalApproximateDistance,
   getMaxDistanceForProfile,
 } from '@/utils/routing';
+import { ROUTABLE_TRANSPORT_MODES } from '@/constants/trip';
 
 export function useRouting() {
   const [queryParams, setQueryParams] = useState<{
@@ -91,18 +92,20 @@ export function useRouting() {
         return;
       }
 
+      if (!ROUTABLE_TRANSPORT_MODES.has(transportMode)) {
+        setQueryParams(null);
+        return;
+      }
+
       const coordinates = locations.map((loc) => loc.coordinates);
 
       const profileMap: Record<string, string> = {
         on_foot: 'walking',
         bicycle: 'cycling',
+        car: 'driving',
       };
 
-      const getProfile = (transport: string): string => {
-        return profileMap[transport] || 'driving';
-      };
-
-      const profile = getProfile(transportMode);
+      const profile = profileMap[transportMode] || 'driving';
       const distance = calculateTotalApproximateDistance(coordinates);
       const maxDistance = getMaxDistanceForProfile(profile);
 
