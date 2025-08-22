@@ -28,6 +28,34 @@ interface FileInputProps {
   acceptedTypes?: 'images' | 'media';
 }
 
+function inferTypeFromNameOrUrl(
+  file: File | FileMetadata
+): 'image' | 'video' | 'audio' | 'unknown' {
+  const nameOrPath =
+    ('name' in file ? file.name : undefined) ||
+    ('url' in file && file.url ? new URL(file.url).pathname : '');
+  const ext = nameOrPath.split('.').pop()?.toLowerCase() ?? '';
+
+  const image = new Set([
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'webp',
+    'svg',
+    'avif',
+    'heic',
+    'heif',
+  ]);
+  const video = new Set(['mp4', 'mov', 'avi', 'mkv', 'webm']);
+  const audio = new Set(['mp3', 'wav', 'aac', 'ogg', 'm4a']);
+
+  if (image.has(ext)) return 'image';
+  if (video.has(ext)) return 'video';
+  if (audio.has(ext)) return 'audio';
+  return 'unknown';
+}
+
 const ACCEPTED_TYPES: Record<
   NonNullable<FileInputProps['acceptedTypes']>,
   string
@@ -40,12 +68,13 @@ const ACCEPTED_TYPES: Record<
 function getFileType(
   file: File | FileMetadata
 ): 'image' | 'video' | 'audio' | 'unknown' {
-  const mimeType = 'type' in file ? file.type : '';
+  const mimeType = 'type' in file && file.type ? file.type : '';
   if (mimeType.startsWith('image/')) return 'image';
   if (mimeType.startsWith('video/')) return 'video';
   if (mimeType.startsWith('audio/')) return 'audio';
-  return 'unknown';
+  return inferTypeFromNameOrUrl(file);
 }
+
 
 function getFileName(file: File | FileMetadata): string {
   return 'name' in file ? file.name : 'Unknown file';
