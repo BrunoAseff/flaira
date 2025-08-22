@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import { api } from '@/lib/api';
 
 interface UploadMemoryResponse {
   url: string;
@@ -18,24 +19,19 @@ const uploadMemoryToS3 = async (
     return 'image';
   };
 
-  const presignedUrlResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/trip/upload-memory`,
+  const presignedUrlResponse = await api.post<UploadMemoryResponse>(
+    '/trip/upload-memory',
     {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ fileName, type }),
+      body: { fileName, type },
+      auth: true,
     }
   );
 
   if (!presignedUrlResponse.ok) {
-    const errorData = await presignedUrlResponse.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Failed to get upload URL.');
+    throw new Error(presignedUrlResponse.error || 'Failed to get upload URL.');
   }
 
-  const { url: S3UploadUrl, key: s3Key }: UploadMemoryResponse = (
-    await presignedUrlResponse.json()
-  ).data;
+  const { url: S3UploadUrl, key: s3Key } = presignedUrlResponse.data!;
 
   const uploadResponse = await fetch(S3UploadUrl, {
     method: 'PUT',
