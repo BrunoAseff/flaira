@@ -40,8 +40,8 @@ const SuccessState = ({
   onSeeTrip: () => void;
 }) => (
   <div className="text-center space-y-4">
-    <div className="mx-auto w-12 h-12 bg-success/10 rounded-full flex items-center justify-center">
-      <HugeiconsIcon icon={Tick02Icon} size={24} className="text-success" />
+    <div className="mx-auto rounded-full flex items-center justify-center">
+      <HugeiconsIcon icon={Tick02Icon} size={38} className="text-foreground" />
     </div>
     <p className="text-foreground/60 px-12">
       Your trip has been created and is ready for your next adventure!
@@ -59,8 +59,8 @@ const SuccessState = ({
 
 const ErrorState = ({ onClose }: { onClose: () => void }) => (
   <div className="text-center space-y-4">
-    <div className="mx-auto w-12 h-12 bg-error/10 rounded-full flex items-center justify-center">
-      <HugeiconsIcon icon={Cancel01Icon} size={24} className="text-error" />
+    <div className="mx-auto rounded-full flex items-center justify-center">
+      <HugeiconsIcon icon={Cancel01Icon} size={38} className="text-error" />
     </div>
     <p className="text-foreground/60 px-12">
       Something went wrong while creating your trip. Please try again.
