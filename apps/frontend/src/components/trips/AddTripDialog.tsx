@@ -119,7 +119,7 @@ export function AddTripDialog({
               Add a new trip to your library.
             </DialogDescription>
           </DialogHeader>
-          <AddTripForm />
+          <AddTripForm onSuccess={() => setIsOpen(false)} />
           <DialogClose />
         </DialogContent>
       </Dialog>
@@ -149,7 +149,7 @@ export function AddTripDialog({
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmExit}
-              className="bg-error text-white shadow-xs hover:bg-error/90 focus-visible:ring-error/20 dark:focus-visible:ring-error/40 dark:bg-error/60"
+              className="bg-error text-background shadow-xs hover:bg-error/90 focus-visible:ring-error/20 dark:focus-visible:ring-error/40 dark:bg-error/60"
             >
               Leave and discard changes
             </AlertDialogAction>
