@@ -12,16 +12,19 @@ trip.post(
   '/create',
   zValidator('json', createTripSchema, (result, c) => {
     if (!result.success) {
-      const errors = result.error.issues.map(issue => ({
+      const errors = result.error.issues.map((issue) => ({
         path: issue.path.join('.'),
         message: issue.message,
       }));
-      return c.json({
-        status: 'error',
-        code: 422,
-        message: 'Validation failed',
-        errors,
-      }, 422);
+      return c.json(
+        {
+          status: 'error',
+          code: 422,
+          message: 'Validation failed',
+          errors,
+        },
+        422
+      );
     }
   }),
   addTrip

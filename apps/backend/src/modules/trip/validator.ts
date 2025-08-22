@@ -15,63 +15,72 @@ export const tripTravelerSchema = z.object({
   role: z.string().min(1, 'Role is required'),
 });
 
-
-export const createTripSchema = z.object({
-  details: z.object({
-    title: z.string().trim().min(1, 'Title is required'),
-    description: z.string().optional().default(''),
-    startDate: z.string().datetime('Invalid start date format'),
-    endDate: z.string().datetime('Invalid end date format').optional(),
-    hasTripFinished: z.boolean().default(false),
-  }),
-  route: z.object({
-    transportMode: z.enum([
-      'on_foot',
-      'bicycle', 
-      'car',
-      'motorbike',
-      'bus',
-      'plane',
-      'ship',
-      'boat',
-      'train',
-      'other'
-    ]),
-    estimatedDuration: z.number().nonnegative('Duration must be non-negative'),
-    estimatedDistance: z.number().nonnegative('Distance must be non-negative'),
-    locations: z
-      .array(tripLocationSchema)
-      .min(2, 'At least start and end locations are required')
-      .refine(
-        (locations) => {
-          const hasStart = locations.some((loc) => loc.id === 'start');
-          const hasEnd = locations.some((loc) => loc.id === 'end');
-          return hasStart && hasEnd;
-        },
-        { message: 'Both start and end locations are required' }
-      ),
-    stops: z.array(z.object({ id: z.number() })).default([]),
-  }),
-  travelers: z.object({
-    users: z.array(tripTravelerSchema).default([]),
-  }),
-  memories: z.array(z.object({
-    s3Key: z.string().min(1, 'S3 key is required'),
-    type: z.enum(['image', 'video', 'audio']),
-  })).optional(),
-}).refine(
-  (data) => {
-    if (data.details.endDate) {
-      const startDate = new Date(data.details.startDate);
-      const endDate = new Date(data.details.endDate);
-      return endDate >= startDate;
+export const createTripSchema = z
+  .object({
+    details: z.object({
+      title: z.string().trim().min(1, 'Title is required'),
+      description: z.string().optional().default(''),
+      startDate: z.string().datetime('Invalid start date format'),
+      endDate: z.string().datetime('Invalid end date format').optional(),
+      hasTripFinished: z.boolean().default(false),
+    }),
+    route: z.object({
+      transportMode: z.enum([
+        'on_foot',
+        'bicycle',
+        'car',
+        'motorbike',
+        'bus',
+        'plane',
+        'ship',
+        'boat',
+        'train',
+        'other',
+      ]),
+      estimatedDuration: z
+        .number()
+        .nonnegative('Duration must be non-negative'),
+      estimatedDistance: z
+        .number()
+        .nonnegative('Distance must be non-negative'),
+      locations: z
+        .array(tripLocationSchema)
+        .min(2, 'At least start and end locations are required')
+        .refine(
+          (locations) => {
+            const hasStart = locations.some((loc) => loc.id === 'start');
+            const hasEnd = locations.some((loc) => loc.id === 'end');
+            return hasStart && hasEnd;
+          },
+          { message: 'Both start and end locations are required' }
+        ),
+      stops: z.array(z.object({ id: z.number() })).default([]),
+    }),
+    travelers: z.object({
+      users: z.array(tripTravelerSchema).default([]),
+    }),
+    memories: z
+      .array(
+        z.object({
+          s3Key: z.string().min(1, 'S3 key is required'),
+          type: z.enum(['image', 'video', 'audio']),
+        })
+      )
+      .optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.details.endDate) {
+        const startDate = new Date(data.details.startDate);
+        const endDate = new Date(data.details.endDate);
+        return endDate >= startDate;
+      }
+      return true;
+    },
+    {
+      message: 'End date must be after start date',
+      path: ['details', 'endDate'],
     }
-    return true;
-  },
-  { 
-    message: 'End date must be after start date',
-    path: ['details', 'endDate']
-  }
-);
+  );
 
 export type CreateTripInput = z.infer<typeof createTripSchema>;
