@@ -5,6 +5,7 @@ import { corsConfig } from './utils/http';
 import { user } from '@/modules/user/route';
 import { directions } from '@/modules/directions/route';
 import { status } from '@/modules/status/route';
+import { trip } from '@/modules/trip/route';
 
 const app = new Hono<{
   Variables: {
@@ -38,5 +39,7 @@ app.route('/status', status);
 app.route('/user', user);
 
 app.route('/directions', directions);
+
+app.route('/trip', trip);
 
 export { app };
