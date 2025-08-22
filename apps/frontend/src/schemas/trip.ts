@@ -48,3 +48,49 @@ export const tripTravelersSchema = z.object({
     })
   ),
 });
+
+export const validateTripDetails = (details: any) => {
+  const result = tripDetailsSchema.safeParse(details);
+  return {
+    isValid: result.success,
+    errors: result.success
+      ? []
+      : result.error.issues.map((issue) => issue.message),
+  };
+};
+
+export const validateTripRoute = (route: any) => {
+  const result = tripRouteSchema.safeParse(route);
+  return {
+    isValid: result.success,
+    errors: result.success
+      ? []
+      : result.error.issues.map((issue) => issue.message),
+  };
+};
+
+export const validateTripTravelers = (travelers: any) => {
+  if (travelers.users.length === 0) {
+    return { isValid: true, errors: [] };
+  }
+
+  const missingEmails = travelers.users.filter(
+    (user: any) => !user.email.trim()
+  );
+  if (missingEmails.length > 0) {
+    return {
+      isValid: false,
+      errors: ['All travelers must have an email address'],
+    };
+  }
+
+  const hasInvalidEmails = travelers.users.some((user: any) => {
+    return user.email.trim() && !emailSchema.safeParse(user.email).success;
+  });
+
+  if (hasInvalidEmails) {
+    return { isValid: false, errors: [] };
+  }
+
+  return { isValid: true, errors: [] };
+};

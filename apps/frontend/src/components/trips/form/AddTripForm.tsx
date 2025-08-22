@@ -24,9 +24,9 @@ import {
   useTripActions,
 } from '@/stores/trip-store';
 import {
-  tripDetailsSchema,
-  tripRouteSchema,
-  emailSchema,
+  validateTripDetails,
+  validateTripRoute,
+  validateTripTravelers,
 } from '@/schemas/trip';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useCreateTrip } from '@/hooks/use-trip';
@@ -121,49 +121,9 @@ export default function AddTripForm({ onSuccess }: AddTripFormProps = {}) {
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === totalSteps;
 
-  const detailsValidation = useMemo(() => {
-    const result = tripDetailsSchema.safeParse(details);
-    return {
-      isValid: result.success,
-      errors: result.success
-        ? []
-        : result.error.issues.map((issue) => issue.message),
-    };
-  }, [details]);
-
-  const routeValidation = useMemo(() => {
-    const result = tripRouteSchema.safeParse(route);
-    return {
-      isValid: result.success,
-      errors: result.success
-        ? []
-        : result.error.issues.map((issue) => issue.message),
-    };
-  }, [route]);
-
-  const travelersValidation = useMemo(() => {
-    if (travelers.users.length === 0) {
-      return { isValid: true, errors: [] };
-    }
-
-    const missingEmails = travelers.users.filter((user) => !user.email.trim());
-    if (missingEmails.length > 0) {
-      return {
-        isValid: false,
-        errors: ['All travelers must have an email address'],
-      };
-    }
-
-    const hasInvalidEmails = travelers.users.some((user) => {
-      return user.email.trim() && !emailSchema.safeParse(user.email).success;
-    });
-
-    if (hasInvalidEmails) {
-      return { isValid: false, errors: [] };
-    }
-
-    return { isValid: true, errors: [] };
-  }, [travelers]);
+  const detailsValidation = useMemo(() => validateTripDetails(details), [details]);
+  const routeValidation = useMemo(() => validateTripRoute(route), [route]);
+  const travelersValidation = useMemo(() => validateTripTravelers(travelers), [travelers]);
 
   const currentStepValidation = useMemo(() => {
     switch (currentStep) {
