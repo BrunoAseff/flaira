@@ -14,11 +14,13 @@ import type { Transaction } from '@/db/types';
 const calculateTripDuration = (
   startDate: Date,
   endDate: Date | null
-): number | null => {
-  if (!endDate) return null;
-  return Math.ceil(
-    (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
-  );
+): number => {
+  if (!endDate) return 0;
+
+  const diffMs = endDate.getTime() - startDate.getTime();
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+  return Math.max(1, Math.ceil(diffDays));
 };
 
 const insertTripRecord = async (
@@ -30,7 +32,8 @@ const insertTripRecord = async (
   const startDate = new Date(tripData.details.startDate);
   const endDate = tripData.details.endDate
     ? new Date(tripData.details.endDate)
-    : null;
+    : startDate;
+
   const duration = calculateTripDuration(startDate, endDate);
 
   await tx.insert(trips).values({
@@ -39,7 +42,7 @@ const insertTripRecord = async (
     title: tripData.details.title,
     description: tripData.details.description || null,
     startDate,
-    endDate: endDate || startDate,
+    endDate,
     duration,
     distance: tripData.route.estimatedDistance,
     visibility: 'private' as const,
@@ -65,11 +68,25 @@ const insertTripLocations = async (
       if (id === 'start') return { type: 'start', stopIndex: null };
       if (id === 'end') return { type: 'end', stopIndex: null };
       if (id.startsWith('stop-')) {
-        const stopId = parseInt(id.replace('stop-', ''));
+        const stopIdStr = id.slice(5);
+        const stopId = parseInt(stopIdStr, 10);
+
+        if (!Number.isFinite(stopId) || stopIdStr !== stopId.toString()) {
+          throw new Error(
+            `Invalid stop ID format: ${id}. Expected format: 'stop-{number}'`
+          );
+        }
+
         const stopIndex = route.stops.findIndex((stop) => stop.id === stopId);
+        if (stopIndex === -1) {
+          throw new Error(`Stop with ID ${stopId} not found in route stops`);
+        }
+
         return { type: 'stop', stopIndex };
       }
-      throw new Error(`Invalid location type: ${id}`);
+      throw new Error(
+        `Invalid location type: ${id}. Expected 'start', 'end', or 'stop-{number}'`
+      );
     };
 
     const { type, stopIndex } = getLocationType(location.id);
