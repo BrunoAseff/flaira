@@ -8,9 +8,9 @@ interface LoadingSpinnerProps {
 
 export function LoadingSpinner({ size = 32, className }: LoadingSpinnerProps) {
   return (
-    <LoaderCircle 
-      className={cn("animate-spin text-foreground", className)} 
-      size={size} 
+    <LoaderCircle
+      className={cn('animate-spin text-foreground', className)}
+      size={size}
     />
   );
 }

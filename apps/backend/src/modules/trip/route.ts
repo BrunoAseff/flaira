@@ -1,11 +1,11 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { addTrip, uploadMemory, getMemory, deleteMemory } from './controller';
-import { 
-  createTripSchema, 
-  uploadMemorySchema, 
-  getMemorySchema, 
-  deleteMemorySchema 
+import {
+  createTripSchema,
+  uploadMemorySchema,
+  getMemorySchema,
+  deleteMemorySchema,
 } from './validator';
 import { middleware } from '@/utils/middleware';
 

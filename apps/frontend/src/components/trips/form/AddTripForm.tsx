@@ -121,9 +121,15 @@ export default function AddTripForm({ onSuccess }: AddTripFormProps = {}) {
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === totalSteps;
 
-  const detailsValidation = useMemo(() => validateTripDetails(details), [details]);
+  const detailsValidation = useMemo(
+    () => validateTripDetails(details),
+    [details]
+  );
   const routeValidation = useMemo(() => validateTripRoute(route), [route]);
-  const travelersValidation = useMemo(() => validateTripTravelers(travelers), [travelers]);
+  const travelersValidation = useMemo(
+    () => validateTripTravelers(travelers),
+    [travelers]
+  );
 
   const currentStepValidation = useMemo(() => {
     switch (currentStep) {
