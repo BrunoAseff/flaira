@@ -1,7 +1,12 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { addTrip, uploadMemory, getMemory, deleteMemory } from './controller';
-import { createTripSchema } from './validator';
+import { 
+  createTripSchema, 
+  uploadMemorySchema, 
+  getMemorySchema, 
+  deleteMemorySchema 
+} from './validator';
 import { middleware } from '@/utils/middleware';
 
 const trip = new Hono();
@@ -30,8 +35,70 @@ trip.post(
   addTrip
 );
 
-trip.post('/upload-memory', uploadMemory);
-trip.get('/get-memory', getMemory);
-trip.delete('/delete-memory', deleteMemory);
+trip.post(
+  '/upload-memory',
+  zValidator('json', uploadMemorySchema, (result, c) => {
+    if (!result.success) {
+      const errors = result.error.issues.map((issue) => ({
+        path: issue.path.join('.'),
+        message: issue.message,
+      }));
+      return c.json(
+        {
+          status: 'error',
+          code: 422,
+          message: 'Validation failed',
+          errors,
+        },
+        422
+      );
+    }
+  }),
+  uploadMemory
+);
+
+trip.get(
+  '/get-memory',
+  zValidator('query', getMemorySchema, (result, c) => {
+    if (!result.success) {
+      const errors = result.error.issues.map((issue) => ({
+        path: issue.path.join('.'),
+        message: issue.message,
+      }));
+      return c.json(
+        {
+          status: 'error',
+          code: 422,
+          message: 'Validation failed',
+          errors,
+        },
+        422
+      );
+    }
+  }),
+  getMemory
+);
+
+trip.delete(
+  '/delete-memory',
+  zValidator('query', deleteMemorySchema, (result, c) => {
+    if (!result.success) {
+      const errors = result.error.issues.map((issue) => ({
+        path: issue.path.join('.'),
+        message: issue.message,
+      }));
+      return c.json(
+        {
+          status: 'error',
+          code: 422,
+          message: 'Validation failed',
+          errors,
+        },
+        422
+      );
+    }
+  }),
+  deleteMemory
+);
 
 export { trip };

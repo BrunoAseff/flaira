@@ -15,6 +15,19 @@ export const tripTravelerSchema = z.object({
   role: z.string().min(1, 'Role is required'),
 });
 
+export const uploadMemorySchema = z.object({
+  fileName: z.string().min(1, 'File name is required'),
+  type: z.string().min(1, 'File type is required'),
+});
+
+export const getMemorySchema = z.object({
+  key: z.string().min(1, 'S3 key is required'),
+});
+
+export const deleteMemorySchema = z.object({
+  key: z.string().min(1, 'S3 key is required'),
+});
+
 export const createTripSchema = z
   .object({
     details: z.object({
