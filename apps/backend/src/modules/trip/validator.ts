@@ -6,7 +6,12 @@ export const tripLocationSchema = z.object({
   address: z.string().optional(),
   city: z.string().optional(),
   country: z.string().optional(),
-  coordinates: z.tuple([z.number(), z.number()]),
+  coordinates: z
+    .tuple([z.number(), z.number()])
+    .refine(
+      ([lon, lat]) => lon >= -180 && lon <= 180 && lat >= -90 && lat <= 90,
+      'Coordinates must be [lon, lat] with lon in [-180,180] and lat in [-90,90]'
+    ),
 });
 
 export const tripTravelerSchema = z.object({
