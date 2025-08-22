@@ -82,8 +82,8 @@ function FilePreview({ file }: { file: FileWithPreview }) {
   }
 
   return (
-    <div className="size-full rounded-[inherit] bg-muted/50 flex flex-col items-center justify-center p-2 text-center">
-      <div className="text-muted-foreground mb-1">{getFileIcon(fileType)}</div>
+    <div className="size-full rounded-[inherit] bg-foreground/10 flex flex-col items-center justify-center p-2 text-center">
+      <div className="text-foreground mb-1">{getFileIcon(fileType)}</div>
       <span className="text-xs font-medium text-muted-foreground truncate w-full">
         {getFileName(file.file)}
       </span>
