@@ -64,18 +64,47 @@ export const createTripSchema = z
       locations: z
         .array(tripLocationSchema)
         .min(2, 'At least start and end locations are required')
-        .refine(
-          (locations) => {
-            const hasStart = locations.some((loc) => loc.id === 'start');
-            const hasEnd = locations.some((loc) => loc.id === 'end');
-            return hasStart && hasEnd;
-          },
-          { message: 'Both start and end locations are required' }
-        ),
+        .superRefine((locations, ctx) => {
+          const ids = locations.map((l) => l.id);
+          const idSet = new Set(ids);
+          if (idSet.size !== ids.length) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Location IDs must be unique',
+              path: [],
+            });
+          }
+          const starts = locations.filter((l) => l.id === 'start').length;
+          const ends = locations.filter((l) => l.id === 'end').length;
+          if (starts !== 1 || ends !== 1) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Exactly one start and one end location are required',
+              path: [],
+            });
+          }
+        }),
+
       stops: z.array(z.object({ id: z.number() })).default([]),
     }),
     travelers: z.object({
-      users: z.array(tripTravelerSchema).default([]),
+      users: z
+        .array(tripTravelerSchema)
+        .default([])
+        .superRefine((users, ctx) => {
+          const seen = new Set<string>();
+          for (const u of users) {
+            const e = u.email.toLowerCase();
+            if (seen.has(e)) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `Duplicate traveler email: ${u.email}`,
+                path: [],
+              });
+            }
+            seen.add(e);
+          }
+        }),
     }),
     memories: z
       .array(
@@ -96,7 +125,7 @@ export const createTripSchema = z
       return true;
     },
     {
-      message: 'End date must be after start date',
+      message: 'End date must be on or after start date',
       path: ['details', 'endDate'],
     }
   );
