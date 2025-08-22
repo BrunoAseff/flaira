@@ -16,7 +16,10 @@ const uploadMemoryToS3 = async (
     if (mimeType.startsWith('image/')) return 'image';
     if (mimeType.startsWith('video/')) return 'video';
     if (mimeType.startsWith('audio/')) return 'audio';
-    return 'image';
+    throw new Error(
+      'Unsupported file type. Please upload an image, video, or audio file.'
+    );
+
   };
 
   const presignedUrlResponse = await api.post<UploadMemoryResponse>(
