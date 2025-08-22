@@ -1,8 +1,20 @@
 'use client';
 
-import { AlertCircleIcon, UploadIcon, XIcon } from 'lucide-react';
+import {
+  AlertCircleIcon,
+  UploadIcon,
+  XIcon,
+  FileIcon,
+  VideoIcon,
+  AudioLinesIcon,
+  ImageIcon,
+} from 'lucide-react';
 
-import { useFileUpload, type FileWithPreview } from '@/hooks/use-file-upload';
+import {
+  useFileUpload,
+  type FileWithPreview,
+  type FileMetadata,
+} from '@/hooks/use-file-upload';
 import { Button } from '@/components/ui/button';
 import { ImageUploadIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -13,6 +25,101 @@ interface FileInputProps {
   onFilesChange?: (files: FileWithPreview[]) => void;
   maxSizeMB?: number;
   maxFiles?: number;
+  acceptedTypes?: 'images' | 'media';
+}
+
+function inferTypeFromNameOrUrl(
+  file: File | FileMetadata
+): 'image' | 'video' | 'audio' | 'unknown' {
+  const nameOrPath =
+    ('name' in file ? file.name : undefined) ||
+    ('url' in file && file.url ? new URL(file.url).pathname : '');
+  const ext = nameOrPath.split('.').pop()?.toLowerCase() ?? '';
+
+  const image = new Set([
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'webp',
+    'svg',
+    'avif',
+    'heic',
+    'heif',
+  ]);
+  const video = new Set(['mp4', 'mov', 'avi', 'mkv', 'webm']);
+  const audio = new Set(['mp3', 'wav', 'aac', 'ogg', 'm4a']);
+
+  if (image.has(ext)) return 'image';
+  if (video.has(ext)) return 'video';
+  if (audio.has(ext)) return 'audio';
+  return 'unknown';
+}
+
+const ACCEPTED_TYPES: Record<
+  NonNullable<FileInputProps['acceptedTypes']>,
+  string
+> = {
+  images: 'image/*,.heic,.heif',
+  media:
+    'image/*,video/*,audio/*,.mp4,.mov,.avi,.mkv,.webm,.heic,.heif,.mp3,.wav,.aac,.ogg,.m4a',
+} as const;
+
+function getFileType(
+  file: File | FileMetadata
+): 'image' | 'video' | 'audio' | 'unknown' {
+  const mimeType = 'type' in file && file.type ? file.type : '';
+  if (mimeType.startsWith('image/')) return 'image';
+  if (mimeType.startsWith('video/')) return 'video';
+  if (mimeType.startsWith('audio/')) return 'audio';
+  return inferTypeFromNameOrUrl(file);
+}
+
+function getFileName(file: File | FileMetadata): string {
+  return 'name' in file ? file.name : 'Unknown file';
+}
+
+function getFileSize(file: File | FileMetadata): number {
+  return 'size' in file ? file.size : 0;
+}
+
+function getFileIcon(fileType: string, className: string = 'size-8') {
+  switch (fileType) {
+    case 'video':
+      return <VideoIcon className={className} />;
+    case 'audio':
+      return <AudioLinesIcon className={className} />;
+    case 'image':
+      return <ImageIcon className={className} />;
+    default:
+      return <FileIcon className={className} />;
+  }
+}
+
+function FilePreview({ file }: { file: FileWithPreview }) {
+  const fileType = getFileType(file.file);
+
+  if (fileType === 'image') {
+    return (
+      <img
+        src={file.preview}
+        alt={file.file.name}
+        className="size-full rounded-[inherit] object-cover"
+      />
+    );
+  }
+
+  return (
+    <div className="size-full rounded-[inherit] bg-popover flex flex-col items-center justify-center p-2 text-center">
+      <div className="text-foreground mb-1">{getFileIcon(fileType)}</div>
+      <span className="text-xs font-medium text-foreground truncate w-full">
+        {getFileName(file.file)}
+      </span>
+      <span className="text-[10px] text-foreground/60 mt-0.5">
+        {(getFileSize(file.file) / 1024 / 1024).toFixed(1)}MB
+      </span>
+    </div>
+  );
 }
 
 export default function FileInput({
@@ -20,6 +127,7 @@ export default function FileInput({
   onFilesChange,
   maxSizeMB = 5,
   maxFiles = 18,
+  acceptedTypes = 'images',
 }: FileInputProps) {
   const maxSize = maxSizeMB * 1024 * 1024;
   const previousFilesLength = useRef(0);
@@ -37,7 +145,7 @@ export default function FileInput({
       getInputProps,
     },
   ] = useFileUpload({
-    accept: 'image/svg+xml,image/png,image/jpeg,image/jpg,image/gif',
+    accept: ACCEPTED_TYPES[acceptedTypes],
     maxSize,
     multiple: true,
     maxFiles,
@@ -66,7 +174,7 @@ export default function FileInput({
         <input
           {...getInputProps()}
           className="sr-only"
-          aria-label="Upload image file"
+          aria-label="Upload file"
         />
         {files.length > 0 ? (
           <div className="flex w-full flex-col gap-3 h-full">
@@ -91,8 +199,8 @@ export default function FileInput({
               </Button>
             </div>
             {files.length >= maxFiles && (
-              <span className="mx-auto py-1 px-2  text-sm bg-muted shadow-lg border border-accent rounded-2xl">
-                You can add more memories later!
+              <span className="mx-auto py-1 px-2 text-sm bg-muted shadow-lg border border-accent rounded-2xl">
+                You can add more files later!
               </span>
             )}
             <div className="grid grid-cols-2 gap-4 overflow-y-auto p-4 md:grid-cols-6 flex-1 min-h-0">
@@ -101,11 +209,7 @@ export default function FileInput({
                   key={file.id}
                   className="bg-accent relative aspect-square rounded-md"
                 >
-                  <img
-                    src={file.preview}
-                    alt={file.file.name}
-                    className="size-full rounded-[inherit] object-cover"
-                  />
+                  <FilePreview file={file} />
                   <Button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -113,7 +217,7 @@ export default function FileInput({
                     }}
                     size="icon"
                     className="border-background bg-foreground focus-visible:border-background absolute -top-2 -right-2 size-6 rounded-full border shadow-none"
-                    aria-label="Remove image"
+                    aria-label="Remove file"
                   >
                     <XIcon className="size-3.5" />
                   </Button>
@@ -132,11 +236,17 @@ export default function FileInput({
                 icon={ImageUploadIcon}
                 color="currentColor"
                 strokeWidth={1.5}
-              />{' '}
+              />
             </div>
-            <p className="mb-1.5 text-sm font-medium">Drop your images here</p>
+            <p className="mb-1.5 text-sm font-medium">
+              {acceptedTypes === 'images'
+                ? 'Drop your images here'
+                : 'Drop your media files here'}
+            </p>
             <p className="text-foreground/60 text-xs">
-              SVG, PNG, JPG or GIF (max. {maxSizeMB}MB)
+              {acceptedTypes === 'images'
+                ? `SVG, PNG, JPG or GIF (max. ${maxSizeMB}MB)`
+                : `Images, Videos, Audio (max. ${maxSizeMB}MB)`}
             </p>
             <Button
               variant="outline"
@@ -148,7 +258,7 @@ export default function FileInput({
               }}
             >
               <UploadIcon className="-ms-1 opacity-60" aria-hidden="true" />
-              Select images
+              {acceptedTypes === 'images' ? 'Select images' : 'Select files'}
             </Button>
           </div>
         )}

@@ -16,24 +16,87 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { useDetails, useRoute, useTravelers } from '@/stores/trip-store';
 import {
-  tripDetailsSchema,
-  tripRouteSchema,
-  emailSchema,
+  useDetails,
+  useImages,
+  useRoute,
+  useTravelers,
+  useTripActions,
+} from '@/stores/trip-store';
+import {
+  validateTripDetails,
+  validateTripRoute,
+  validateTripTravelers,
 } from '@/schemas/trip';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useCreateTrip } from '@/hooks/use-trip';
+import { useUploadMemories } from '@/hooks/use-memories';
+import { TripCreationDialog } from '../TripCreationDialog';
 
-export default function AddTripForm() {
+interface AddTripFormProps {
+  onSuccess?: () => void;
+}
+
+export default function AddTripForm({ onSuccess }: AddTripFormProps = {}) {
   const [currentStep, setCurrentStep] = useState(1);
   const [api, setApi] = useState<CarouselApi>();
+  const [showCreationDialog, setShowCreationDialog] = useState(false);
   const isMobile = useIsMobile();
+  const details = useDetails();
+  const route = useRoute();
+  const travelers = useTravelers();
+  const images = useImages();
+  const actions = useTripActions();
+  const createTripMutation = useCreateTrip();
+  const uploadMemoriesMutation = useUploadMemories();
 
   const totalSteps = 4;
+
+  const handleCreateTrip = async () => {
+    try {
+      let memories: Array<{
+        s3Key: string;
+        type: 'image' | 'video' | 'audio';
+      }> = [];
+
+      if (images.length > 0) {
+        const files = images
+          .map((img) => img.file)
+          .filter((file): file is File => file instanceof File);
+        const uploadResult = await uploadMemoriesMutation.mutateAsync(files);
+        memories = uploadResult;
+      }
+
+      const tripData = {
+        details: {
+          title: details.title,
+          description: details.description,
+          startDate: details.startDate?.toISOString() || '',
+          endDate: details.endDate?.toISOString(),
+          hasTripFinished: details.hasTripFinished,
+        },
+        route,
+        travelers,
+        memories: memories.length > 0 ? memories : undefined,
+      };
+
+      const result = await createTripMutation.mutateAsync(tripData);
+      if (result.status === 'ok') {
+        return { tripId: result.data!.tripId };
+      } else {
+        throw new Error(result.message || 'Failed to create trip');
+      }
+    } catch (error) {
+      console.error('Trip creation error:', error);
+      return null;
+    }
+  };
 
   const handleNext = useCallback(() => {
     if (currentStep < totalSteps) {
       api?.scrollNext();
+    } else if (currentStep === totalSteps) {
+      setShowCreationDialog(true);
     }
   }, [api, currentStep, totalSteps]);
 
@@ -58,53 +121,15 @@ export default function AddTripForm() {
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === totalSteps;
 
-  const details = useDetails();
-  const route = useRoute();
-  const travelers = useTravelers();
-
-  const detailsValidation = useMemo(() => {
-    const result = tripDetailsSchema.safeParse(details);
-    return {
-      isValid: result.success,
-      errors: result.success
-        ? []
-        : result.error.issues.map((issue) => issue.message),
-    };
-  }, [details]);
-
-  const routeValidation = useMemo(() => {
-    const result = tripRouteSchema.safeParse(route);
-    return {
-      isValid: result.success,
-      errors: result.success
-        ? []
-        : result.error.issues.map((issue) => issue.message),
-    };
-  }, [route]);
-
-  const travelersValidation = useMemo(() => {
-    if (travelers.users.length === 0) {
-      return { isValid: true, errors: [] };
-    }
-
-    const missingEmails = travelers.users.filter((user) => !user.email.trim());
-    if (missingEmails.length > 0) {
-      return {
-        isValid: false,
-        errors: ['All travelers must have an email address'],
-      };
-    }
-
-    const hasInvalidEmails = travelers.users.some((user) => {
-      return user.email.trim() && !emailSchema.safeParse(user.email).success;
-    });
-
-    if (hasInvalidEmails) {
-      return { isValid: false, errors: [] };
-    }
-
-    return { isValid: true, errors: [] };
-  }, [travelers]);
+  const detailsValidation = useMemo(
+    () => validateTripDetails(details),
+    [details]
+  );
+  const routeValidation = useMemo(() => validateTripRoute(route), [route]);
+  const travelersValidation = useMemo(
+    () => validateTripTravelers(travelers),
+    [travelers]
+  );
 
   const currentStepValidation = useMemo(() => {
     switch (currentStep) {
@@ -212,6 +237,16 @@ export default function AddTripForm() {
           </Button>
         )}
       </div>
+
+      <TripCreationDialog
+        open={showCreationDialog}
+        onOpenChange={setShowCreationDialog}
+        onCreateTrip={handleCreateTrip}
+        onSuccess={() => {
+          actions.resetForm();
+          onSuccess?.();
+        }}
+      />
     </div>
   );
 }

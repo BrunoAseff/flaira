@@ -54,11 +54,27 @@ export default function TravelersForm() {
         return newErrors;
       });
     } else {
-      const result = emailSchema.safeParse(email.trim());
+      const trimmedEmail = email.trim();
+      const result = emailSchema.safeParse(trimmedEmail);
+
       if (!result.success) {
         setEmailErrors((prev) => ({
           ...prev,
           [id]: result.error.issues[0]?.message || 'Invalid email address',
+        }));
+      } else if (trimmedEmail === session?.user?.email) {
+        setEmailErrors((prev) => ({
+          ...prev,
+          [id]: 'Travelers cannot have the same email as the owner',
+        }));
+      } else if (
+        travelers.users.some(
+          (t) => t.id !== id && t.email.trim() === trimmedEmail
+        )
+      ) {
+        setEmailErrors((prev) => ({
+          ...prev,
+          [id]: 'Travelers must have unique email addresses',
         }));
       } else {
         setEmailErrors((prev) => {
