@@ -49,25 +49,17 @@ export const tripTravelersSchema = z.object({
   ),
 });
 
-export const validateTripDetails = (details: any) => {
-  const result = tripDetailsSchema.safeParse(details);
-  return {
-    isValid: result.success,
-    errors: result.success
-      ? []
-      : result.error.issues.map((issue) => issue.message),
-  };
-};
+const toValidation = <I, O>(r: z.SafeParseReturnType<I, O>) =>
+  r.success
+    ? { isValid: true, errors: [] as string[] }
+    : { isValid: false, errors: r.error.issues.map((i) => i.message) };
 
-export const validateTripRoute = (route: any) => {
-  const result = tripRouteSchema.safeParse(route);
-  return {
-    isValid: result.success,
-    errors: result.success
-      ? []
-      : result.error.issues.map((issue) => issue.message),
-  };
-};
+export const validateTripDetails = (
+  details: z.input<typeof tripDetailsSchema>
+) => toValidation(tripDetailsSchema.safeParse(details));
+
+export const validateTripRoute = (route: z.input<typeof tripRouteSchema>) =>
+  +toValidation(tripRouteSchema.safeParse(route));
 
 export const validateTripTravelers = (travelers: any) => {
   if (travelers.users.length === 0) {
