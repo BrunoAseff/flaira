@@ -13,13 +13,21 @@ interface FileInputProps {
   onFilesChange?: (files: FileWithPreview[]) => void;
   maxSizeMB?: number;
   maxFiles?: number;
+  acceptedTypes?: 'images' | 'media';
 }
+
+const ACCEPTED_TYPES = {
+  images: 'image/svg+xml,image/png,image/jpeg,image/jpg,image/gif,image/webp',
+  media:
+    'image/svg+xml,image/png,image/jpeg,image/jpg,image/gif,image/webp,video/mp4,video/mov,video/avi,video/mkv,video/webm,audio/mp3,audio/wav,audio/aac,audio/ogg,audio/m4a',
+};
 
 export default function FileInput({
   files: externalFiles = [],
   onFilesChange,
   maxSizeMB = 5,
   maxFiles = 18,
+  acceptedTypes = 'images',
 }: FileInputProps) {
   const maxSize = maxSizeMB * 1024 * 1024;
   const previousFilesLength = useRef(0);
@@ -37,7 +45,7 @@ export default function FileInput({
       getInputProps,
     },
   ] = useFileUpload({
-    accept: 'image/svg+xml,image/png,image/jpeg,image/jpg,image/gif',
+    accept: ACCEPTED_TYPES[acceptedTypes],
     maxSize,
     multiple: true,
     maxFiles,
@@ -91,7 +99,7 @@ export default function FileInput({
               </Button>
             </div>
             {files.length >= maxFiles && (
-              <span className="mx-auto py-1 px-2  text-sm bg-muted shadow-lg border border-accent rounded-2xl">
+              <span className="mx-auto py-1 px-2 text-sm bg-muted shadow-lg border border-accent rounded-2xl">
                 You can add more memories later!
               </span>
             )}
@@ -132,11 +140,17 @@ export default function FileInput({
                 icon={ImageUploadIcon}
                 color="currentColor"
                 strokeWidth={1.5}
-              />{' '}
+              />
             </div>
-            <p className="mb-1.5 text-sm font-medium">Drop your images here</p>
+            <p className="mb-1.5 text-sm font-medium">
+              {acceptedTypes === 'images'
+                ? 'Drop your images here'
+                : 'Drop your media files here'}
+            </p>
             <p className="text-foreground/60 text-xs">
-              SVG, PNG, JPG or GIF (max. {maxSizeMB}MB)
+              {acceptedTypes === 'images'
+                ? `SVG, PNG, JPG or GIF (max. ${maxSizeMB}MB)`
+                : `Images, Videos, Audio (max. ${maxSizeMB}MB)`}
             </p>
             <Button
               variant="outline"
@@ -148,7 +162,7 @@ export default function FileInput({
               }}
             >
               <UploadIcon className="-ms-1 opacity-60" aria-hidden="true" />
-              Select images
+              {acceptedTypes === 'images' ? 'Select images' : 'Select files'}
             </Button>
           </div>
         )}

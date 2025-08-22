@@ -90,23 +90,27 @@ export const getMemory = async (context: Context) => {
 
 export const deleteMemory = async (context: Context) => {
   try {
-   const user = context.get('user') as { id?: string } | undefined;
-   if (!user?.id) {
-     const headers = getHeaders();
-     const body = getBody(401, null, new Error('Unauthorized'));
-     return getResponse(context, 401, headers, body);
-   }
-   const key = context.req.query('key');
-   if (!key) {
-     const headers = getHeaders();
-     const body = getBody(400, null, new Error('Missing required field: key'));
-     return getResponse(context, 400, headers, body);
-   }
-   if (!key.startsWith(`memories/${user.id}/`)) {
-     const headers = getHeaders();
-     const body = getBody(403, null, new Error('Forbidden: key does not belong to the authenticated user'));
-     return getResponse(context, 403, headers, body);
-   }
+    const user = context.get('user') as { id?: string } | undefined;
+    if (!user?.id) {
+      const headers = getHeaders();
+      const body = getBody(401, null, new Error('Unauthorized'));
+      return getResponse(context, 401, headers, body);
+    }
+    const key = context.req.query('key');
+    if (!key) {
+      const headers = getHeaders();
+      const body = getBody(400, null, new Error('Missing required field: key'));
+      return getResponse(context, 400, headers, body);
+    }
+    if (!key.startsWith(`memories/${user.id}/`)) {
+      const headers = getHeaders();
+      const body = getBody(
+        403,
+        null,
+        new Error('Forbidden: key does not belong to the authenticated user')
+      );
+      return getResponse(context, 403, headers, body);
+    }
     const result = await deleteTripMemory({ key });
 
     const headers = getHeaders();

@@ -81,7 +81,11 @@ export default function Details() {
       <div className="flex flex-col w-full md:w-[60%] gap-1 h-full">
         <Label className="text-base flex-shrink-0">Memories</Label>
         <div className="flex-1 min-h-0">
-          <FileInput files={images} onFilesChange={actions.setImages} />
+          <FileInput
+            files={images}
+            onFilesChange={actions.setImages}
+            acceptedTypes="media"
+          />
         </div>
       </div>
     </div>
