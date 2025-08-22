@@ -59,29 +59,48 @@ export const validateTripDetails = (
 ) => toValidation(tripDetailsSchema.safeParse(details));
 
 export const validateTripRoute = (route: z.input<typeof tripRouteSchema>) =>
-  +toValidation(tripRouteSchema.safeParse(route));
+  toValidation(tripRouteSchema.safeParse(route));
 
-export const validateTripTravelers = (travelers: any) => {
-  if (travelers.users.length === 0) {
-    return { isValid: true, errors: [] };
-  }
-
-  const missingEmails = travelers.users.filter(
-    (user: any) => !user.email.trim()
-  );
-  if (missingEmails.length > 0) {
+export const validateTripTravelers = (
+  travelers: z.input<typeof tripTravelersSchema>
+) => {
+  const parsed = tripTravelersSchema.safeParse(travelers);
+  if (!parsed.success) {
     return {
       isValid: false,
-      errors: ['All travelers must have an email address'],
+      errors: parsed.error.issues.map((i) => i.message),
     };
   }
 
-  const hasInvalidEmails = travelers.users.some((user: any) => {
-    return user.email.trim() && !emailSchema.safeParse(user.email).success;
-  });
+  const users = parsed.data.users ?? [];
+  if (users.length === 0) {
+    return { isValid: true, errors: [] };
+  }
 
-  if (hasInvalidEmails) {
-    return { isValid: false, errors: [] };
+  const missingIdx = users
+    .map((u, i) => ({ i, email: typeof u.email === 'string' ? u.email : '' }))
+    .filter(({ email }) => email.trim().length === 0)
+    .map(({ i }) => i + 1);
+  if (missingIdx.length > 0) {
+    return {
+      isValid: false,
+      errors: [
+        `All travelers must have an email address (missing for: ${missingIdx.join(', ')})`,
+      ],
+    };
+  }
+
+  const invalidIdx = users
+    .map((u, i) => ({ i, email: u.email.trim() }))
+    .filter(({ email }) => !emailSchema.safeParse(email).success)
+    .map(({ i }) => i + 1);
+  if (invalidIdx.length > 0) {
+    return {
+      isValid: false,
+      errors: [
+        `Invalid email address for traveler(s): ${invalidIdx.join(', ')}`,
+      ],
+    };
   }
 
   return { isValid: true, errors: [] };
