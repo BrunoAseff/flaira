@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { TripConfetti } from './TripConfetti';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Tick02Icon, Cancel01Icon } from '@hugeicons/core-free-icons';
-import { LoaderCircle } from 'lucide-react';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 interface TripCreationDialogProps {
   open: boolean;
@@ -26,7 +26,7 @@ type DialogState = 'loading' | 'success' | 'error';
 const LoadingState = () => (
   <div className="text-center space-y-4">
     <div className="flex items-center justify-center py-4">
-      <LoaderCircle className="animate-spin text-foreground" size={32} />
+      <LoadingSpinner />
     </div>
     <p className="text-sm text-foreground/60">Setting up your adventure...</p>
   </div>
@@ -159,9 +159,17 @@ export function TripCreationDialog({
     }
   };
 
+  const handleDialogChange = (open: boolean) => {
+    if (!open && state === 'success') {
+      handleSuccessClose();
+    } else {
+      onOpenChange(open);
+    }
+  };
+
   return (
     <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
+      <Dialog open={open} onOpenChange={handleDialogChange}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>{getTitle()}</DialogTitle>
