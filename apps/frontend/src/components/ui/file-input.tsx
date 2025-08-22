@@ -1,8 +1,20 @@
 'use client';
 
-import { AlertCircleIcon, UploadIcon, XIcon } from 'lucide-react';
+import {
+  AlertCircleIcon,
+  UploadIcon,
+  XIcon,
+  FileIcon,
+  VideoIcon,
+  AudioLinesIcon,
+  ImageIcon,
+} from 'lucide-react';
 
-import { useFileUpload, type FileWithPreview } from '@/hooks/use-file-upload';
+import {
+  useFileUpload,
+  type FileWithPreview,
+  type FileMetadata,
+} from '@/hooks/use-file-upload';
 import { Button } from '@/components/ui/button';
 import { ImageUploadIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -16,11 +28,71 @@ interface FileInputProps {
   acceptedTypes?: 'images' | 'media';
 }
 
-const ACCEPTED_TYPES = {
-  images: 'image/svg+xml,image/png,image/jpeg,image/jpg,image/gif,image/webp',
+const ACCEPTED_TYPES: Record<
+  NonNullable<FileInputProps['acceptedTypes']>,
+  string
+> = {
+  images: 'image/*,.heic,.heif',
   media:
-    'image/svg+xml,image/png,image/jpeg,image/jpg,image/gif,image/webp,video/mp4,video/mov,video/avi,video/mkv,video/webm,audio/mp3,audio/wav,audio/aac,audio/ogg,audio/m4a',
-};
+    'image/*,video/*,audio/*,.mp4,.mov,.avi,.mkv,.webm,.heic,.heif,.mp3,.wav,.aac,.ogg,.m4a',
+} as const;
+
+function getFileType(
+  file: File | FileMetadata
+): 'image' | 'video' | 'audio' | 'unknown' {
+  const mimeType = 'type' in file ? file.type : '';
+  if (mimeType.startsWith('image/')) return 'image';
+  if (mimeType.startsWith('video/')) return 'video';
+  if (mimeType.startsWith('audio/')) return 'audio';
+  return 'unknown';
+}
+
+function getFileName(file: File | FileMetadata): string {
+  return 'name' in file ? file.name : 'Unknown file';
+}
+
+function getFileSize(file: File | FileMetadata): number {
+  return 'size' in file ? file.size : 0;
+}
+
+function getFileIcon(fileType: string, className: string = 'size-8') {
+  switch (fileType) {
+    case 'video':
+      return <VideoIcon className={className} />;
+    case 'audio':
+      return <AudioLinesIcon className={className} />;
+    case 'image':
+      return <ImageIcon className={className} />;
+    default:
+      return <FileIcon className={className} />;
+  }
+}
+
+function FilePreview({ file }: { file: FileWithPreview }) {
+  const fileType = getFileType(file.file);
+
+  if (fileType === 'image') {
+    return (
+      <img
+        src={file.preview}
+        alt={file.file.name}
+        className="size-full rounded-[inherit] object-cover"
+      />
+    );
+  }
+
+  return (
+    <div className="size-full rounded-[inherit] bg-muted/50 flex flex-col items-center justify-center p-2 text-center">
+      <div className="text-muted-foreground mb-1">{getFileIcon(fileType)}</div>
+      <span className="text-xs font-medium text-muted-foreground truncate w-full">
+        {getFileName(file.file)}
+      </span>
+      <span className="text-[10px] text-muted-foreground/70 mt-0.5">
+        {(getFileSize(file.file) / 1024 / 1024).toFixed(1)}MB
+      </span>
+    </div>
+  );
+}
 
 export default function FileInput({
   files: externalFiles = [],
@@ -74,7 +146,7 @@ export default function FileInput({
         <input
           {...getInputProps()}
           className="sr-only"
-          aria-label="Upload image file"
+          aria-label="Upload file"
         />
         {files.length > 0 ? (
           <div className="flex w-full flex-col gap-3 h-full">
@@ -109,11 +181,7 @@ export default function FileInput({
                   key={file.id}
                   className="bg-accent relative aspect-square rounded-md"
                 >
-                  <img
-                    src={file.preview}
-                    alt={file.file.name}
-                    className="size-full rounded-[inherit] object-cover"
-                  />
+                  <FilePreview file={file} />
                   <Button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -121,7 +189,7 @@ export default function FileInput({
                     }}
                     size="icon"
                     className="border-background bg-foreground focus-visible:border-background absolute -top-2 -right-2 size-6 rounded-full border shadow-none"
-                    aria-label="Remove image"
+                    aria-label="Remove file"
                   >
                     <XIcon className="size-3.5" />
                   </Button>
