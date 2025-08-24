@@ -39,7 +39,7 @@ export default function Details() {
 
   return (
     <div className="flex flex-col md:flex-row mx-6 md:mx-10 gap-8 h-[95%] py-2">
-      <div className="flex flex-col w-full md:w-[40%] gap-4 h-full min-h-0 overflow-y-auto p-1">
+      <div className="flex flex-col w-full md:w-[40%] gap-4 h-full md:min-h-0 md:overflow-y-auto p-1">
         <div className="flex flex-col gap-1 px-1 flex-shrink-0">
           <Label className="text-base">Title</Label>
           <Input
@@ -78,9 +78,10 @@ export default function Details() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-full md:w-[60%] gap-1 h-full">
+
+      <div className="flex flex-col w-full md:w-[60%] gap-1 md:h-full">
         <Label className="text-base flex-shrink-0">Memories</Label>
-        <div className="flex-1 min-h-0">
+        <div className="md:flex-1 md:min-h-0 min-h-[400px]">
           <FileInput
             files={images}
             onFilesChange={actions.setImages}
