@@ -170,7 +170,7 @@ export function TripCreationDialog({
   return (
     <>
       <Dialog open={open} onOpenChange={handleDialogChange}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md sm:h-auto max-w-none w-full h-dvh max-h-dvh overflow-y-auto rounded-none p-0 sm:rounded-lg sm:p-6">
           <DialogHeader>
             <DialogTitle>{getTitle()}</DialogTitle>
           </DialogHeader>
