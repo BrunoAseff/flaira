@@ -1,7 +1,7 @@
 import { uploadUrl, getUrl, deleteObject } from '@/utils/s3';
 import { v4 as uuidv4 } from 'uuid';
 import { tripMedia } from '@/db/schema/trip';
-import { eq, sql } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { db } from '@/db';
 
 export const uploadTripMemory = async ({
@@ -52,7 +52,16 @@ export const getRandomTripMemories = async ({ userId }: { userId: string }) => {
   return mediaWithUrls;
 };
 
-export const deleteTripMemory = async ({ key }: { key: string }) => {
-  const result = await deleteObject({ key });
-  return result;
+export const deleteTripMemory = async ({
+  key,
+  userId,
+}: {
+  key: string;
+  userId: string;
+}) => {
+  await deleteObject({ key });
+  await db
+    .delete(tripMedia)
+    .where(and(eq(tripMedia.s3Key, key), eq(tripMedia.uploadedBy, userId)));
+  return true;
 };
