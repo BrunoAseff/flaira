@@ -6,6 +6,7 @@ import { user } from '@/modules/user/route';
 import { directions } from '@/modules/directions/route';
 import { status } from '@/modules/status/route';
 import { trip } from '@/modules/trip/route';
+import { memory } from './modules/memories/route';
 
 const app = new Hono<{
   Variables: {
@@ -41,5 +42,7 @@ app.route('/user', user);
 app.route('/directions', directions);
 
 app.route('/trip', trip);
+
+app.route('/memory', memory);
 
 export { app };

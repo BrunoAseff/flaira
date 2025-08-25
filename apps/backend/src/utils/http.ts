@@ -2,16 +2,31 @@ import { env } from '@/env';
 import type { Context } from 'hono';
 import type { StatusCode } from 'hono/utils/http-status';
 
+const STATUS_MESSAGES: Record<number, string> = {
+  400: 'Bad Request',
+  401: 'Unauthorized',
+  403: 'Forbidden',
+  404: 'Not Found',
+  405: 'Method Not Allowed',
+  409: 'Conflict',
+  422: 'Unprocessable Entity',
+  429: 'Too Many Requests',
+  500: 'Internal Server Error',
+  501: 'Not Implemented',
+  502: 'Bad Gateway',
+  503: 'Service Unavailable',
+};
+
 export function getHeaders(): Record<string, string> {
   return { 'Content-Type': 'application/json' };
 }
 
 export function getBody(statusCode: number, data?: unknown, error?: unknown) {
-  if (error) {
+  if (error || statusCode >= 400) {
     const message =
       error instanceof Error && env.NODE_ENV !== 'production'
         ? error.message
-        : 'Something went wrong';
+        : STATUS_MESSAGES[statusCode] || 'Something went wrong';
 
     return {
       status: 'error',
