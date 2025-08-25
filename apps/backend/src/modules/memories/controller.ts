@@ -93,7 +93,7 @@ export const deleteMemory = async (context: Context) => {
       );
       return getResponse(context, 403, headers, body);
     }
-    const result = await deleteTripMemory({ key });
+    const result = await deleteTripMemory({ key, userId: user.id });
 
     const headers = getHeaders();
     const body = getBody(200, result);
