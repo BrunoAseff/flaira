@@ -85,3 +85,5 @@ memory.delete(
   }),
   deleteMemory
 );
+
+export { memory };
