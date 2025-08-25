@@ -24,7 +24,11 @@ export function getHeaders(): Record<string, string> {
   return { 'Content-Type': 'application/json' };
 }
 
-export function getBody(statusCode: number, data?: unknown, error?: unknown) {
+export function getBody(
+  statusCode: StatusCode,
+  data?: unknown,
+  error?: unknown
+) {
   if (error || statusCode >= 400) {
     const message =
       error instanceof Error && env.NODE_ENV !== 'production'
