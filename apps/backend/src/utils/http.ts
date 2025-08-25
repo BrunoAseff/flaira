@@ -29,12 +29,18 @@ export function getBody(
   data?: unknown,
   error?: unknown
 ) {
-  if (error || statusCode >= 400) {
-    const message =
-      error instanceof Error && env.NODE_ENV !== 'production'
-        ? error.message
-        : STATUS_MESSAGES[statusCode] || 'Something went wrong';
-
+ if (error || statusCode >= 400) {
+   const isServerError = statusCode >= 500;
+   const messageFromError =
+     error instanceof Error
+       ? error.message
+       : typeof error === 'string'
+         ? error
+         : undefined;
+   const message =
+     isServerError || !messageFromError
+       ? STATUS_MESSAGES[statusCode] ?? 'Something went wrong'
+       : messageFromError;
     return {
       status: 'error',
       code: statusCode,
