@@ -14,6 +14,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20.19.0
+          standalone: true
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm lint
 
@@ -27,6 +28,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20.19.0
+          standalone: true
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm typecheck
 
@@ -40,6 +42,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20.19.0
+          standalone: true
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm format:check
 
