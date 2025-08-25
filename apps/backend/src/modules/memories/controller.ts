@@ -1,6 +1,11 @@
 import type { Context } from 'hono';
 import { getBody, getHeaders, getResponse } from '@/utils/http';
-import { uploadTripMemory, getTripMemory, deleteTripMemory } from './service';
+import {
+  uploadTripMemory,
+  getTripMemory,
+  deleteTripMemory,
+  getRandomTripMemories,
+} from './service';
 
 export const uploadMemory = async (context: Context) => {
   try {
@@ -47,6 +52,31 @@ export const getMemory = async (context: Context) => {
     }
 
     const result = await getTripMemory({ key });
+
+    const headers = getHeaders();
+    const body = getBody(200, result);
+
+    return getResponse(context, 200, headers, body);
+  } catch (error) {
+    console.error('Failed to get memory', error);
+
+    const headers = getHeaders();
+    const body = getBody(500, null, error);
+
+    return getResponse(context, 500, headers, body);
+  }
+};
+
+export const getRandomMemories = async (context: Context) => {
+  try {
+    const user = context.get('user') as { id?: string } | undefined;
+    if (!user?.id) {
+      const headers = getHeaders();
+      const body = getBody(401, null, new Error('Unauthorized'));
+      return getResponse(context, 401, headers, body);
+    }
+
+    const result = await getRandomTripMemories({ userId: user.id });
 
     const headers = getHeaders();
     const body = getBody(200, result);

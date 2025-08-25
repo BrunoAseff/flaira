@@ -1,6 +1,11 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { uploadMemory, getMemory, deleteMemory } from './controller';
+import {
+  uploadMemory,
+  getMemory,
+  deleteMemory,
+  getRandomMemories,
+} from './controller';
 
 import { middleware } from '@/utils/middleware';
 import {
@@ -56,6 +61,8 @@ memory.get(
   }),
   getMemory
 );
+
+memory.get('/get-random-memories', getRandomMemories);
 
 memory.delete(
   '/delete-memory',
