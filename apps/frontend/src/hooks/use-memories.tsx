@@ -22,7 +22,7 @@ const uploadMemoryToS3 = async (
   };
 
   const presignedUrlResponse = await api.post<UploadMemoryResponse>(
-    '/trip/upload-memory',
+    '/memory/upload-memory',
     {
       body: { fileName, type },
       auth: true,
