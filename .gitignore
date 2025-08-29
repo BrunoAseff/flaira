@@ -4,11 +4,6 @@ node_modules
 **/node_modules
 /.pnp
 .pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
 /coverage
 **/coverage
 /.next/
