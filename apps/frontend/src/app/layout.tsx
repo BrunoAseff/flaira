@@ -18,7 +18,7 @@ const k2d = K2D({
 
 export const metadata: Metadata = {
   title: 'Flaira',
-  description: 'A flight tracker platform',
+  description: 'A travel tracking platform',
 };
 
 export default function RootLayout({
