@@ -7,7 +7,7 @@
     "pnpm": "10.6.3"
   },
   "scripts": {
-    "dev": "cross-env next dev",
+    "dev": "next dev 2>&1 | sed -u $'s/\\x1b\\[[0-9;]*[a-zA-Z]//g; s/\\x1bc//g'",
     "build": "next build",
     "start": "next start",
     "lint": "eslint src",
