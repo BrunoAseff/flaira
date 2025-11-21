@@ -23,7 +23,10 @@ const envSchema = z.object({
 const _env = envSchema.safeParse(process.env);
 
 if (_env.success === false) {
-  bootstrapLogger.error({ errors: _env.error.format() }, 'Invalid environment variables');
+  bootstrapLogger.error(
+    { errors: _env.error.format() },
+    'Invalid environment variables'
+  );
 
   throw new Error(
     `Invalid environment variables: ${JSON.stringify(_env.error.format())}`
