@@ -1,5 +1,8 @@
 import 'dotenv/config';
 import { z } from 'zod';
+import pino from 'pino';
+
+const bootstrapLogger = pino({ level: 'error' });
 
 const envSchema = z.object({
   DATABASE_URL: z.string(),
@@ -20,7 +23,7 @@ const envSchema = z.object({
 const _env = envSchema.safeParse(process.env);
 
 if (_env.success === false) {
-  console.error('Invalid environment variables.', _env.error.format());
+  bootstrapLogger.error({ errors: _env.error.format() }, 'Invalid environment variables');
 
   throw new Error(
     `Invalid environment variables: ${JSON.stringify(_env.error.format())}`

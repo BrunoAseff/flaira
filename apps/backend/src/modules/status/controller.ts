@@ -1,6 +1,7 @@
 import type { Context } from 'hono';
 import { getDatabaseStatus } from './service';
 import { getBody, getHeaders, getResponse } from '@/utils/http';
+import { logger } from '@/utils/logger';
 
 export const getStatus = async (context: Context) => {
   try {
@@ -11,7 +12,7 @@ export const getStatus = async (context: Context) => {
 
     return getResponse(context, 200, headers, body);
   } catch (error) {
-    console.error('Failed to get status', error);
+    logger.error({ error }, 'Failed to get status');
 
     const headers = getHeaders();
     const body = getBody(500, null, error);

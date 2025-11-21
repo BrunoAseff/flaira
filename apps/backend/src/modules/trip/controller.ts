@@ -2,6 +2,7 @@ import type { Context } from 'hono';
 import { getBody, getHeaders, getResponse } from '@/utils/http';
 import { createTrip } from './service';
 import type { CreateTripInput } from './validator';
+import { logger } from '@/utils/logger';
 
 export const addTrip = async (context: Context) => {
   try {
@@ -14,7 +15,7 @@ export const addTrip = async (context: Context) => {
 
     return getResponse(context, 201, headers, body);
   } catch (error) {
-    console.error('Failed to create trip', error);
+    logger.error({ error }, 'Failed to create trip');
 
     const headers = getHeaders();
     const body = getBody(500, null, error);

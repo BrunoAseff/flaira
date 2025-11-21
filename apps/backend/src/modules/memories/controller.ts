@@ -6,6 +6,7 @@ import {
   deleteTripMemory,
   getRandomTripMemories,
 } from './service';
+import { logger } from '@/utils/logger';
 
 export const uploadMemory = async (context: Context) => {
   try {
@@ -18,7 +19,7 @@ export const uploadMemory = async (context: Context) => {
 
     return getResponse(context, 200, headers, body);
   } catch (error) {
-    console.error('Failed to get memory upload URL', error);
+    logger.error({ error }, 'Failed to get memory upload URL');
 
     const headers = getHeaders();
     const body = getBody(500, null, error);
@@ -45,7 +46,7 @@ export const getMemory = async (context: Context) => {
 
     return getResponse(context, 200, headers, body);
   } catch (error) {
-    console.error('Failed to get memory', error);
+    logger.error({ error }, 'Failed to get memory');
 
     const headers = getHeaders();
     const body = getBody(500, null, error);
@@ -65,7 +66,7 @@ export const getRandomMemories = async (context: Context) => {
 
     return getResponse(context, 200, headers, body);
   } catch (error) {
-    console.error('Failed to get memory', error);
+    logger.error({ error }, 'Failed to get random memories');
 
     const headers = getHeaders();
     const body = getBody(500, null, error);
@@ -100,7 +101,7 @@ export const deleteMemory = async (context: Context) => {
 
     return getResponse(context, 200, headers, body);
   } catch (error) {
-    console.error('Failed to delete memory', error);
+    logger.error({ error }, 'Failed to delete memory');
 
     const headers = getHeaders();
     const body = getBody(500, null, error);
