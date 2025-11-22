@@ -6,22 +6,10 @@ import {
   tripInvites,
   tripMedia,
 } from '@/db/schema/trip';
-import { uploadUrl, getUrl, deleteObject } from '@/utils/s3';
 import { v4 as uuidv4 } from 'uuid';
 import type { CreateTripInput } from './validator';
 import type { Transaction } from '@/db/types';
-
-const calculateTripDuration = (
-  startDate: Date,
-  endDate: Date | null
-): number => {
-  if (!endDate) return 0;
-
-  const diffMs = endDate.getTime() - startDate.getTime();
-  const diffDays = diffMs / (1000 * 60 * 60 * 24);
-
-  return Math.max(1, Math.ceil(diffDays));
-};
+import { calculateTripDuration, getLocationType } from '@/utils/trip';
 
 const insertTripRecord = async (
   tx: Transaction,
@@ -62,34 +50,7 @@ const insertTripLocations = async (
   const locationInserts = [];
 
   for (const location of route.locations) {
-    const getLocationType = (
-      id: string
-    ): { type: 'start' | 'end' | 'stop'; stopIndex: number | null } => {
-      if (id === 'start') return { type: 'start', stopIndex: null };
-      if (id === 'end') return { type: 'end', stopIndex: null };
-      if (id.startsWith('stop-')) {
-        const stopIdStr = id.slice(5);
-        const stopId = parseInt(stopIdStr, 10);
-
-        if (!Number.isFinite(stopId) || stopIdStr !== stopId.toString()) {
-          throw new Error(
-            `Invalid stop ID format: ${id}. Expected format: 'stop-{number}'`
-          );
-        }
-
-        const stopIndex = route.stops.findIndex((stop) => stop.id === stopId);
-        if (stopIndex === -1) {
-          throw new Error(`Stop with ID ${stopId} not found in route stops`);
-        }
-
-        return { type: 'stop', stopIndex };
-      }
-      throw new Error(
-        `Invalid location type: ${id}. Expected 'start', 'end', or 'stop-{number}'`
-      );
-    };
-
-    const { type, stopIndex } = getLocationType(location.id);
+    const { type, stopIndex } = getLocationType(location.id, route.stops);
 
     locationInserts.push({
       id: uuidv4(),

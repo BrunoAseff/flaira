@@ -24,7 +24,7 @@ export function useGeocoding() {
       const response = await fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?` +
           new URLSearchParams({
-            access_token: process.env.NEXT_PUBLIC_MAPBOX_KEY!,
+            access_token: process.env.NEXT_PUBLIC_MAPBOX_API_KEY!,
             autocomplete: 'true',
             limit: '5',
             types:
@@ -63,7 +63,7 @@ export function useGeocoding() {
         const response = await fetch(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?` +
             new URLSearchParams({
-              access_token: process.env.NEXT_PUBLIC_MAPBOX_KEY!,
+              access_token: process.env.NEXT_PUBLIC_MAPBOX_API_KEY!,
               types: 'address,poi,place,locality,neighborhood,district,region',
               limit: '1',
             })

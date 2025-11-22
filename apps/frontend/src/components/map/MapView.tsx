@@ -33,7 +33,7 @@ export default function MapView({
   onViewStateChange,
   onGeolocate,
 }: MapViewProps) {
-  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_KEY;
+  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
   const [viewState, setViewState] = useState<ViewState>({
     longitude: initialViewState.longitude || 0,
