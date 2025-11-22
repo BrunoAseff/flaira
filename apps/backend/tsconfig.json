@@ -20,5 +20,5 @@
     }
   },
   "include": ["src"],
-  "exclude": ["node_modules", "vitest.config.ts", "test", "**/*.test.ts"]
+  "exclude": ["node_modules", "vitest.config.ts", "test"]
 }
