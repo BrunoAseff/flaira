@@ -5,7 +5,7 @@ import { uploadUrl, getUrl, deleteObject } from '@/utils/s3';
 vi.mock('@/utils/s3', () => ({
   uploadUrl: vi.fn().mockResolvedValue('https://s3.example.com/upload-url'),
   getUrl: vi.fn().mockResolvedValue('https://s3.example.com/presigned-url'),
-  deleteObject: vi.fn().mockResolvedValue({ success: true }),
+  deleteObject: vi.fn().mockResolvedValue(true),
 }));
 
 vi.mock('uuid', () => ({
@@ -93,7 +93,7 @@ describe('User Service', () => {
         key: 'avatar/user-123/profile.jpg',
       });
 
-      expect(result).toEqual({ success: true });
+      expect(result).toBe(true);
       expect(deleteObject).toHaveBeenCalledTimes(1);
       expect(deleteObject).toHaveBeenCalledWith({
         key: 'avatar/user-123/profile.jpg',
