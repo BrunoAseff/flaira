@@ -95,7 +95,7 @@ describe('Memories Service', () => {
 
       const result = await deleteTripMemory({ key, userId });
 
-      expect(result).toBe(true); 
+      expect(result).toBe(true);
       expect(deleteObject).toHaveBeenCalledTimes(1);
       expect(deleteObject).toHaveBeenCalledWith({ key });
       expect(mockDb.delete).toHaveBeenCalledTimes(1);
@@ -145,8 +145,14 @@ describe('Memories Service', () => {
       const result = await getRandomTripMemories({ userId: 'user-123' });
 
       expect(result).toHaveLength(2);
-      expect(result[0]).toHaveProperty('url', 'https://s3.example.com/presigned-url');
-      expect(result[1]).toHaveProperty('url', 'https://s3.example.com/presigned-url');
+      expect(result[0]).toHaveProperty(
+        'url',
+        'https://s3.example.com/presigned-url'
+      );
+      expect(result[1]).toHaveProperty(
+        'url',
+        'https://s3.example.com/presigned-url'
+      );
       expect(mockDb.select).toHaveBeenCalledTimes(1);
       expect(mockDb.from).toHaveBeenCalledTimes(1);
       expect(mockDb.where).toHaveBeenCalledTimes(1);
@@ -154,8 +160,12 @@ describe('Memories Service', () => {
       expect(mockDb.limit).toHaveBeenCalledTimes(1);
       expect(mockDb.limit).toHaveBeenCalledWith(5);
       expect(getUrl).toHaveBeenCalledTimes(2);
-      expect(getUrl).toHaveBeenCalledWith({ key: 'memories/user-123/1/photo1.jpg' });
-      expect(getUrl).toHaveBeenCalledWith({ key: 'memories/user-123/2/photo2.jpg' });
+      expect(getUrl).toHaveBeenCalledWith({
+        key: 'memories/user-123/1/photo1.jpg',
+      });
+      expect(getUrl).toHaveBeenCalledWith({
+        key: 'memories/user-123/2/photo2.jpg',
+      });
       expect(eq).toHaveBeenCalled();
     });
 

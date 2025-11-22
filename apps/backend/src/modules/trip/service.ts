@@ -11,7 +11,6 @@ import type { CreateTripInput } from './validator';
 import type { Transaction } from '@/db/types';
 import { calculateTripDuration, getLocationType } from '@/utils/trip';
 
-
 const insertTripRecord = async (
   tx: Transaction,
   tripData: CreateTripInput,

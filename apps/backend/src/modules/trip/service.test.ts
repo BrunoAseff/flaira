@@ -28,7 +28,6 @@ vi.mock('@/utils/s3', () => ({
   deleteObject: vi.fn(),
 }));
 
-
 describe('Trip Service', () => {
   beforeEach(() => {
     vi.clearAllMocks();
