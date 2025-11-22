@@ -1,8 +1,33 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { calculateTripDuration, getLocationType } from '@/utils/trip';
 
 vi.mock('uuid', () => ({
   v4: vi.fn(() => 'mock-uuid-1234'),
 }));
+
+vi.mock('@/db', () => ({
+  db: {
+    transaction: vi.fn(),
+    insert: vi.fn().mockReturnThis(),
+    values: vi.fn().mockReturnThis(),
+    returning: vi.fn().mockResolvedValue([]),
+  },
+}));
+
+vi.mock('@/db/schema/trip', () => ({
+  trips: {},
+  tripLocations: {},
+  tripUsers: {},
+  tripInvites: {},
+  tripMedia: {},
+}));
+
+vi.mock('@/utils/s3', () => ({
+  uploadUrl: vi.fn(),
+  getUrl: vi.fn(),
+  deleteObject: vi.fn(),
+}));
+
 
 describe('Trip Service', () => {
   beforeEach(() => {
@@ -14,74 +39,25 @@ describe('Trip Service', () => {
       const startDate = new Date('2024-01-01');
       const endDate = null;
 
-      const calculateDuration = (start: Date, end: Date | null): number => {
-        if (!end) return 0;
-        const diffMs = end.getTime() - start.getTime();
-        const diffDays = diffMs / (1000 * 60 * 60 * 24);
-        return Math.max(1, Math.ceil(diffDays));
-      };
-
-      expect(calculateDuration(startDate, endDate)).toBe(0);
+      expect(calculateTripDuration(startDate, endDate)).toBe(0);
     });
 
     it('should return at least 1 day for same start and end date', () => {
       const startDate = new Date('2024-01-01');
       const endDate = new Date('2024-01-01');
 
-      const calculateDuration = (start: Date, end: Date | null): number => {
-        if (!end) return 0;
-        const diffMs = end.getTime() - start.getTime();
-        const diffDays = diffMs / (1000 * 60 * 60 * 24);
-        return Math.max(1, Math.ceil(diffDays));
-      };
-
-      expect(calculateDuration(startDate, endDate)).toBe(1);
+      expect(calculateTripDuration(startDate, endDate)).toBe(1);
     });
 
     it('should calculate correct duration for multi-day trips', () => {
       const startDate = new Date('2024-01-01');
       const endDate = new Date('2024-01-05');
 
-      const calculateDuration = (start: Date, end: Date | null): number => {
-        if (!end) return 0;
-        const diffMs = end.getTime() - start.getTime();
-        const diffDays = diffMs / (1000 * 60 * 60 * 24);
-        return Math.max(1, Math.ceil(diffDays));
-      };
-
-      expect(calculateDuration(startDate, endDate)).toBe(4);
+      expect(calculateTripDuration(startDate, endDate)).toBe(4);
     });
   });
 
   describe('getLocationType', () => {
-    const getLocationType = (
-      id: string,
-      stops: Array<{ id: number }>
-    ): { type: 'start' | 'end' | 'stop'; stopIndex: number | null } => {
-      if (id === 'start') return { type: 'start', stopIndex: null };
-      if (id === 'end') return { type: 'end', stopIndex: null };
-      if (id.startsWith('stop-')) {
-        const stopIdStr = id.slice(5);
-        const stopId = parseInt(stopIdStr, 10);
-
-        if (!Number.isFinite(stopId) || stopIdStr !== stopId.toString()) {
-          throw new Error(
-            `Invalid stop ID format: ${id}. Expected format: 'stop-{number}'`
-          );
-        }
-
-        const stopIndex = stops.findIndex((stop) => stop.id === stopId);
-        if (stopIndex === -1) {
-          throw new Error(`Stop with ID ${stopId} not found in route stops`);
-        }
-
-        return { type: 'stop', stopIndex };
-      }
-      throw new Error(
-        `Invalid location type: ${id}. Expected 'start', 'end', or 'stop-{number}'`
-      );
-    };
-
     it('should return start type for start id', () => {
       const result = getLocationType('start', []);
       expect(result).toEqual({ type: 'start', stopIndex: null });
