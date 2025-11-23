@@ -111,7 +111,10 @@ describe('Memories Service', () => {
       await deleteTripMemory({ key, userId });
 
       expect(deleteObject).toHaveBeenCalledWith({ key });
-      expect(mockDb.delete).toHaveBeenCalled();
+      expect(mockDb.delete).toHaveBeenCalledTimes(1);
+      expect(mockDb.where).toHaveBeenCalledTimes(1);
+      expect(and).toHaveBeenCalledTimes(1);
+      expect(eq).toHaveBeenCalledTimes(2);
     });
   });
 
