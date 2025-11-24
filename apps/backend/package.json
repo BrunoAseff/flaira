@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "pnpm run drizzle:push && tsx watch src/index.ts 2>&1 | sed -u $'s/\\x1b\\[[0-9;]*[a-zA-Z]//g; s/\\x1bc//g'",
+    "dev:docker": "pnpm run drizzle:push && tsx watch src/index.ts",
     "build": "tsc && tsc-alias",
     "start": "node dist/index.js",
     "lint": "eslint src",
