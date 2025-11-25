@@ -1,8 +1,7 @@
 import 'dotenv/config';
-import { scrypt, randomBytes } from 'crypto';
-import { promisify } from 'util';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { v4 as uuid } from 'uuid';
+import { hashPassword } from 'better-auth/crypto';
 import { user, session, account } from './schema/auth';
 import {
   trips,
@@ -16,14 +15,6 @@ import {
 if (process.env.NODE_ENV === 'production') {
   console.error('❌ Cannot run seed in production environment');
   process.exit(1);
-}
-
-const scryptAsync = promisify(scrypt);
-
-async function hashPassword(password: string): Promise<string> {
-  const salt = randomBytes(16).toString('hex');
-  const derivedKey = (await scryptAsync(password, salt, 64)) as Buffer;
-  return `${salt}:${derivedKey.toString('hex')}`;
 }
 
 const db = drizzle(process.env.DATABASE_URL!);
