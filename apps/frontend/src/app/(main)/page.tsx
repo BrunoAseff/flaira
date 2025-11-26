@@ -2,6 +2,7 @@
 
 import ErrorPage from '@/components/pages/ErrorPage';
 import LoadingPage from '@/components/pages/LoadingPage';
+import Overview from '@/components/pages/Overview';
 import useAuth from '@/hooks/use-auth';
 
 export default function Home() {
@@ -12,7 +13,9 @@ export default function Home() {
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-dvh p-5">
-      <main className="flex flex-col gap-[32px] w-full">Overview</main>
+      <main className="flex flex-col gap-[32px] w-full">
+        <Overview />
+      </main>
     </div>
   );
 }
