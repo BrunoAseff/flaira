@@ -1,10 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-
-interface UploadMemoryResponse {
-  url: string;
-  key: string;
-}
+import type { UploadMemoryResponse } from '@/types/routes';
 
 const uploadMemoryToS3 = async (
   file: File
@@ -29,11 +25,11 @@ const uploadMemoryToS3 = async (
     }
   );
 
-  if (!presignedUrlResponse.ok) {
+  if (!presignedUrlResponse.ok || !presignedUrlResponse.data) {
     throw new Error(presignedUrlResponse.error || 'Failed to get upload URL.');
   }
 
-  const { url: S3UploadUrl, key: s3Key } = presignedUrlResponse.data!;
+  const { url: S3UploadUrl, key: s3Key } = presignedUrlResponse.data;
 
   const uploadResponse = await fetch(S3UploadUrl, {
     method: 'PUT',

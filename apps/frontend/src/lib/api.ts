@@ -1,15 +1,11 @@
+import type { ApiResponse } from '@/types/api';
+import { isCustomBackendResponse, isBetterAuthResponse } from '@/types/api';
+
 interface ApiRequestOptions {
   body?: Record<string, any>;
   params?: Record<string, string>;
   auth?: boolean;
   headers?: Record<string, string>;
-}
-
-interface ApiResponse<T = any> {
-  ok: boolean;
-  status: number;
-  data?: T;
-  error?: string;
 }
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -30,7 +26,7 @@ const buildUrl = (
   return url.toString();
 };
 
-const makeRequest = async <T = any>(
+const makeRequest = async <T>(
   method: string,
   endpoint: string,
   options: ApiRequestOptions = {}
@@ -65,37 +61,69 @@ const makeRequest = async <T = any>(
       data = null;
     }
 
+    if (isCustomBackendResponse<T>(data)) {
+      return {
+        status: data.status,
+        code: data.code,
+        data: data.data,
+        message: data.message,
+        errors: data.errors,
+        ok: data.status === 'ok',
+        error: data.message,
+      };
+    }
+
+    if (isBetterAuthResponse<T>(data)) {
+      return {
+        status: response.ok ? 'ok' : 'error',
+        code: response.status,
+        data: data as T,
+        ok: response.ok,
+        error: response.ok ? undefined : 'Request failed',
+      };
+    }
+
+    if (!data) {
+      return {
+        status: response.ok ? 'ok' : 'error',
+        code: response.status,
+        ok: response.ok,
+        error: response.ok ? undefined : 'Request failed',
+      };
+    }
+
     return {
+      status: response.ok ? 'ok' : 'error',
+      code: response.status,
+      data: data as T,
       ok: response.ok,
-      status: response.status,
-      data: response.ok ? data?.data : undefined,
-      error: response.ok ? undefined : data?.message || 'Request failed',
+      error: response.ok ? undefined : 'Request failed',
     };
   } catch (error) {
     return {
+      status: 'error',
+      code: 0,
       ok: false,
-      status: 0,
       error: error instanceof Error ? error.message : 'Network error',
+      message: error instanceof Error ? error.message : 'Network error',
     };
   }
 };
 
 export const api = {
-  get: <T = any>(
-    endpoint: string,
-    options: Omit<ApiRequestOptions, 'body'> = {}
-  ) => makeRequest<T>('GET', endpoint, options),
+  get: <T>(endpoint: string, options: Omit<ApiRequestOptions, 'body'> = {}) =>
+    makeRequest<T>('GET', endpoint, options),
 
-  post: <T = any>(endpoint: string, options: ApiRequestOptions = {}) =>
+  post: <T>(endpoint: string, options: ApiRequestOptions = {}) =>
     makeRequest<T>('POST', endpoint, options),
 
-  put: <T = any>(endpoint: string, options: ApiRequestOptions = {}) =>
+  put: <T>(endpoint: string, options: ApiRequestOptions = {}) =>
     makeRequest<T>('PUT', endpoint, options),
 
-  patch: <T = any>(endpoint: string, options: ApiRequestOptions = {}) =>
+  patch: <T>(endpoint: string, options: ApiRequestOptions = {}) =>
     makeRequest<T>('PATCH', endpoint, options),
 
-  delete: <T = any>(
+  delete: <T>(
     endpoint: string,
     options: Omit<ApiRequestOptions, 'body'> = {}
   ) => makeRequest<T>('DELETE', endpoint, options),
