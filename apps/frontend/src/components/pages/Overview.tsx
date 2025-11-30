@@ -3,10 +3,18 @@ import { api } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import type { Memory } from '@/types/routes';
 
-function MemoryCard({ url }: { url: string }) {
+function MemoryCard({ url }: { url: string | null | undefined }) {
   return (
-    <section>
-      <img src={url} alt="Random Memory" className="object-cover rounded-lg" />
+    <section className="p-4 rounded-lg border border-accent min-h-12">
+      {url ? (
+        <img
+          src={url}
+          alt="Random Memory"
+          className="object-cover rounded-lg"
+        />
+      ) : (
+        <div />
+      )}
     </section>
   );
 }
@@ -33,7 +41,7 @@ export default function Overview() {
   return (
     <div>
       Overview
-      {data && <MemoryCard url={data} />}
+      <MemoryCard url={data} />
     </div>
   );
 }
