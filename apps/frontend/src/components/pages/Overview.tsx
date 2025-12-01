@@ -2,47 +2,8 @@ import { auth } from '@/auth/client';
 import { api } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import type { Memory } from '@/types/routes';
-import { ImageNotFound01Icon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
-import Link from 'next/link';
-
-function MemoryCard({ url }: { url: string | null | undefined }) {
-  return (
-    <section className="m-12 rounded-lg border border-accent">
-      {url ? (
-        <img
-          src={url}
-          alt="Random Memory"
-          className="object-cover rounded-lg"
-        />
-      ) : (
-        <div className="relative">
-          <img
-            src="/no-memories-placeholder.jpg"
-            alt="Memory placeholder"
-            className="object-cover rounded-lg blur-xs brightness-75"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <HugeiconsIcon
-              icon={ImageNotFound01Icon}
-              className="text-background"
-              color="currentColor"
-              strokeWidth={2}
-              size={42}
-            />
-            <h1 className="text-background">You have no memories</h1>
-            <Link
-              className="text-base w-fit text-link hover:underline transition-all duration-300 font-medium"
-              href="/memories"
-            >
-              Click here to upload your first!
-            </Link>
-          </div>
-        </div>
-      )}
-    </section>
-  );
-}
+import MemoryCard from '../overview/MemoryCard';
+import Greeting from '../overview/Greeting';
 
 export default function Overview() {
   const { data: session } = auth.useSession();
@@ -64,8 +25,11 @@ export default function Overview() {
   });
 
   return (
-    <div className="grid grid-cols-3 gap-12">
-      <MemoryCard url={data} />
+    <div className="flex flex-col p-6">
+      {session?.user.name && <Greeting username={session?.user.name} />}
+      <div className="grid grid-cols-3 gap-12 mt-12">
+        <MemoryCard url={data} />
+      </div>
     </div>
   );
 }
