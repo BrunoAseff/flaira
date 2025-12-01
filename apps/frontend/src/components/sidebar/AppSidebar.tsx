@@ -23,15 +23,7 @@ import {
 } from '@/components/ui/tooltip';
 import { auth } from '@/auth/client';
 import { HugeiconsIcon } from '@hugeicons/react';
-import {
-  DiscoverCircleIcon,
-  AirplaneTakeOff01Icon,
-  Image02Icon,
-  MapsGlobal01Icon,
-  News01Icon,
-  Settings05Icon,
-  PlusSignIcon,
-} from '@hugeicons/core-free-icons';
+import { PlusSignIcon } from '@hugeicons/core-free-icons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
