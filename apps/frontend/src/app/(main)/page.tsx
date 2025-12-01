@@ -12,10 +12,8 @@ export default function Home() {
   if (error) return <ErrorPage />;
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-dvh p-5">
-      <main className="flex flex-col gap-[32px] w-full">
-        <Overview />
-      </main>
-    </div>
+    <main className="flex flex-col gap-[32px] w-full">
+      <Overview />
+    </main>
   );
 }
