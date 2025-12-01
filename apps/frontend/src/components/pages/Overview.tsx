@@ -2,14 +2,8 @@ import { auth } from '@/auth/client';
 import { api } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import type { Memory } from '@/types/routes';
-
-function MemoryCard({ url }: { url: string }) {
-  return (
-    <section>
-      <img src={url} alt="Random Memory" className="object-cover rounded-lg" />
-    </section>
-  );
-}
+import MemoryCard from '../overview/MemoryCard';
+import Greeting from '../overview/Greeting';
 
 export default function Overview() {
   const { data: session } = auth.useSession();
@@ -31,9 +25,11 @@ export default function Overview() {
   });
 
   return (
-    <div>
-      Overview
-      {data && <MemoryCard url={data} />}
+    <div className="flex flex-col p-6">
+      {session?.user.name && <Greeting username={session?.user.name} />}
+      <div className="grid grid-cols-3 gap-12 mt-12">
+        <MemoryCard url={data} />
+      </div>
     </div>
   );
 }
