@@ -15,7 +15,7 @@ export function SidebarTrigger() {
   if (isPending || !session) return null;
   return (
     <Button
-      className="absolute left-2 top-2 z-50 size-10 p-2 hover:bg-sidebar-accent"
+      className="absolute left-2 top-2 z-50 size-10 p-2 hover:bg-muted border border-transparent hover:border-accent"
       variant="ghost"
       size="icon"
       onClick={toggleSidebar}
