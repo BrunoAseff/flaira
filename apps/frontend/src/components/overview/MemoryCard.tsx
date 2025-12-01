@@ -19,7 +19,8 @@ export default function MemoryCard({
         <div className="relative">
           <img
             src="/no-memories-placeholder.jpg"
-            alt="Memory placeholder"
+            alt=""
+            role="presentation"
             className="object-cover rounded-lg blur-xs brightness-75"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center">
