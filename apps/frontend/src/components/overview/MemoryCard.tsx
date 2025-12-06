@@ -46,12 +46,7 @@ export default function MemoryCard({
               </h1>
             </div>
             <Button asChild size="sm" variant="outline">
-              <Link
-                className="px-4 py-2 rounded-md font-medium"
-                href="/memories"
-              >
-                Click here to upload your first!
-              </Link>
+              <Link href="/memories">Click here to upload your first!</Link>
             </Button>
           </div>
         </div>
