@@ -40,9 +40,9 @@ export default function MemoryCard({
                 strokeWidth={2}
                 size={24}
               />
-              <h1 className="text-background font-semibold text-2xl">
+              <h2 className="text-background font-semibold text-2xl">
                 You have no memories
-              </h1>
+              </h2>
             </div>
             <Button asChild size="sm" variant="outline">
               <Link href="/memories">Click here to upload your first!</Link>
