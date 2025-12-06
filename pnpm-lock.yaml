@@ -29,9 +29,6 @@ importers:
       eslint:
         specifier: ^9.31.0
         version: 9.31.0(jiti@2.4.2)
-      eslint-config-next:
-        specifier: ^15.4.8
-        version: 15.5.7(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.2)
       eslint-config-prettier:
         specifier: ^10.1.5
         version: 10.1.5(eslint@9.31.0(jiti@2.4.2))
