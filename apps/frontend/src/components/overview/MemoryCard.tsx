@@ -22,7 +22,6 @@ export default function MemoryCard({
           <img
             src="/no-memories-placeholder.jpg"
             alt=""
-            role="presentation"
             className="absolute inset-0 object-cover rounded-lg w-full h-full"
           />
           <ProgressiveBlur
