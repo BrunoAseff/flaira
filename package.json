@@ -2,9 +2,10 @@
   "name": "flaira",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@10.6.3",
   "engines": {
-    "node": "20.19.0",
+    "node": "20",
     "pnpm": "10.6.3"
   },
   "scripts": {
