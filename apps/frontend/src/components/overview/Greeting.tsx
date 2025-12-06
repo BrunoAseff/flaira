@@ -15,8 +15,6 @@ const GREETINGS = {
     (name: string) => `Morning, ${name}!`,
   ],
   afternoon: [
-    (name: string) => `How's your day going, ${name}?`,
-    () => `Hey there`,
     (name: string) => `${name} is back`,
     () => `Afternoon vibes`,
     (name: string) => `Welcome back, ${name}`,
