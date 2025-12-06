@@ -2,9 +2,10 @@
   "name": "flaira",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@10.6.3",
   "engines": {
-    "node": "20.19.0",
+    "node": "20",
     "pnpm": "10.6.3"
   },
   "scripts": {
@@ -35,6 +36,7 @@
     "concurrently": "9.1.2",
     "dotenv-cli": "8.0.0",
     "eslint": "^9.31.0",
+    "eslint-config-next": "^15.4.8",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.1",
     "pino-pretty": "13.0.0",
