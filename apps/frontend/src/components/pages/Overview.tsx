@@ -17,7 +17,7 @@ export default function Overview() {
       });
 
       if (response.ok && response.data && response.data.length) {
-        return response.data[0].url;
+        return response.data;
       }
 
       return null;
@@ -28,7 +28,7 @@ export default function Overview() {
     <div className="flex flex-col p-6">
       {session?.user.name && <Greeting username={session?.user.name} />}
       <div className="grid grid-cols-3 gap-12 mt-12">
-        <MemoryCard url={data} />
+        <MemoryCard memories={data} />
       </div>
     </div>
   );

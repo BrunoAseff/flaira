@@ -126,6 +126,9 @@ export interface GetMemoryResponse {
  */
 export interface Memory {
   id: string;
+  title: string;
+  startDate: string;
+  endDate: string;
   s3Key: string;
   type: 'image' | 'video' | 'audio';
   tripId: string;

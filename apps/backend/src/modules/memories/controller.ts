@@ -30,7 +30,6 @@ export const uploadMemory = async (context: Context) => {
 
 export const getMemory = async (context: Context) => {
   try {
-    const user = context.get('user');
     const key = context.req.query('key');
 
     if (!key) {
