@@ -12,6 +12,7 @@ vi.mock('uuid', () => ({
 
 vi.mock('@/db/schema/trip', () => ({
   tripMedia: {},
+  trips: {},
 }));
 
 vi.mock('drizzle-orm', () => ({
@@ -25,6 +26,7 @@ vi.mock('@/db', () => ({
     select: vi.fn().mockReturnThis(),
     from: vi.fn().mockReturnThis(),
     where: vi.fn().mockReturnThis(),
+    leftJoin: vi.fn().mockReturnThis(),
     orderBy: vi.fn().mockReturnThis(),
     limit: vi.fn().mockResolvedValue([]),
     delete: vi.fn().mockReturnThis(),
