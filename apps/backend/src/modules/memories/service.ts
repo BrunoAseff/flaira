@@ -25,6 +25,8 @@ export const getTripMemory = async ({ key }: { key: string }) => {
 };
 
 export const getRandomTripMemories = async ({ userId }: { userId: string }) => {
+  const MEMORIES_AMOUNT = 5;
+
   const randomMedia = await db
     .select({
       id: tripMedia.id,
@@ -37,7 +39,7 @@ export const getRandomTripMemories = async ({ userId }: { userId: string }) => {
     .from(tripMedia)
     .where(eq(tripMedia.uploadedBy, userId))
     .orderBy(sql`RANDOM()`)
-    .limit(5);
+    .limit(MEMORIES_AMOUNT);
 
   const mediaWithUrls = await Promise.all(
     randomMedia.map(async (media) => {
