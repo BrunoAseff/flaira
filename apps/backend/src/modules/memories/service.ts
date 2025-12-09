@@ -1,6 +1,6 @@
 import { uploadUrl, getUrl, deleteObject } from '@/utils/s3';
 import { v4 as uuidv4 } from 'uuid';
-import { tripMedia } from '@/db/schema/trip';
+import { tripMedia, trips } from '@/db/schema/trip';
 import { and, eq, sql } from 'drizzle-orm';
 import { db } from '@/db';
 
@@ -29,6 +29,9 @@ export const getRandomTripMemories = async ({ userId }: { userId: string }) => {
 
   const randomMedia = await db
     .select({
+      title: trips.title,
+      start_date: trips.startDate,
+      end_date: trips.endDate,
       id: tripMedia.id,
       s3Key: tripMedia.s3Key,
       type: tripMedia.type,
@@ -38,6 +41,7 @@ export const getRandomTripMemories = async ({ userId }: { userId: string }) => {
     })
     .from(tripMedia)
     .where(eq(tripMedia.uploadedBy, userId))
+    .leftJoin(trips, eq(tripMedia.tripId, trips.id))
     .orderBy(sql`RANDOM()`)
     .limit(MEMORIES_AMOUNT);
 
