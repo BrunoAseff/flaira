@@ -30,8 +30,8 @@ export const getRandomTripMemories = async ({ userId }: { userId: string }) => {
   const randomMedia = await db
     .select({
       title: trips.title,
-      start_date: trips.startDate,
-      end_date: trips.endDate,
+      startDate: trips.startDate,
+      endDate: trips.endDate,
       id: tripMedia.id,
       s3Key: tripMedia.s3Key,
       type: tripMedia.type,
