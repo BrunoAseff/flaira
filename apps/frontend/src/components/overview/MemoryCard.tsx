@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { ImageNotFound01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
+import Autoplay from 'embla-carousel-autoplay';
 import { ProgressiveBlur } from '@/components/ui/progressive-blur';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,17 +19,25 @@ interface MemoryCardProps {
 
 export default function MemoryCard({ memories }: MemoryCardProps) {
   const [api, setApi] = useState<CarouselApi>();
+
+  const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
+
   const hasMemories = memories && memories.length > 0;
+
+  const hasMultipleMemories = memories && memories.length > 1;
 
   return (
     <section className="rounded-lg border border-accent overflow-hidden bg-card">
       {hasMemories ? (
         <Carousel
           setApi={setApi}
+          plugins={hasMultipleMemories ? [plugin.current] : []}
           opts={{
             loop: true,
             watchDrag: false,
           }}
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
           className="w-full"
         >
           <CarouselContent>
