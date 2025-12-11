@@ -52,8 +52,5 @@
     "onlyBuiltDependencies": [
       "sharp"
     ]
-  },
-  "dependencies": {
-    "embla-carousel-autoplay": "^8.6.0"
   }
 }
