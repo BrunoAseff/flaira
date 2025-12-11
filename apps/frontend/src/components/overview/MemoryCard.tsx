@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { ImageNotFound01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
@@ -20,7 +20,10 @@ interface MemoryCardProps {
 export default function MemoryCard({ memories }: MemoryCardProps) {
   const [api, setApi] = useState<CarouselApi>();
 
-  const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
+  const plugin = useMemo(
+    () => Autoplay({ delay: 4000, stopOnInteraction: true }),
+    []
+  );
 
   const hasMemories = memories && memories.length > 0;
 
@@ -31,13 +34,13 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
       {hasMemories ? (
         <Carousel
           setApi={setApi}
-          plugins={hasMultipleMemories ? [plugin.current] : []}
+          plugins={hasMultipleMemories ? [plugin] : []}
           opts={{
             loop: true,
             watchDrag: false,
           }}
-          onMouseEnter={plugin.current.stop}
-          onMouseLeave={plugin.current.reset}
+          onMouseEnter={plugin.stop}
+          onMouseLeave={plugin.reset}
           className="w-full"
         >
           <CarouselContent>
