@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      embla-carousel-autoplay:
-        specifier: ^8.6.0
-        version: 8.6.0(embla-carousel@8.6.0)
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.1
@@ -208,6 +204,9 @@ importers:
       dotenv:
         specifier: 16.4.7
         version: 16.4.7
+      embla-carousel-autoplay:
+        specifier: ^8.6.0
+        version: 8.6.0(embla-carousel@8.6.0)
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.0.0)
