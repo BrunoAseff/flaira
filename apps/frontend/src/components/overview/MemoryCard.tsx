@@ -1,14 +1,16 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { ImageNotFound01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
-import Autoplay from 'embla-carousel-autoplay';
 import { ProgressiveBlur } from '@/components/ui/progressive-blur';
 import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
   type CarouselApi,
 } from '@/components/ui/carousel';
 import type { Memory } from '@/types/routes';
@@ -17,31 +19,43 @@ interface MemoryCardProps {
   memories: Memory[] | null | undefined;
 }
 
+const AUTOPLAY_DELAY = 16000;
+
 export default function MemoryCard({ memories }: MemoryCardProps) {
   const [api, setApi] = useState<CarouselApi>();
+  const [progressKey, setProgressKey] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
-  const plugin = useMemo(
-    () => Autoplay({ delay: 4000, stopOnInteraction: true }),
-    []
-  );
+  useEffect(() => {
+    if (!api) return;
+    const onSelect = () => setProgressKey((prev) => prev + 1);
+    api.on('select', onSelect);
+    return () => {
+      api.off('select', onSelect);
+    };
+  }, [api]);
 
   const hasMemories = memories && memories.length > 0;
-
   const hasMultipleMemories = memories && memories.length > 1;
+
+  const handleAnimationEnd = () => {
+    if (api && !isHovered) {
+      api.scrollNext();
+    }
+  };
 
   return (
     <section className="rounded-lg border border-accent overflow-hidden bg-card">
       {hasMemories ? (
         <Carousel
           setApi={setApi}
-          plugins={hasMultipleMemories ? [plugin] : []}
           opts={{
             loop: true,
             watchDrag: false,
           }}
-          onMouseEnter={plugin.stop}
-          onMouseLeave={plugin.reset}
-          className="w-full"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className="w-full relative group/carousel"
         >
           <CarouselContent>
             {memories.map((memory) => {
@@ -49,15 +63,12 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
 
               return (
                 <CarouselItem key={memory.id}>
-                  <div className="relative min-h-[400px] w-full flex items-center justify-center overflow-hidden rounded-lg group">
+                  <div className="relative min-h-[400px] w-full flex items-center justify-center overflow-hidden rounded-lg">
                     <img
                       src={memory.url}
                       alt={memory.title}
-                      className="absolute inset-0 h-full w-full object-cover"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-in-out group-hover/carousel:scale-105"
                     />
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/10 to-transparent" />
-
                     <ProgressiveBlur
                       direction="bottom"
                       className="pointer-events-none absolute inset-0"
@@ -77,6 +88,40 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
               );
             })}
           </CarouselContent>
+
+          {hasMultipleMemories && (
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-foreground/20 z-30">
+              <div
+                key={progressKey}
+                onAnimationEnd={handleAnimationEnd}
+                className="h-full bg-background origin-left shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                style={{
+                  animation: `progress-loop ${AUTOPLAY_DELAY}ms linear forwards`,
+                  animationPlayState: isHovered ? 'paused' : 'running',
+                }}
+              />
+            </div>
+          )}
+
+          {hasMultipleMemories && (
+            <>
+              <CarouselPrevious
+                variant="ghost"
+                size={null}
+                className="absolute left-0 inset-y-0 h-full w-20 m-0 translate-y-0 rounded-none border-none hover:bg-transparent text-background/50 hover:text-background hover:cursor-pointer transition-colors z-20 flex items-center justify-center opacity-0 group-hover/carousel:opacity-100"
+              >
+                <ChevronLeft className="size-8" />
+              </CarouselPrevious>
+
+              <CarouselNext
+                variant="ghost"
+                size={null}
+                className="absolute right-0 inset-y-0 h-full w-20 m-0 translate-y-0 rounded-none border-none hover:bg-transparent text-background/50 hover:text-background hover:cursor-pointer transition-colors z-20 flex items-center justify-center opacity-0 group-hover/carousel:opacity-100"
+              >
+                <ChevronRight className="size-8" />
+              </CarouselNext>
+            </>
+          )}
         </Carousel>
       ) : (
         <div className="relative min-h-[400px] flex items-center justify-center">
@@ -111,6 +156,17 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
           </div>
         </div>
       )}
+
+      <style jsx global>{`
+        @keyframes progress-loop {
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
+        }
+      `}</style>
     </section>
   );
 }
