@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Autoplay from 'embla-carousel-autoplay';
 import { ProgressiveBlur } from '@/components/ui/progressive-blur';
 import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -46,7 +47,7 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
           }}
           onMouseEnter={plugin.stop}
           onMouseLeave={plugin.reset}
-          className="w-full relative group"
+          className="w-full relative group/carousel"
         >
           <CarouselContent>
             {memories.map((memory) => {
@@ -54,11 +55,11 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
 
               return (
                 <CarouselItem key={memory.id}>
-                  <div className="relative min-h-[400px] w-full flex items-center justify-center overflow-hidden rounded-lg group/item">
+                  <div className="relative min-h-[400px] w-full flex items-center justify-center overflow-hidden rounded-lg">
                     <img
                       src={memory.url}
                       alt={memory.title}
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-in-out group-hover/item:scale-105"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-in-out group-hover/carousel:scale-105"
                     />
                     <ProgressiveBlur
                       direction="bottom"
@@ -82,8 +83,21 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
 
           {hasMultipleMemories && (
             <>
-              <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-20 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-background/50 hover:text-foreground hover:cursor-pointer border-none" />
-              <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-background/50 hover:text-foreground hover:cursor-pointer border-none" />
+              <CarouselPrevious
+                variant="ghost"
+                size={null}
+                className="absolute left-0 inset-y-0 h-full w-20 m-0 translate-y-0 rounded-none border-none hover:bg-transparent text-background/50 hover:text-background transition-opacity z-20 flex items-center justify-center opacity-0 group-hover/carousel:opacity-100"
+              >
+                <ChevronLeft className="size-8" />
+              </CarouselPrevious>
+
+              <CarouselNext
+                variant="ghost"
+                size={null}
+                className="absolute right-0 inset-y-0 h-full w-20 m-0 translate-y-0 rounded-none border-none hover:bg-transparent text-background/50 hover:text-background transition-opacity z-20 flex items-center justify-center opacity-0 group-hover/carousel:opacity-100"
+              >
+                <ChevronRight className="size-8" />
+              </CarouselNext>
             </>
           )}
         </Carousel>
