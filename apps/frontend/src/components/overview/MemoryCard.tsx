@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from 'react';
 import { ImageNotFound01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
-import Autoplay from 'embla-carousel-autoplay';
 import { ProgressiveBlur } from '@/components/ui/progressive-blur';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -26,15 +25,6 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
   const [api, setApi] = useState<CarouselApi>();
   const [progressKey, setProgressKey] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-
-  const plugin = useMemo(
-    () =>
-      Autoplay({
-        delay: AUTOPLAY_DELAY,
-        stopOnInteraction: true,
-      }),
-    []
-  );
 
   useEffect(() => {
     if (!api) return;
