@@ -26,7 +26,7 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
   const plugin = useMemo(
     () =>
       Autoplay({
-        delay: 6000,
+        delay: 16000,
         stopOnInteraction: true,
       }),
     []
