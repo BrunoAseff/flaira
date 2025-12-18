@@ -55,9 +55,6 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
                       alt={memory.title}
                       className="absolute inset-0 h-full w-full object-cover"
                     />
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/10 to-transparent" />
-
                     <ProgressiveBlur
                       direction="bottom"
                       className="pointer-events-none absolute inset-0"
