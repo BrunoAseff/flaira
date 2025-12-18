@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { ImageNotFound01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
@@ -20,33 +20,51 @@ interface MemoryCardProps {
   memories: Memory[] | null | undefined;
 }
 
+const AUTOPLAY_DELAY = 16000;
+
 export default function MemoryCard({ memories }: MemoryCardProps) {
   const [api, setApi] = useState<CarouselApi>();
+  const [progressKey, setProgressKey] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   const plugin = useMemo(
     () =>
       Autoplay({
-        delay: 16000,
+        delay: AUTOPLAY_DELAY,
         stopOnInteraction: true,
       }),
     []
   );
 
+  useEffect(() => {
+    if (!api) return;
+    const onSelect = () => setProgressKey((prev) => prev + 1);
+    api.on('select', onSelect);
+    return () => {
+      api.off('select', onSelect);
+    };
+  }, [api]);
+
   const hasMemories = memories && memories.length > 0;
   const hasMultipleMemories = memories && memories.length > 1;
+
+  const handleAnimationEnd = () => {
+    if (api && !isHovered) {
+      api.scrollNext();
+    }
+  };
 
   return (
     <section className="rounded-lg border border-accent overflow-hidden bg-card">
       {hasMemories ? (
         <Carousel
           setApi={setApi}
-          plugins={hasMultipleMemories ? [plugin] : []}
           opts={{
             loop: true,
             watchDrag: false,
           }}
-          onMouseEnter={plugin.stop}
-          onMouseLeave={plugin.reset}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           className="w-full relative group/carousel"
         >
           <CarouselContent>
@@ -80,6 +98,20 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
               );
             })}
           </CarouselContent>
+
+          {hasMultipleMemories && (
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-foreground/20 z-30">
+              <div
+                key={progressKey}
+                onAnimationEnd={handleAnimationEnd}
+                className="h-full bg-background origin-left shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                style={{
+                  animation: `progress-loop ${AUTOPLAY_DELAY}ms linear forwards`,
+                  animationPlayState: isHovered ? 'paused' : 'running',
+                }}
+              />
+            </div>
+          )}
 
           {hasMultipleMemories && (
             <>
@@ -134,6 +166,17 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
           </div>
         </div>
       )}
+
+      <style jsx global>{`
+        @keyframes progress-loop {
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
+        }
+      `}</style>
     </section>
   );
 }
