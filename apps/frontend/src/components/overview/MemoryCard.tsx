@@ -86,7 +86,7 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
               <CarouselPrevious
                 variant="ghost"
                 size={null}
-                className="absolute left-0 inset-y-0 h-full w-20 m-0 translate-y-0 rounded-none border-none hover:bg-transparent text-background/50 hover:text-background transition-opacity z-20 flex items-center justify-center opacity-0 group-hover/carousel:opacity-100"
+                className="absolute left-0 inset-y-0 h-full w-20 m-0 translate-y-0 rounded-none border-none hover:bg-transparent text-background/50 hover:text-background hover:cursor-pointer transition-colors z-20 flex items-center justify-center opacity-0 group-hover/carousel:opacity-100"
               >
                 <ChevronLeft className="size-8" />
               </CarouselPrevious>
@@ -94,7 +94,7 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
               <CarouselNext
                 variant="ghost"
                 size={null}
-                className="absolute right-0 inset-y-0 h-full w-20 m-0 translate-y-0 rounded-none border-none hover:bg-transparent text-background/50 hover:text-background transition-opacity z-20 flex items-center justify-center opacity-0 group-hover/carousel:opacity-100"
+                className="absolute right-0 inset-y-0 h-full w-20 m-0 translate-y-0 rounded-none border-none hover:bg-transparent text-background/50 hover:text-background hover:cursor-pointer transition-colors z-20 flex items-center justify-center opacity-0 group-hover/carousel:opacity-100"
               >
                 <ChevronRight className="size-8" />
               </CarouselNext>
