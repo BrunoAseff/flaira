@@ -9,6 +9,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
   type CarouselApi,
 } from '@/components/ui/carousel';
 import type { Memory } from '@/types/routes';
@@ -21,12 +23,15 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
   const [api, setApi] = useState<CarouselApi>();
 
   const plugin = useMemo(
-    () => Autoplay({ delay: 4000, stopOnInteraction: true }),
+    () =>
+      Autoplay({
+        delay: 6000,
+        stopOnInteraction: true,
+      }),
     []
   );
 
   const hasMemories = memories && memories.length > 0;
-
   const hasMultipleMemories = memories && memories.length > 1;
 
   return (
@@ -41,7 +46,7 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
           }}
           onMouseEnter={plugin.stop}
           onMouseLeave={plugin.reset}
-          className="w-full"
+          className="w-full relative group"
         >
           <CarouselContent>
             {memories.map((memory) => {
@@ -49,11 +54,11 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
 
               return (
                 <CarouselItem key={memory.id}>
-                  <div className="relative min-h-[400px] w-full flex items-center justify-center overflow-hidden rounded-lg group">
+                  <div className="relative min-h-[400px] w-full flex items-center justify-center overflow-hidden rounded-lg group/item">
                     <img
                       src={memory.url}
                       alt={memory.title}
-                      className="absolute inset-0 h-full w-full object-cover"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-in-out group-hover/item:scale-105"
                     />
                     <ProgressiveBlur
                       direction="bottom"
@@ -74,6 +79,13 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
               );
             })}
           </CarouselContent>
+
+          {hasMultipleMemories && (
+            <>
+              <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-20 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-background/50 hover:text-foreground hover:cursor-pointer border-none" />
+              <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-background/50 hover:text-foreground hover:cursor-pointer border-none" />
+            </>
+          )}
         </Carousel>
       ) : (
         <div className="relative min-h-[400px] flex items-center justify-center">
