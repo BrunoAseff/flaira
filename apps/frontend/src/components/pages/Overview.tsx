@@ -27,7 +27,7 @@ export default function Overview() {
   return (
     <div className="flex flex-col p-6">
       {session?.user.name && <Greeting username={session?.user.name} />}
-      <div className="grid grid-cols-3 gap-12 mt-12">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 mt-12 w-full">
         <MemoryCard memories={data} />
       </div>
     </div>
