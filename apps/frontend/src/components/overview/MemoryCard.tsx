@@ -45,7 +45,7 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
   };
 
   return (
-    <section className="rounded-lg border border-accent overflow-hidden bg-card">
+    <section className="rounded-lg border border-accent overflow-hidden bg-card h-full">
       {hasMemories ? (
         <Carousel
           setApi={setApi}
@@ -55,7 +55,7 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
           }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className="w-full relative group/carousel"
+          className="w-full h-full relative group/carousel"
         >
           <CarouselContent>
             {memories.map((memory) => {
@@ -63,7 +63,7 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
 
               return (
                 <CarouselItem key={memory.id}>
-                  <div className="relative min-h-[400px] w-full flex items-center justify-center overflow-hidden rounded-lg">
+                  <div className="relative h-full w-full flex items-center justify-center overflow-hidden rounded-lg">
                     <img
                       src={memory.url}
                       alt={memory.title}
@@ -156,7 +156,6 @@ export default function MemoryCard({ memories }: MemoryCardProps) {
           </div>
         </div>
       )}
-
       <style jsx global>{`
         @keyframes progress-loop {
           from {
