@@ -33,6 +33,7 @@ export default function Overview() {
       <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 mt-12 w-full">
         <MemoryCard memories={data} />
         <TripCard />
+        <LogbookCard />
         <MapCard />
       </div>
     </div>
