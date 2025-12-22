@@ -5,6 +5,8 @@ import type { Memory } from '@/types/routes';
 import MemoryCard from '../overview/MemoryCard';
 import Greeting from '../overview/Greeting';
 import MapCard from '../overview/MapCard';
+import TripCard from '../overview/TripCard';
+import LogbookCard from '../overview/LogbookCard';
 
 export default function Overview() {
   const { data: session } = auth.useSession();
@@ -30,6 +32,7 @@ export default function Overview() {
       {session?.user.name && <Greeting username={session?.user.name} />}
       <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 mt-12 w-full">
         <MemoryCard memories={data} />
+        <TripCard />
         <MapCard />
       </div>
     </div>
