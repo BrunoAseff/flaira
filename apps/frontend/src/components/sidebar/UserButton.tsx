@@ -63,7 +63,10 @@ export default function UserButton() {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <SidebarMenuButton size="lg" className="py-6 hover:bg-background">
+          <SidebarMenuButton
+            size="lg"
+            className="py-6 hover:bg-muted border border-transparent hover:border-accent cursor-pointer"
+          >
             <Avatar className="size-8 rounded-lg">
               {imageUrl && imageUrl !== '' && (
                 <AvatarImage
@@ -72,7 +75,7 @@ export default function UserButton() {
                   className="object-cover w-full h-full"
                 />
               )}
-              <AvatarFallback className="text-foreground/70">
+              <AvatarFallback className="text-foreground ml-[0.45rem]">
                 <HugeiconsIcon
                   icon={User03Icon}
                   color="currentColor"

@@ -31,7 +31,7 @@ export default function Overview() {
     <div className="flex flex-col p-6 mt-12 md:mt-0">
       {session?.user.name && <Greeting username={session?.user.name} />}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 auto-rows-[350px] gap-12 p-2 mt-12 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 [@media(min-width:2000px)]:grid-cols-4 auto-rows-[350px] gap-12 p-2 mt-12 w-full">
         <MemoryCard memories={data} />
         <TripCard />
         <LogbookCard />
