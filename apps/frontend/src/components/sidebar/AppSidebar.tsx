@@ -108,7 +108,7 @@ export function AppSidebar() {
                                   icon={route.icon}
                                   color="currentColor"
                                   strokeWidth={1.8}
-                                  className="ml-0.5"
+                                  className="ml-[0.2rem]"
                                 />
                                 <span>{route.title}</span>
                               </Link>
